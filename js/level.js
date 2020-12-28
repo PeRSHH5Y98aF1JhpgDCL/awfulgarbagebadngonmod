@@ -23,7 +23,7 @@ const level = {
             // for (let i = 0; i < 15; i++) tech.giveTech("plasma jet")
 
             level.intro(); //starting level
-            // level.testing(); //not in rotation
+            //level.testing(); //not in rotation
             // level.final() //final boss level
             // level.gauntlet(); //before final boss level
             // level.testChamber() //less mobs, more puzzle

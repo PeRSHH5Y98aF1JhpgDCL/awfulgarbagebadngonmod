@@ -992,7 +992,7 @@ const b = {
             b.canExtruderFire = false;
         }
     },
-    plasma() {
+    plasma(isUpgrade=tech.plasmaBotUpg) { ////i am lazy
         const DRAIN = 0.00008 + mech.fieldRegen
         if (mech.energy > DRAIN) {
             mech.energy -= DRAIN;
@@ -1003,7 +1003,7 @@ const b = {
 
             //calculate laser collision
             let best;
-            let range = tech.isPlasmaRange * (120 + (mech.crouch ? 400 : 300) * Math.sqrt(Math.random())) //+ 100 * Math.sin(mech.cycle * 0.3);
+            let range = tech.isPlasmaRange * (120 + (mech.crouch ? 400 : 300) * Math.sqrt(Math.random()))*(isUpgrade ? 2 : 1) //+ 100 * Math.sin(mech.cycle * 0.3);
             // const dir = mech.angle // + 0.04 * (Math.random() - 0.5)
             const path = [{
                     x: mech.pos.x + 20 * Math.cos(mech.angle),
@@ -1073,7 +1073,7 @@ const b = {
                     y: best.y
                 };
                 if (best.who.alive) {
-                    const dmg = 0.8 * b.dmgScale; //********** SCALE DAMAGE HERE *********************
+                    const dmg = 0.8 * b.dmgScale * (isUpgrade ? 2 : 1); //********** SCALE DAMAGE HERE *********************
                     best.who.damage(dmg);
                     best.who.locatePlayer();
 

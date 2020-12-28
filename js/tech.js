@@ -100,7 +100,7 @@ const tech = {
         return (tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance
     },
     totalBots() {
-        return tech.foamBotCount + tech.nailBotCount + tech.laserBotCount + tech.boomBotCount + tech.plasmaBotCount + tech.orbitBotCount
+        return tech.foamBotCount + tech.nailBotCount + tech.laserBotCount + tech.boomBotCount + tech.plasmaBotCount + tech.orbitBotCount + tech.plasmaBotCount
     },
     tech: [{
             name: "electrolytes",
@@ -3471,15 +3471,32 @@ const tech = {
             maxCount: 9,
             count: 0,
             allowed() {
-                return mech.fieldUpgrades[mech.fieldMode].name === "plasma torch"
+                return true
             },
-            requires: "plasma torch",
+            requires: "you aren't supposed to see this",
             effect() {
                 tech.plasmaBotCount++;
                 b.plasmaBot();
             },
             remove() {
                 tech.plasmaBotCount = 0;
+            }
+        },
+        {
+            name: "plasma upgrade",
+            description: "all <strong class='color-plasma'>plasma</strong> weapons' <strong>range</strong> and <strong class='color-d'>damage</strong> is doubled<br><em>applies to all current and future plasma-bots</em><br><em>and also plasma field</em>",
+            isFieldTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return mech.fieldUpgrades[mech.fieldMode].name === "plasma torch" || tech.plasmaBotCount>1
+            },
+            requires: "plasma torch or at least 2 plasma bots",
+            effect() {
+                tech.plasmaBotUpg=true
+            },
+            remove() {
+                tech.plasmaBotUpg=false
             }
         },
         {

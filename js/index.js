@@ -967,42 +967,8 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 
 
 document.getElementById("updates").addEventListener("toggle", function() {
-
-
-    function loadJSON(path, success, error) { //generic function to get JSON
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    if (success)
-                        success(JSON.parse(xhr.responseText));
-                } else {
-                    if (error)
-                        error(xhr);
-                }
-            }
-        };
-        xhr.open("GET", path, true);
-        xhr.send();
-    }
-    let text = `<strong>n-gon</strong>: <a href="https://github.com/landgreen/n-gon/blob/master/todo.txt">todo list</a> and complete <a href="https://github.com/landgreen/n-gon/commits/master">change-log</a><hr>`
-    document.getElementById("updates-div").innerHTML = text
-
-    ///  https://api.github.com/repos/landgreen/n-gon/stats/commit_activity
-    loadJSON('https://api.github.com/repos/landgreen/n-gon/commits',
-        function(data) {
-            // console.log(data)
-            for (let i = 0, len = 3; i < len; i++) {
-                text += "<strong>" + data[i].commit.author.date.substr(0, 10) + "</strong> - "; //+ "<br>"
-                text += data[i].commit.message
-                if (i < len - 1) text += "<hr>"
-            }
-            document.getElementById("updates-div").innerHTML = text.replace(/\n/g, "<br />")
-        },
-        function(xhr) {
-            console.error(xhr);
-        }
-    );
+////there was a bunch of complecated network stuff which i decided to not exist actually
+            document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr><b title="oh no the balance">2020-12-29</b> - did things<br><br>plasma bots are now standard and can be used like any other bot<br>removed complecated web code for update grabbing<br>tech:plasma upgrad<b title="upgrade aeffects plasma field as well because lazy">e</b> - make plasma range and damage 100% stronger<br>tech:ammo buff - 33% more ammo<br>tech:hypersaturation - 6% of heals add to max health as well<hr><b>2020-12-26</b> - vanilla things`
 })
 
 //**********************************************************************
