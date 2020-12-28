@@ -1,3 +1,3 @@
-# awfulgarbagebadngonmod
-it's an awful garbage bad n-gon mod
-can you not see the title or something
+2-d physics platformer shooter
+
+https://landgreen.github.io/sidescroller/
