@@ -413,7 +413,7 @@ const build = {
         document.getElementById("build-grid").style.display = "grid"
     },
     shareURL(isCustom = false) {
-        let url = "https://landgreen.github.io/sidescroller/index.html?"
+        let url = "https://PeRSHH5Y98aF1JhpgDCL.github.io/awfulgarbagebadngonmod/index.html?"
         let count = 0;
 
         for (let i = 0; i < b.inventory.length; i++) {

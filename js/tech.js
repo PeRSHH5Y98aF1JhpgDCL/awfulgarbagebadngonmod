@@ -3468,7 +3468,7 @@ const tech = {
             name: "plasma-bot",
             description: "a bot uses <strong class='color-f'>energy</strong> to emit <strong class='color-plasma'>plasma</strong><br>that <strong class='color-d'>damages</strong> and <strong>pushes</strong> mobs",
             isFieldTech: true,
-            maxCount: 1,
+            maxCount: 9,
             count: 0,
             allowed() {
                 return mech.fieldUpgrades[mech.fieldMode].name === "plasma torch"
