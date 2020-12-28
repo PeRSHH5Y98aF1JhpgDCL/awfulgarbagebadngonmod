@@ -1,3 +1,3 @@
-2-d physics platformer shooter
-
-https://landgreen.github.io/sidescroller/
+#awfulgarbagebadngonmod
+it's an awful garbage bad n-gon mod
+can you not read or something
