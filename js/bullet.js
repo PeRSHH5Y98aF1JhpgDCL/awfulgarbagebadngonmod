@@ -8,8 +8,10 @@ const b = {
     inventory: [], //list of what guns player has  // 0 starts with basic gun
     fire() {
         if (input.fire && mech.fireCDcycle < mech.cycle && (!input.field || mech.fieldFire) && b.inventory.length) {
-            if (b.guns[b.activeGun].ammo > 0) {
-                b.guns[b.activeGun].fire();
+            if (b.guns[b.activeGun].ammo >  tech.ammoBuff) {
+                for (let i=0;i<tech.multiShot;i++) {
+					b.guns[b.activeGun].fire();
+				
                 if (tech.isCrouchAmmo && mech.crouch) {
                     if (tech.isCrouchAmmo % 2) {
                         b.guns[b.activeGun].ammo--;
@@ -19,7 +21,7 @@ const b = {
                 } else {
                     b.guns[b.activeGun].ammo--;
                     simulation.updateGunHUD();
-                }
+                }}
             } else {
                 if (tech.isAmmoFromHealth) {
                     if (mech.health > 0.05) {

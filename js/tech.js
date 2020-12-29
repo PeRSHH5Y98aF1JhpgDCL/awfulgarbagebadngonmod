@@ -134,6 +134,22 @@ const tech = {
                 tech.ammoBuff = 1;
             }
         },
+		{
+            name: "multishot",
+            description: "fire multiple times at once",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.ammoBuff>1
+            },
+            requires: "ammo upgrade",
+            effect: () => {
+                tech.multiShot +=1
+            },
+            remove() {
+                tech.multiShot=1
+            }
+        },
         {
             name: "exciton-lattice",
             description: `increase <strong class='color-d'>damage</strong> by <strong>50%</strong>, but<br><strong class='color-g'>ammo</strong> will no longer <strong>spawn</strong>`,
