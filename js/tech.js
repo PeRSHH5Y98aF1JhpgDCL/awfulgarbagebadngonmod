@@ -97,7 +97,9 @@ const tech = {
         return dmg * tech.slowFire * tech.aimDamage
     },
     duplicationChance() {
-        return (tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance
+        x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
+		if (x>1.5) x=1.5*((x/1.5)**0.825)
+		return x
     },
     totalBots() {
         return tech.foamBotCount + tech.nailBotCount + tech.laserBotCount + tech.boomBotCount + tech.plasmaBotCount + tech.orbitBotCount + tech.plasmaBotCount
@@ -1437,7 +1439,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return tech.duplicationChance() < 1
+                return true
             },
             requires: "below 100% duplication chance",
             effect: () => {
@@ -1455,7 +1457,7 @@ const tech = {
             maxCount: 9,
             count: 0,
             allowed() {
-                return tech.duplicationChance() < 1
+                return true
             },
             requires: "below 100% duplication chance",
             effect() {

@@ -670,7 +670,11 @@ const powerUps = {
             (!simulation.isNoPowerUps || (target === 'reroll' || target === 'heal' || target === 'ammo'))
         ) {
             powerUps.directSpawn(x, y, target, moving, mode, size)
-            if (Math.random() < tech.duplicationChance()) {
+			for(i=0;i<Math.floor(tech.duplicationChance());i++) {
+                powerUps.directSpawn(x, y, target, moving, mode, size)
+                powerUp[powerUp.length - 1].isBonus = true
+			}
+            if (Math.random() < (tech.duplicationChance()%1)) {
                 powerUps.directSpawn(x, y, target, moving, mode, size)
                 powerUp[powerUp.length - 1].isBonus = true
             }

@@ -184,7 +184,7 @@ const build = {
       <strong class='color-d'>damage</strong> increase: ${((tech.damageFromTech()-1)*100).toFixed(0)}%
       <br><strong class='color-harm'>harm</strong> reduction: ${((1-mech.harmReduction())*100).toFixed(0)}%
       <br><strong><em>fire delay</em></strong> decrease: ${((1-b.fireCD)*100).toFixed(0)}%
-      <br><strong class='color-dup'>duplication</strong> chance: ${(Math.min(1,tech.duplicationChance())*100).toFixed(0)}%
+      <br><strong class='color-dup'>duplication</strong> chance: ${(tech.duplicationChance()*100).toFixed(0)+(tech.duplicationChance()>1.5?"(softcapped)":"")}%
       <br>
       <br><strong class='color-r'>rerolls</strong>: ${powerUps.reroll.rerolls}
       <br><strong class='color-h'>health</strong>: (${(mech.health*100).toFixed(0)} / ${(mech.maxHealth*100).toFixed(0)}) &nbsp; <strong class='color-f'>energy</strong>: (${(mech.energy*100).toFixed(0)} / ${(mech.maxEnergy*100).toFixed(0)})
@@ -968,7 +968,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
-            document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr><b title="help">2020-12-30</b> - oh boy more bullets<br><br>tech:multishot - all shots shoot more<hr><b title="oh no the balance">2020-12-29</b> - did things<br><br>plasma bots are now standard and can be used like any other bot<br>removed complecated web code for update grabbing<br>tech:plasma upgrad<b title="upgrade aeffects plasma field as well because lazy">e</b> - make plasma range and damage 100% stronger<br>tech:ammo buff - 33% more ammo<br>tech:hypersaturation - 6% of heals add to max health as well<hr><b>2020-12-26</b> - vanilla things`
+            document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr><b title="help">2020-12-30</b> - funny DI reference<br><br>duplication chance can go past 100% but is softcapped (exponented by 0.825) after 150%<hr><b title="help">2020-12-30</b> - oh boy more bullets<br><br>tech:multishot - all shots shoot more<hr><b title="oh no the balance">2020-12-29</b> - did things<br><br>plasma bots are now standard and can be used like any other bot<br>removed complecated web code for update grabbing<br>tech:plasma upgrad<b title="upgrade aeffects plasma field as well because lazy">e</b> - make plasma range and damage 100% stronger<br>tech:ammo buff - 33% more ammo<br>tech:hypersaturation - 6% of heals add to max health as well<hr><b>2020-12-26</b> - vanilla things`
 })
 
 //**********************************************************************
