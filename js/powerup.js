@@ -246,6 +246,12 @@ const powerUps = {
                     powerUps.field.choiceLog.push(choice4)
                     powerUps.field.choiceLog.push(choice5)
                 }
+				let extrachoices=[]
+				for (i=0;i<tech.isExtraChoices;i++) {
+					extrachoices[extrachoices.length] = pick(mech.fieldUpgrades)
+					text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${extrachoices[extrachoices.length-1]})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].name}</div> ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].description}</div>`
+					powerUps.field.choiceLog.push(extrachoices[extrachoices.length-1])
+				} 
                 powerUps.field.choiceLog.push(choice1)
                 powerUps.field.choiceLog.push(choice2)
                 powerUps.field.choiceLog.push(choice3)
@@ -278,39 +284,16 @@ const powerUps = {
                 function pick(skip1 = -1, skip2 = -1, skip3 = -1, skip4 = -1) {
                     let options = [];
                     for (let i = 0; i < tech.tech.length; i++) {
-                        if (tech.tech[i].count < tech.tech[i].maxCount && i !== skip1 && i !== skip2 && i !== skip3 && i !== skip4 && tech.tech[i].allowed()) {
-                            options.push(i);
+                        if (tech.tech[i].count < tech.tech[i].maxCount && tech.tech[i].allowed()) {
+							options.push(i);
                         }
                     }
                     powerUps.tech.lastTotalChoices = options.length //this is recorded so that banish can know how many tech were available
 
-                    if (tech.isBanish) { //remove banished tech from last selection
-                        for (let i = 0; i < powerUps.tech.banishLog.length; i++) {
-                            for (let j = 0; j < options.length; j++) {
-                                if (powerUps.tech.banishLog[i] === options[j]) {
-                                    options.splice(j, 1)
-                                    break
-                                }
-                            }
-                        }
-                    } else { //remove repeats from last selection
-                        const totalChoices = tech.isDeterminism ? 1 : 3 + tech.isExtraChoice * 2
-                        if (powerUps.tech.choiceLog.length > totalChoices || powerUps.tech.choiceLog.length === totalChoices) { //make sure this isn't the first time getting a power up and there are previous choices to remove
-                            for (let i = 0; i < totalChoices; i++) { //repeat for each choice from the last selection
-                                if (options.length > totalChoices) {
-                                    for (let j = 0, len = options.length; j < len; j++) {
-                                        if (powerUps.tech.choiceLog[powerUps.tech.choiceLog.length - 1 - i] === options[j]) {
-                                            options.splice(j, 1) //remove previous choice from option pool
-                                            break
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
 
                     if (options.length > 0) {
                         const choose = options[Math.floor(Math.random() * options.length)]
+						console.log(choose)
                         const isCount = tech.tech[choose].count > 0 ? `(${tech.tech[choose].count+1}x)` : "";
 
                         if (tech.tech[choose].isFieldTech) {
@@ -357,6 +340,12 @@ const powerUps = {
                         powerUps.tech.choiceLog.push(choice4)
                         powerUps.tech.choiceLog.push(choice5)
                     }
+									let extrachoices=[]
+				for (p=0;p<tech.isExtraChoices;p++) {
+					console.log(i)
+					extrachoices[extrachoices.length] = pick()
+					powerUps.tech.choiceLog.push(extrachoices[extrachoices.length-1])
+				} 
                     powerUps.tech.choiceLog.push(choice1)
                     powerUps.tech.choiceLog.push(choice2)
                     powerUps.tech.choiceLog.push(choice3)
@@ -402,7 +391,7 @@ const powerUps = {
                 }
 
                 //remove repeats from last selection
-                const totalChoices = tech.isDeterminism ? 1 : 3 + tech.isExtraChoice * 2
+                const totalChoices = tech.isDeterminism ? 1 : 3 + tech.isExtraChoice * 2 +tech.isExtraChoices
                 if (powerUps.gun.choiceLog.length > totalChoices || powerUps.gun.choiceLog.length === totalChoices) { //make sure this isn't the first time getting a power up and there are previous choices to remove
                     for (let i = 0; i < totalChoices; i++) { //repeat for each choice from the last selection
                         if (options.length > totalChoices) {
@@ -443,6 +432,13 @@ const powerUps = {
                     powerUps.gun.choiceLog.push(choice4)
                     powerUps.gun.choiceLog.push(choice5)
                 }
+				let extrachoices=[]
+				for (i=0;i<tech.isExtraChoices;i++) {
+					extrachoices[extrachoices.length] = pick(b.guns)
+					text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${extrachoices[extrachoices.length-1]})">
+          <div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[extrachoices[extrachoices.length-1]].name}</div> ${b.guns[extrachoices[extrachoices.length-1]].description}</div>`
+					powerUps.tech.choiceLog.push(extrachoices[extrachoices.length-1])
+				} 
                 powerUps.gun.choiceLog.push(choice1)
                 powerUps.gun.choiceLog.push(choice2)
                 powerUps.gun.choiceLog.push(choice3)

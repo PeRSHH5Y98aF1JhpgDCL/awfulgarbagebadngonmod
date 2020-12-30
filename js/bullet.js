@@ -1075,7 +1075,7 @@ const b = {
                     y: best.y
                 };
                 if (best.who.alive) {
-                    const dmg = 0.8 * b.dmgScale * (isUpgrade ? 2 : 1); //********** SCALE DAMAGE HERE *********************
+                    const dmg = 0.25 * b.dmgScale * (isUpgrade ? 2 : 1); //********** SCALE DAMAGE HERE *********************
                     best.who.damage(dmg);
                     best.who.locatePlayer();
 

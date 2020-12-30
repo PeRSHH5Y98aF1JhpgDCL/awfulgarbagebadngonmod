@@ -1309,7 +1309,7 @@ const tech = {
             }
         },{
             name: "hypersaturation",
-            description: "when you pick up a <strong class='color-h'>heal</strong><strong> power up</strong> you get 6% of your <strong class='color-h'>healing</strong> as <strong>maximum</strong> <strong class='color-h'>health</strong>",
+            description: "when you pick up a <strong class='color-h'>heal</strong><strong> power up</strong> <br>you get 6% of your <strong class='color-h'>healing</strong> as <strong>maximum</strong> <strong class='color-h'>health</strong>",
             maxCount: 9,
             count: 0,
             allowed() {
@@ -1746,6 +1746,22 @@ const tech = {
                 tech.isExtraChoice = false;
             }
         },
+		{
+            name: "cardinality extended",
+            description: "<strong class='color-m'>tech</strong>, <strong class='color-f'>fields</strong>, and <strong class='color-g'>guns</strong> have <strong>+1</strong> <strong>choice</strong><br><em>does not care about unpicked because i simply do not want to fix that</em>",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return (!tech.isDeterminism) && tech.isExtraChoice
+            },
+            requires: "not determinism",
+            effect: () => {
+                tech.isExtraChoices += 1;
+            },
+            remove() {
+                tech.isExtraChoices = 0;
+            }
+        },
         {
             name: "determinism",
             description: "spawn <strong>5</strong> <strong class='color-m'>tech</strong><br><strong class='color-m'>tech</strong>, <strong class='color-f'>fields</strong>, and <strong class='color-g'>guns</strong> have only <strong>1 choice</strong>",
@@ -1816,26 +1832,6 @@ const tech = {
             },
             remove() {
                 tech.renormalization = false;
-            }
-        },
-        {
-            name: "erase",
-            description: "<strong class='color-r'>rerolled</strong> or <strong>canceled</strong> <strong class='color-m'>tech</strong> will not <strong>reoccur</strong> <br>spawn <strong>4</strong> <strong class='color-r'>rerolls</strong>",
-            maxCount: 1,
-            count: 0,
-            allowed() {
-                return (powerUps.reroll.rerolls > 5 || build.isCustomSelection) && !tech.isDeterminism
-            },
-            requires: "not determinism, at least 4 rerolls",
-            effect() {
-                tech.isBanish = true
-                for (let i = 0; i < 4; i++) {
-                    powerUps.spawn(mech.pos.x, mech.pos.y, "reroll", false);
-                }
-            },
-            remove() {
-                tech.isBanish = false
-                powerUps.tech.banishLog = [] //reset banish log
             }
         },
         {
