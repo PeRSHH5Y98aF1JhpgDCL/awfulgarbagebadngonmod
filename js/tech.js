@@ -121,9 +121,25 @@ const tech = {
             }
         },
 		{
+            name: "ghostly bullets[AAAAAAAAAAAAA HOW TO MAKE THIS WORK]",
+            description: "bullets don't collide with walls",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return false
+            },
+            requires: "a gun",
+            effect: () => {
+                tech.bulletsCollide = false
+            },
+            remove() {
+                tech.bulletsCollide = true
+            }
+        },
+		{
             name: "ammo upgrade",
             description: "increase <strong class='color-g'>ammo</strong> by <strong>33%</strong>",
-            maxCount: 9,
+            maxCount: 25,
             count: 0,
             allowed() {
                 return b.inventory.length>0
@@ -3560,13 +3576,36 @@ const tech = {
             },
             requires: "time dilation field",
             effect() {
-                tech.fastTime = 1.40;
-                tech.fastTimeJump = 1.11;
+                tech.fastTime *= 1.40;
+                tech.fastTimeJump *= 1.11
                 mech.setMovement();
                 b.setFireCD();
             },
             remove() {
                 tech.fastTime = 1;
+                tech.fastTimeJump = 1;
+                mech.setMovement();
+                b.setFireCD();
+            }
+        },
+        {
+            name: "Lorentz transformation extended",
+            description: "permanently increase your relative time rate<br><strong>move</strong>, <strong>jump</strong>, and <strong>shoot</strong> <strong>20%</strong> faster",
+            isFieldTech: true,
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.fastTime>1.3
+            },
+            requires: "time dilation field",
+            effect() {
+                tech.fastTime *= 1.20;
+				tech.fastTimeJump += 0.11;
+                mech.setMovement();
+                b.setFireCD();
+            },
+            remove() {
+                tech.fastTime = 1.4;
                 tech.fastTimeJump = 1;
                 mech.setMovement();
                 b.setFireCD();

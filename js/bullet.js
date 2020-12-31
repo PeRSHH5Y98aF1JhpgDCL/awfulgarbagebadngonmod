@@ -33,7 +33,7 @@ const b = {
                 } else {
                     simulation.makeTextLog(`${b.guns[b.activeGun].name}.<span class='color-gun'>ammo</span> <span class='color-symbol'>=</span> 0`);
                 }
-                mech.fireCDcycle = mech.cycle + 30; //fire cooldown        
+                mech.fireCDcycle = mech.cycle + 30*tech.fastTime; //fire cooldown        
             }
             if (mech.holdingTarget) mech.drop();
         }
@@ -457,7 +457,7 @@ const b = {
             bullet[me].do = function() {
                 this.force.x += this.thrust.x;
                 this.force.y += this.thrust.y;
-                if (Matter.Query.collides(this, map).length || Matter.Query.collides(this, body).length) {
+                if ((tech.bulletsCollide&&Matter.Query.collides(this, map).length) || Matter.Query.collides(this, body).length) {
                     this.endCycle = 0; //explode if touching map or blocks
                 }
             };
@@ -491,7 +491,7 @@ const b = {
             }
             bullet[me].do = function() {
                 const suckCycles = 40
-                if (simulation.cycle > this.endCycle - suckCycles || Matter.Query.collides(this, map).length || Matter.Query.collides(this, body).length) { //suck
+                if (simulation.cycle > this.endCycle - suckCycles || (tech.bulletsCollide&&Matter.Query.collides(this, map).length) || Matter.Query.collides(this, body).length) { //suck
                     const that = this
 
                     function suck(who, radius = that.explodeRad * 3.2) {
@@ -689,7 +689,7 @@ const b = {
                         }
                     }
                 } else {
-                    const bodyCollisions = Matter.Query.collides(this, body)
+                    const bodyCollisions = tech.bulletsCollide?Matter.Query.collides(this, body):[]
                     if (bodyCollisions.length) {
                         if (!bodyCollisions[0].bodyA.isNotHoldable) {
                             onCollide(this)
@@ -1314,7 +1314,7 @@ const b = {
             beforeDmg() {},
             do() {
                 this.force.y += this.mass * 0.002; //extra gravity
-                let collide = Matter.Query.collides(this, map) //check if collides with map
+                let collide = tech.bulletsCollide&&Matter.Query.collides(this, map) //check if collides with map
                 if (collide.length > 0) {
                     for (let i = 0; i < collide.length; i++) {
                         if (collide[i].bodyA.collisionFilter.category === cat.map) { // || collide[i].bodyB.collisionFilter.category === cat.map) {
@@ -1350,7 +1350,7 @@ const b = {
                                             that.isArmed = false
                                             b.mine(that.position, that.velocity, that.angle)
                                         }
-                                    }, 100, that);
+                                    }, 100*tech.fastTime, that);
                                     break
                                 }
                                 //move until you are touching the wall
@@ -1599,7 +1599,7 @@ const b = {
                             mech.energy += tech.iceEnergy
                             mech.addHealth(tech.iceEnergy * 0.04)
                         }
-                    }, 10);
+                    }, 10*tech.fastTime);
                 }
             },
             onEnd() {},

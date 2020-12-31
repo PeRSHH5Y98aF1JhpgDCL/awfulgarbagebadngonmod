@@ -1163,7 +1163,7 @@ const mobs = {
                             if (that.mass > massLimit) {
                                 const scale = 0.95;
                                 Matter.Body.scale(that, scale, scale);
-                                setTimeout(shrink, 20, that, massLimit);
+                                setTimeout(shrink, 20*tech.fastTime, that, massLimit);
                             }
                         };
                         shrink(body[len], 7 + 4 * Math.random())

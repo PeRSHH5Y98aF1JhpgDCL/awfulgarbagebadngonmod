@@ -968,7 +968,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
-            document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>update css<hr><b title="i'm not smart like at all ok">2020-12-30</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA<br><br>nerfed plasma (0.8 dmg to 0.25 dmg base)<br>tech:cardinality extended - +1 choice<br>r<b title="stupid variable names...">e</b>moved erase because i'm not smart<br>chooseable things(tech,fields,guns) now don't check for repeats(fun!)<hr><b title="help">2020-12-30</b> - funny DI reference<br><br>duplication chance can go past 100% but is softcapped (exponented by 0.825) after 150%<hr><b title="help">2020-12-30</b> - oh boy more bullets<br><br>tech:multishot - all shots shoot more<hr><b title="oh no the balance">2020-12-29</b> - did things<br><br>plasma bots are now standard and can be used like any other bot<br>removed complecated web code for update grabbing<br>tech:plasma upgrad<b title="upgrade aeffects plasma field as well because lazy">e</b> - make plasma range and damage 100% stronger<br>tech:ammo buff - 33% more ammo<br>tech:hypersaturation - 6% of heals add to max health as well<hr><b>2020-12-26</b> - vanilla things`
+            document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr><b title="i'm not smart ok">2021-1-1</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA part 2<br><br>tech:lorentz transformation extended-20% more time<br>WIP stuff (AAAAAAAAAAAAA)<hr>update css<hr><b title="i'm not smart like at all ok">2020-12-30</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA<br><br>nerfed plasma (0.8 dmg to 0.25 dmg base)<br>tech:cardinality extended - +1 choice<br>r<b title="stupid variable names...">e</b>moved erase because i'm not smart<br>chooseable things(tech,fields,guns) now don't check for repeats(fun!)<hr><b title="help">2020-12-30</b> - funny DI reference<br><br>duplication chance can go past 100% but is softcapped (exponented by 0.825) after 150%<hr><b title="help">2020-12-30</b> - oh boy more bullets<br><br>tech:multishot - all shots shoot more<hr><b title="oh no the balance">2020-12-29</b> - did things<br><br>plasma bots are now standard and can be used like any other bot<br>removed complecated web code for update grabbing<br>tech:plasma upgrad<b title="upgrade aeffects plasma field as well because lazy">e</b> - make plasma range and damage 100% stronger<br>tech:ammo buff - 33% more ammo<br>tech:hypersaturation - 6% of heals add to max health as well<hr><b>2020-12-26</b> - vanilla things`
 })
 
 //**********************************************************************
@@ -984,7 +984,7 @@ function cycle() {
         simulation.then = now - (elapsed % simulation.fpsInterval); // Get ready for next frame by setting then=now.   Also, adjust for fpsInterval not being multiple of 16.67
 
         simulation.cycle++; //tracks game cycles
-        mech.cycle++; //tracks player cycles  //used to alow time to stop for everything, but the player
+        mech.cycle+=1; //tracks player cycles  //used to alow time to stop for everything, but the player
         if (simulation.clearNow) {
             simulation.clearNow = false;
             simulation.clearMap();
