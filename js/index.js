@@ -356,10 +356,13 @@ const build = {
     <div>
     <label for="difficulty-select" title="effects: number of mobs, damage done by mobs, damage done to mobs, mob speed, heal effects">difficulty:</label>
       <select name="difficulty-select" id="difficulty-select-custom">
-        <option value="1">easy</option>
-        <option value="2" selected>normal</option>
-        <option value="4">hard</option>
-        <option value="6">why?</option>
+                        <option value="1">easy[1]</option>
+                        <option value="2" selected>normal[2]</option>
+                        <option value="4">hard[4]</option>
+                        <option value="6">why?[6]</option>
+                        <option value="10">help.[10]</option>
+                        <option value="25">AAAAAAAAA[25]</option>
+                        <option value="100">good luck[100]</option>
       </select>
     </div>
     <div>
@@ -788,6 +791,9 @@ window.addEventListener("keydown", function(event) {
             case "8":
                 spawn.randomLevelBoss(simulation.mouseInGame.x, simulation.mouseInGame.y);
                 break
+			case "9":
+				spawn.finalBoss(simulation.mouseInGame.x, simulation.mouseInGame.y)
+			break
             case "f":
                 const mode = (mech.fieldMode === mech.fieldUpgrades.length - 1) ? 0 : mech.fieldMode + 1
                 mech.setField(mode)
@@ -976,6 +982,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<hr>
 			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
 			<b title="oh boy more tecgs">2021-1-5</b> - XxX_Xtreme_XxX mode!!!!!!!!!!!!!!!!!!!!!!!<br><br>tech:extreme fragmentation - most stuffs make nails<br>tech:extreme defense - /2 harm<hr>
 			<b title="funny DI reference the second">2021-1-5</b> - Xtreme mode!!!!!!!<br><br>added extreme mode<br>tech:extreme radiation - radiation recurses with x1.2 multiplier<br>tech:extreme damage - x2 damage<hr>

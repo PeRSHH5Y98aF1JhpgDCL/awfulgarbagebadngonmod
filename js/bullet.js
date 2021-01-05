@@ -162,7 +162,7 @@ const b = {
             }
         }
     },
-    explosion(where, radius, dmg=radius*0.013) { // typically explode is used for some bullets with .onEnd
+    explosion(where, radius, dmg=radius*0.013, nails=true) { // typically explode is used for some bullets with .onEnd
         radius *= tech.explosiveRadius
         let dist, sub, knock;
         if (tech.isExplosionHarm) radius *= 1.8 //    1/sqrt(2) radius -> area
@@ -191,7 +191,7 @@ const b = {
         //player damage and knock back
         sub = Vector.sub(where, player.position);
         dist = Vector.magnitude(sub);
-		b.targetedNail(where,tech.extremeFragments);
+		if (nails) b.targetedNail(where,tech.extremeFragments);
         if (dist < radius) {
             if (tech.isImmuneExplosion) {
                 const mitigate = Math.min(1, Math.max(1 - mech.energy * 0.7, 0))
@@ -1962,8 +1962,7 @@ const b = {
         bullet[me].endCycle = simulation.cycle + 60 + 18 * Math.random();
         bullet[me].dmg = dmg
         bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
-			b.targetedNail(this.position,tech.extremeFragments)
-			if (tech.extremeNailExpl) b.explosion(this.position, 100,2);//oh no
+			if (tech.extremeNailExpl) b.explosion(this.position, 100,2,false);//oh no
             if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
             if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
         };
