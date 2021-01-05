@@ -502,6 +502,7 @@ const mech = {
         if (tech.isPiezo) dmg *= 0.85
         if (tech.isHarmReduce && mech.fieldUpgrades[mech.fieldMode].name === "negative mass field" && mech.isFieldActive) dmg *= 0.6
         if (tech.isBotArmor) dmg *= 0.97 ** tech.totalBots()
+		dmg=dmg/tech.extremeHrmDec
         if (tech.isHarmArmor && mech.lastHarmCycle + 600 > mech.cycle) dmg *= 0.33;
         if (tech.isNoFireDefense && mech.cycle > mech.fireCDcycle + 120) dmg *= 0.6
         if (tech.energyRegen === 0) dmg *= 0.4

@@ -164,7 +164,7 @@ const mobs = {
                             time: simulation.drawTime
                         });
                     }
-						if (simulation.isExtremeMode && tech.extremeRadExp && (this.startCycle + cycles == simulation.cycle)) {mobs.statusDoT(who, tickDamage * 1.2, 60)}
+						if ((tech.extremeRadExp > 1) && (this.startCycle + cycles == simulation.cycle)) {mobs.statusDoT(who, tickDamage * tech.extremeRadExp, 35)}
                     if (true) {
                         //check for nearby mobs
 

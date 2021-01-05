@@ -192,7 +192,7 @@ const b = {
         //player damage and knock back
         sub = Vector.sub(where, player.position);
         dist = Vector.magnitude(sub);
-
+		b.targetedNail(where,tech.extremeFragments);
         if (dist < radius) {
             if (tech.isImmuneExplosion) {
                 const mitigate = Math.min(1, Math.max(1 - mech.energy * 0.7, 0))
@@ -822,7 +822,7 @@ const b = {
             },
             onEnd() {
                 b.explosion(this.position, this.explodeRad * size); //makes bullet do explosive damage at end
-                if (tech.fragments) b.targetedNail(this.position, tech.fragments * 5)
+                if (tech.fragments) b.targetedNail(this.position, tech.fragments * 5+tech.extremeFragments)
                 if (spawn) {
                     for (let i = 0; i < tech.recursiveMissiles; i++) {
                         if (0.2 - 0.02 * i > Math.random()) {
@@ -1077,6 +1077,7 @@ const b = {
                 if (best.who.alive) {
                     const dmg = 0.25 * b.dmgScale * (isUpgrade ? 2 : 1); //********** SCALE DAMAGE HERE *********************
                     best.who.damage(dmg);
+					b.targetedNail(best.who.position,tech.extremeFragments)
                     best.who.locatePlayer();
 
                     //push mobs away
@@ -1212,6 +1213,7 @@ const b = {
         };
         const laserHitMob = function() {
             if (best.who.alive) {
+				b.targetedNail(best.who.position,tech.extremeFragments)
                 best.who.damage(damage);
                 best.who.locatePlayer();
                 simulation.drawList.push({ //add dmg to draw queue
@@ -1478,6 +1480,7 @@ const b = {
             beforeDmg(who) {
                 this.endCycle = 0; //bullet ends cycle after doing damage 
                 if (this.isFreeze) mobs.statusSlow(who, 60)
+					b.targetedNail(who.position,tech.extremeFragments)
             },
             onEnd() {
                 if (tech.isMutualism && this.isMutualismActive && !tech.isEnergyHealth) {
@@ -1591,6 +1594,7 @@ const b = {
             isFollowMouse: true,
             beforeDmg(who) {
                 mobs.statusSlow(who, 60)
+				b.targetedNail(who.position,tech.extremeFragments)
                 this.endCycle = simulation.cycle
                 if (tech.isHeavyWater) mobs.statusDoT(who, 0.15, 300)
                 if (tech.iceEnergy && !who.shield && !who.isShielded && who.dropPowerUp && who.alive) {
@@ -1671,6 +1675,7 @@ const b = {
             deathCycles: 110 + RADIUS * 5,
             isImproved: false,
             beforeDmg(who) {
+				b.targetedNail(who.position,tech.extremeFragments)
                 if (tech.isIncendiary) {
                     const max = Math.min(this.endCycle - simulation.cycle, 1500)
                     b.explosion(this.position, max * 0.08 + this.isImproved * 100 + 60 * Math.random()); //makes bullet do explosive damage at end
@@ -1958,6 +1963,7 @@ const b = {
         bullet[me].endCycle = simulation.cycle + 60 + 18 * Math.random();
         bullet[me].dmg = dmg
         bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
+			b.targetedNail(this.position,tech.extremeFragments)
             if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
             if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
         };

@@ -1,3 +1,4 @@
+
 const tech = {
     totalCount: null,
     setupAllTech() {
@@ -94,7 +95,7 @@ const tech = {
         if (tech.isNoFireDamage && mech.cycle > mech.fireCDcycle + 120) dmg *= 1.66
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
-        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc
+        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
@@ -123,23 +124,23 @@ const tech = {
 		{
             name: "extreme radiation",
             description: "when radiation ends radiation resets with x1.2 damage",
-            maxCount: 1,
+            maxCount: 9,
             count: 0,
             allowed() {
                 return simulation.isExtremeMode 
             },
             requires: "extreme mode(see settings)",
             effect: () => {
-                tech.extremeRadExp = true
+                tech.extremeRadExp *= 1.1
             },
             remove() {
-                tech.extremeRadExp = false;
+                tech.extremeRadExp = 1;
             }
         },
 		{
             name: "extreme damage",
             description: "x2 damage",
-            maxCount: 9,
+            maxCount: 39,
             count: 0,
             allowed() {
                 return simulation.isExtremeMode 
@@ -152,6 +153,82 @@ const tech = {
                 tech.extremeAtkInc = 1;
             }
         },
+/*		{
+            name: "extreme eternal damage",
+            description: "x1.3 damage beyond runs",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+                tech.extremeAtkIncPerm *= 1.3
+				localSettings.extrAtkPerm = tech.extremeAtkIncPerm;
+				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
+            },
+            remove() {
+				localSettings.extrAtkPerm = tech.extremeAtkIncPerm;
+				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
+				}
+				tech.extremeAtkIncPerm=JSON.parse(localStorage.getItem('localSettings')).extrAtkPerm
+				
+            }
+        },*/
+		{
+            name: "extreme fragmentation",
+            description: "most collisions create nails",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+				tech.extremeFragments+=1
+            },
+            remove() {
+				tech.extremeFragments=0
+            }
+        },
+		{
+            name: "extreme defense",
+            description: "/2 harm",
+            maxCount: 39,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+                tech.extremeHrmDec *= 2
+            },
+            remove() {
+                tech.extremeHrmDec = 1;
+            }
+        },
+		/*{
+            name: "extreme eternal defense",
+            description: "/1.3 harm beyond runs",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+                tech.extremeHrmDecPerm *= 1.3
+				localSettings.extrDefPerm = tech.extremeHrmDecPerm;
+				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
+            },
+            remove() {
+                if (!tech.extremeHrmDecPerm) {
+				localSettings.extrDefPerm = tech.extremeHrmDecPerm;
+				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
+				}
+				tech.extremeHrmDecPerm=JSON.parse(localStorage.getItem('localSettings')).extrDefPerm
+            }
+        },*/
 		{
             name: "ghostly bullets[AAAAAAAAAAAAA HOW TO MAKE THIS WORK]",
             description: "bullets don't collide with walls",
@@ -4057,3 +4134,5 @@ const tech = {
     isRewindGun: null
 
 }
+					tech.extremeHrmDecPerm = 1;
+tech.extremeAtkIncPerm = 1;
