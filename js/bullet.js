@@ -162,10 +162,9 @@ const b = {
             }
         }
     },
-    explosion(where, radius) { // typically explode is used for some bullets with .onEnd
+    explosion(where, radius, dmg=radius*0.013) { // typically explode is used for some bullets with .onEnd
         radius *= tech.explosiveRadius
         let dist, sub, knock;
-        let dmg = radius * 0.013;
         if (tech.isExplosionHarm) radius *= 1.8 //    1/sqrt(2) radius -> area
         if (tech.isSmallExplosion) {
             radius *= 0.8
@@ -1955,7 +1954,7 @@ const b = {
             }
         }
     },
-    nail(pos, velocity, dmg = 0) {
+    nail(pos, velocity, dmg = 0) {//boringTargetString1 (i'm lazy can't scroll)
         const me = bullet.length;
         bullet[me] = Bodies.rectangle(pos.x, pos.y, 25 * tech.biggerNails, 2 * tech.biggerNails, b.fireAttributes(Math.atan2(velocity.y, velocity.x)));
         Matter.Body.setVelocity(bullet[me], velocity);
@@ -1964,6 +1963,7 @@ const b = {
         bullet[me].dmg = dmg
         bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
 			b.targetedNail(this.position,tech.extremeFragments)
+			if (tech.extremeNailExpl) b.explosion(this.position, 100,2);//oh no
             if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
             if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
         };

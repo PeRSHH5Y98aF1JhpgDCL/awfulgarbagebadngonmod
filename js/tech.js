@@ -153,6 +153,22 @@ const tech = {
                 tech.extremeAtkInc = 1;
             }
         },
+		{
+            name: "extremely explosive nails",
+            description: "nails explode<br><em>...oh no...</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return tech.extremeFragments>0 
+            },
+            requires: "extreme fragmentation",
+            effect: () => {
+                tech.extremeNailExpl = true
+            },
+            remove() {
+                tech.extremeNailExpl = false;
+            }
+        },
 /*		{
             name: "extreme eternal damage",
             description: "x1.3 damage beyond runs",
