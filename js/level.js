@@ -3798,7 +3798,13 @@ const level = {
             return "hard"
         } else if (simulation.difficultyMode === 6) {
             return "why"
-        }
+        } else if (simulation.difficultyMode === 10) {
+			return "help"
+		} else if (simulation.difficultyMode === 25) {
+			return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+		} else if (simulation.difficultyMode === 100) {
+			return "good luck"
+		}
     },
     levelAnnounce() {
         if (level.levelsCleared === 0) {
