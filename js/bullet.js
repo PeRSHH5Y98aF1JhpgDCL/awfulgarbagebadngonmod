@@ -163,7 +163,7 @@ const b = {
         }
     },
     explosion(where, radius, dmg=radius*0.013, nails=true) { // typically explode is used for some bullets with .onEnd
-        radius *= tech.explosiveRadius
+        radius *= tech.explosiveRadius * tech.extremeExplosiveRadius
         let dist, sub, knock;
         if (tech.isExplosionHarm) radius *= 1.8 //    1/sqrt(2) radius -> area
         if (tech.isSmallExplosion) {
@@ -2875,7 +2875,7 @@ const b = {
                     bullet[me].restitution = 1;
                     bullet[me].friction = 0;
                     bullet[me].do = function() {
-                        this.force.y += this.mass * 0.0012;
+                        if (tech.antiGrav) this.force.y += this.mass * 0.0012;
                     };
                     bullet[me].beforeDmg = function(who) {
                         mobs.statusStun(who, 180) // (2.3) * 2 / 14 ticks (2x damage over 7 seconds)
@@ -2902,7 +2902,7 @@ const b = {
                         bullet[me].restitution = 0.99;
                         bullet[me].friction = 0;
                         bullet[me].do = function() {
-                            this.force.y += this.mass * 0.001;
+                            if (tech.antiGrav) this.force.y += this.mass * 0.001;
                         };
                         bullet[me].beforeDmg = function() {
                             if (tech.isIncendiary) {

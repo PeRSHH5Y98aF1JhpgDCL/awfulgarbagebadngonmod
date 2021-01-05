@@ -502,7 +502,7 @@ const mech = {
         if (tech.isPiezo) dmg *= 0.85
         if (tech.isHarmReduce && mech.fieldUpgrades[mech.fieldMode].name === "negative mass field" && mech.isFieldActive) dmg *= 0.6
         if (tech.isBotArmor) dmg *= 0.97 ** tech.totalBots()
-		dmg=dmg/tech.extremeHrmDec
+		dmg=dmg/tech.extremeHrmDec/tech.allBoost
         if (tech.isHarmArmor && mech.lastHarmCycle + 600 > mech.cycle) dmg *= 0.33;
         if (tech.isNoFireDefense && mech.cycle > mech.fireCDcycle + 120) dmg *= 0.6
         if (tech.energyRegen === 0) dmg *= 0.4
@@ -905,8 +905,11 @@ const mech = {
         }
     },
     setMaxEnergy() {
-        mech.maxEnergy = (tech.isMaxEnergyTech ? 0.5 : 1) + tech.bonusEnergy + tech.healMaxEnergyBonus
+        mech.maxEnergy = ((tech.isMaxEnergyTech ? 0.5 : 1) + tech.bonusEnergy + tech.healMaxEnergyBonus)*tech.extremeEnergy*tech.allBoost
     },
+	setEnergyRegen() {
+		mech.fieldRegen = tech.energyRegen*tech.extremeEnergy*tech.allBoost;
+	},
     fieldMeterColor: "#0cf",
     drawFieldMeter(bgColor = "rgba(0, 0, 0, 0.4)", range = 60) {
         if (mech.energy < mech.maxEnergy) {

@@ -28,7 +28,7 @@ const spawn = {
         spawn.pickList.push(spawn.fullPickList[Math.floor(Math.random() * spawn.fullPickList.length)]);
     },
     spawnChance(chance) {
-        return Math.random() < chance + 0.07 * simulation.difficulty && mob.length < -1 + 16 * Math.log10(simulation.difficulty + 1)
+        return Math.random() < chance + 0.07 * (simulation.difficulty+0.1) && mob.length < -1 + 16 * Math.log10(simulation.difficulty + 1)
     },
     randomMob(x, y, chance = 1) {
         if (spawn.spawnChance(chance) || chance === Infinity) {

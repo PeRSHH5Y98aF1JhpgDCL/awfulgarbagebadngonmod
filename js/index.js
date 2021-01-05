@@ -356,6 +356,9 @@ const build = {
     <div>
     <label for="difficulty-select" title="effects: number of mobs, damage done by mobs, damage done to mobs, mob speed, heal effects">difficulty:</label>
       <select name="difficulty-select" id="difficulty-select-custom">
+						<option value="0">deserted[0]</option>
+						<option value="0.25">not fun[0.25]</option>
+						<option value="0.5">very easy[0.5]</option>
                         <option value="1">easy[1]</option>
                         <option value="2" selected>normal[2]</option>
                         <option value="4">hard[4]</option>
@@ -982,6 +985,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="even less now">2021-1-6</b> - xteme ode?<br><br>tech:extreme energy - 2x energy cap and generation<br>tech:extreme explosives - 2x explosive radius and damage<br>oh boy more difficulty:deserted[0],not fun[0.25],very easy[0.5]<hr>
 			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>
 			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
 			<b title="oh boy more tecgs">2021-1-5</b> - XxX_Xtreme_XxX mode!!!!!!!!!!!!!!!!!!!!!!!<br><br>tech:extreme fragmentation - most stuffs make nails<br>tech:extreme defense - /2 harm<hr>

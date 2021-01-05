@@ -95,7 +95,7 @@ const tech = {
         if (tech.isNoFireDamage && mech.cycle > mech.fireCDcycle + 120) dmg *= 1.66
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
-        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)
+        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
@@ -169,28 +169,42 @@ const tech = {
                 tech.extremeNailExpl = false;
             }
         },
-/*		{
-            name: "extreme eternal damage",
-            description: "x1.3 damage beyond runs",
+		{
+            name: "extreme energy",
+            description: "x2 energy cap and generation",
             maxCount: 9,
             count: 0,
             allowed() {
-                return simulation.isExtremeMode 
+                return simulation.isExtremeMode
             },
-            requires: "extreme mode(see settings)",
+            requires: "extreme mode",
             effect: () => {
-                tech.extremeAtkIncPerm *= 1.3
-				localSettings.extrAtkPerm = tech.extremeAtkIncPerm;
-				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
+                tech.extremeEnergy *= 2;
+				mech.setEnergyRegen()
+                mech.setMaxEnergy()
             },
             remove() {
-				localSettings.extrAtkPerm = tech.extremeAtkIncPerm;
-				localStorage.setItem("localSettings", JSON.stringify(localSettings)); //update local storage
-				}
-				tech.extremeAtkIncPerm=JSON.parse(localStorage.getItem('localSettings')).extrAtkPerm
-				
+                tech.extremeEnergy = 1;
+                mech.setEnergyRegen()
+                mech.setMaxEnergy()
             }
-        },*/
+        },
+        {
+            name: "extreme explosives",
+            description: "increase <strong class='color-e'>explosive</strong> <strong class='color-d'>damage</strong> and <br><strong class='color-b'>radius</strong> by <strong>x2</strong><br><em>PLEASE get electric reactive armor</em>",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "extreme mode",
+            effect: () => {
+                tech.extremeExplosiveRadius *= 2;
+            },
+            remove() {
+                tech.extremeExplosiveRadius = 1;
+            }
+        },
 		{
             name: "extreme fragmentation",
             description: "most collisions create nails",
@@ -259,6 +273,25 @@ const tech = {
             },
             remove() {
                 tech.bulletsCollide = true
+            }
+        },
+		{
+            name: "simple boost",
+            description: "x1.1 damage,harm reduction,<br>energy cap,energy generation",
+            maxCount: 25,
+            count: 0,
+            allowed() {
+                return true
+            },
+            requires: "...",
+            effect: () => {
+                tech.allBoost *= 1.1
+				mech.setEnergyRegen()
+            },
+            remove() {
+                tech.allBoost = 1;
+				mech.setEnergyRegen()
+				mech.setEnergyRegen()
             }
         },
 		{
@@ -2431,6 +2464,23 @@ const tech = {
             }
         },
         {
+            name: "anti-gravity",
+            description: "super balls aren't affected by gravity",
+            isGunTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return tech.haveGunCheck("super balls")
+            },
+            requires: "super balls",
+            effect() {
+                tech.antiGrav=false
+            },
+            remove() {
+                tech.antiGrav = true;
+            }
+        },
+        {
             name: "flechettes cartridges",
             description: "<strong>flechettes</strong> release <strong>three</strong> needles in each shot<br><strong class='color-g'>ammo</strong> costs are <strong>tripled</strong>",
             isGunTech: true,
@@ -3747,12 +3797,12 @@ const tech = {
             },
             requires: "time dilation field",
             effect: () => {
-                tech.energyRegen = 0.004;
-                mech.fieldRegen = tech.energyRegen;
+                tech.energyRegen *= 4;
+                mech.setEnergyRegen()
             },
             remove() {
                 tech.energyRegen = 0.001;
-                mech.fieldRegen = tech.energyRegen;
+                mech.setEnergyRegen()
             }
         },
         {
