@@ -94,7 +94,7 @@ const tech = {
         if (tech.isNoFireDamage && mech.cycle > mech.fireCDcycle + 120) dmg *= 1.66
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
-        return dmg * tech.slowFire * tech.aimDamage
+        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
@@ -118,6 +118,38 @@ const tech = {
             },
             remove() {
                 tech.isEnergyDamage = false;
+            }
+        },
+		{
+            name: "extreme radiation",
+            description: "when radiation ends radiation resets with x1.2 damage",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+                tech.extremeRadExp = true
+            },
+            remove() {
+                tech.extremeRadExp = false;
+            }
+        },
+		{
+            name: "extreme damage",
+            description: "x2 damage",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+                tech.extremeAtkInc *= 2
+            },
+            remove() {
+                tech.extremeAtkInc = 1;
             }
         },
 		{
