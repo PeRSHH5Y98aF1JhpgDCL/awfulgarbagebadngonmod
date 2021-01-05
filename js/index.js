@@ -982,7 +982,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
-			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<hr>
+			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>
 			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
 			<b title="oh boy more tecgs">2021-1-5</b> - XxX_Xtreme_XxX mode!!!!!!!!!!!!!!!!!!!!!!!<br><br>tech:extreme fragmentation - most stuffs make nails<br>tech:extreme defense - /2 harm<hr>
 			<b title="funny DI reference the second">2021-1-5</b> - Xtreme mode!!!!!!!<br><br>added extreme mode<br>tech:extreme radiation - radiation recurses with x1.2 multiplier<br>tech:extreme damage - x2 damage<hr>
