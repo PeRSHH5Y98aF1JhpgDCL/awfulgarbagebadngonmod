@@ -3804,7 +3804,19 @@ const level = {
 			return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 		} else if (simulation.difficultyMode === 100) {
 			return "good luck"
+		} else if (simulation.difficultyMode === 0) {
+            return "unscaled"
+        } else if (simulation.difficultyMode === 0.25) {
+			return "not fun"
+		} else if (simulation.difficultyMode === 0.5) {
+			return "very easy"
+		} else if (simulation.difficultyMode === -0.1) {
+			return "deserted"
 		}
+		/*						<option value="-0.1">...what?[-0.1]</option>
+						<option value="0">removed scaling[0]</option>
+						<option value="0.25">not fun[0.25]</option>
+						<option value="0.5">very easy[0.5]</option>*/
     },
     levelAnnounce() {
         if (level.levelsCleared === 0) {
