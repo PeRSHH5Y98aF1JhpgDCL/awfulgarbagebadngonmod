@@ -683,7 +683,7 @@ window.addEventListener("keyup", function(event) {
             break
     }
 });
-
+simulation.testSpawnX=0
 window.addEventListener("keydown", function(event) {
     switch (event.code) {
         case input.key.right:
@@ -751,6 +751,18 @@ window.addEventListener("keydown", function(event) {
     }
     if (simulation.testing) {
         switch (event.key.toLowerCase()) {
+            case "b":
+                simulation.testSpawnX++
+                break;
+            case "v":
+                simulation.testSpawnX--
+                break;
+            case "n":
+                spawn[spawn.fullPickList[Math.abs(simulation.testSpawnX)%spawn.fullPickList.length]](simulation.mouseInGame.x,simulation.mouseInGame.y)
+                break
+			case "m":
+				spawn[spawn.levelBosses[Math.abs(simulation.testSpawnX)%spawn.levelBosses.length]](simulation.mouseInGame.x,simulation.mouseInGame.y)
+				break
             case "o":
                 simulation.isAutoZoom = false;
                 simulation.zoomScale /= 0.9;
@@ -985,6 +997,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="<b title='<b title=\'...\'></b>'></b>">2021-1-7</b> - recurser<br><br>new enemy:recurser - makes itself<br>in testing mode press v,b,n,m for more things<hr>
 			<b title="lowerer">2021-1-6</b> - stme blde/<br><br>tech:extreme perpetual tech - get 1 tech on level<br>tech:extreme tech replication - 1/1.5 current tech<br>oh boy one more enemy:summoner - makes other enmeys<hr>
 			<b title="even less now">2021-1-6</b> - xteme ode?<br><br>tech:extreme energy - 2x energy cap and generation<br>tech:extreme explosives - 2x explosive radius and damage<br>oh boy more difficulty:deserted[0],not fun[0.25],very easy[0.5]<hr>
 			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>

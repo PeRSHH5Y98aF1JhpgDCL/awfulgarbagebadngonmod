@@ -836,7 +836,7 @@ const simulation = {
         ctx.fillStyle = "#000";
         if (!simulation.isConstructionMode) {
             // ctx.textAlign = "right";
-            ctx.fillText("T: exit testing mode", canvas.width / 2, canvas.height - 10);
+		ctx.fillText(`T: exit testing mode[mod things:${spawn.fullPickList[Math.abs(simulation.testSpawnX)%spawn.fullPickList.length]},${spawn.levelBosses[Math.abs(simulation.testSpawnX)%spawn.levelBosses.length]},${Math.abs(simulation.testSpawnX)}     V,B,N,M to make things II]`, canvas.width / 2, canvas.height - 10);
             // let line = 500;
             // const x = canvas.width - 5;
             // ctx.fillText("T: exit testing mode", x, line);
