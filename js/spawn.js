@@ -20,8 +20,21 @@ const spawn = {
         "spawner",
         "ghoster",
         "sneaker",
+		"summoner"
     ],
-    allowedBossList: ["chaser", "spinner", "striker", "springer", "laser", "focuser", "beamer", "exploder", "spawner", "shooter", "launcher", "stabber", "sniper"],
+	    summonPickList: [
+        "hopper", "hopper", 
+        "shooter",
+        "striker", 
+        "laser", 
+        "exploder",
+        "stabber", 
+        "launcher", 
+        "springer",
+		"grower",
+		"spawner"
+    ],
+    allowedBossList: ["chaser", "spinner", "striker", "springer", "laser", "focuser", "beamer", "exploder", "spawner", "shooter", "launcher", "stabber", "sniper", "metasummoner"],
     setSpawnList() { //this is run at the start of each new level to determine the possible mobs for the level
         //each level has 2 mobs: one new mob and one from the last level
         spawn.pickList.splice(0, 1);
@@ -1576,6 +1589,69 @@ const spawn = {
                     this.vertices[this.spikeVertex].x = this.position.x + spike.x
                     this.vertices[this.spikeVertex].y = this.position.y + spike.y
                 }
+            }
+        };
+    },
+    summoner(x, y, radius = 25 + Math.ceil(Math.random() * 12), spikeMax = 9) {
+        if (radius > 80) radius = 65;
+        mobs.spawn(x, y, 6, radius, "rgb(100,0,105)"); //can't have sides above 6 or collision events don't work (probably because of a convex problem)
+        let me = mob[mob.length - 1];
+        me.isVerticesChange = true
+        me.accelMag = 0.00006 * simulation.accelScale;
+        // me.g = 0.0002; //required if using 'gravity'
+        me.delay = 75 * simulation.CDScale;
+		me.lastCycle = 0
+        me.collisionFilter.mask = cat.map | cat.body | cat.bullet | cat.player //can't touch other mobs
+        Matter.Body.rotate(me, Math.PI * 0.1);
+        spawn.shield(me, x, y);
+        // me.onDamage = function () {};
+        me.onDeath = function() {
+        };
+        me.do = function() {
+            if (!mech.isBodiesAsleep) {
+				 if (this.seePlayer.recall) {
+					 me.lastCycle++
+				 }
+                // this.gravity();
+                this.seePlayerByLookingAt();
+                this.checkStatus();
+                this.attraction();
+				if (me.lastCycle>me.delay) {
+					let y=spawn.summonPickList[Math.floor(Math.random()*spawn.summonPickList.length)]
+					me.lastCycle=0
+					spawn[y](me.position.x,me.position.y,me.radius/1.75)
+				}
+            }
+        };
+    },
+    metasummoner(x, y, radius = 250 + Math.ceil(Math.random() * 12), spikeMax = 9) {
+        if (radius > 80) radius = 65;
+        mobs.spawn(x, y, 6, radius, "rgb(45,250,46)"); //can't have sides above 6 or collision events don't work (probably because of a convex problem)
+        let me = mob[mob.length - 1];
+        me.isVerticesChange = true
+        me.accelMag = 0.00006 * simulation.accelScale;
+        // me.g = 0.0002; //required if using 'gravity'
+        me.delay = 200 * simulation.CDScale;
+		me.lastCycle = simulation.cycle
+        me.collisionFilter.mask = cat.map | cat.body | cat.bullet | cat.player //can't touch other mobs
+        Matter.Body.rotate(me, Math.PI * 0.1);
+        spawn.shield(me, x, y);
+        // me.onDamage = function () {};
+        me.onDeath = function() {
+        };
+        me.do = function() {
+            if (!mech.isBodiesAsleep) {
+				if (this.seePlayer.recall) {
+					 me.lastCycle++
+				 }
+                // this.gravity();
+                this.seePlayerByLookingAt();
+                this.checkStatus();
+                this.attraction();
+				if (me.lastCycle>me.delay) {
+					me.lastCycle=0
+					spawn.summoner(me.position.x,me.position.y,me.radius/1.75)
+				}
             }
         };
     },

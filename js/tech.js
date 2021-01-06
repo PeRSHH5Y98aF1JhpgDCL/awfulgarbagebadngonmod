@@ -137,6 +137,22 @@ const tech = {
                 tech.extremeRadExp = 1;
             }
         },
+        {
+            name: "extreme perpetual tech",
+            description: "find <strong>1</strong> <strong class='color-m'>tech</strong> at the start of each <strong>level</strong>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "only 1 perpetual effect, not superdeterminism",
+            effect() {
+                tech.isPerpetualTech = true
+            },
+            remove() {
+                tech.isPerpetualTech = false
+            }
+        },
 		{
             name: "extreme damage",
             description: "x2 damage",
@@ -274,6 +290,29 @@ const tech = {
             remove() {
                 tech.bulletsCollide = true
             }
+        },
+        {
+            name: "extreme tech replication",
+            description: "spawn new <strong class='color-m'>tech</strong> according<br> to your current <strong class='color-m'>tech</strong>(/1.5)",
+            maxCount: 1,
+            count: 0,
+            // isNonRefundable: true,
+            isCustomHide: true,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "extreme mode",
+            effect: () => {
+                let count = 0 //count tech
+                for (let i = 0, len = tech.tech.length; i < len; i++) { // spawn new tech power ups
+                    if (!tech.tech[i].isNonRefundable) count += tech.tech[i].count
+                }
+                for (let i = 0; i < count/1.5; i++) { // spawn new tech power ups
+                    powerUps.spawn(mech.pos.x, mech.pos.y, "tech");
+                }
+                //have state is checked in mech.death()
+            },
+            remove() {}
         },
 		{
             name: "simple boost",

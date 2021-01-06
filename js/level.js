@@ -73,6 +73,7 @@ const level = {
             }
         }
         if (tech.isPerpetualReroll) powerUps.spawn(mech.pos.x + 60 * (Math.random() - 0.5), mech.pos.y + 60 * (Math.random() - 0.5), "reroll", false);
+		if (tech.isPerpetualTech) powerUps.spawn(mech.pos.x + 60 * (Math.random() - 0.5), mech.pos.y + 60 * (Math.random() - 0.5), "tech", false);
         if (tech.isPerpetualAmmo) {
             powerUps.spawn(mech.pos.x + 60 * (Math.random() - 0.5), mech.pos.y + 60 * (Math.random() - 0.5), "ammo", false);
             powerUps.spawn(mech.pos.x + 60 * (Math.random() - 0.5), mech.pos.y + 60 * (Math.random() - 0.5), "ammo", false);

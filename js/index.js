@@ -985,14 +985,14 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="lowerer">2021-1-6</b> - stme blde/<br><br>tech:extreme perpetual tech - get 1 tech on level<br>tech:extreme tech replication - 1/1.5 current tech<br>oh boy one more enemy:summoner - makes other enmeys<hr>
 			<b title="even less now">2021-1-6</b> - xteme ode?<br><br>tech:extreme energy - 2x energy cap and generation<br>tech:extreme explosives - 2x explosive radius and damage<br>oh boy more difficulty:deserted[0],not fun[0.25],very easy[0.5]<hr>
 			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>
 			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
 			<b title="oh boy more tecgs">2021-1-5</b> - XxX_Xtreme_XxX mode!!!!!!!!!!!!!!!!!!!!!!!<br><br>tech:extreme fragmentation - most stuffs make nails<br>tech:extreme defense - /2 harm<hr>
 			<b title="funny DI reference the second">2021-1-5</b> - Xtreme mode!!!!!!!<br><br>added extreme mode<br>tech:extreme radiation - radiation recurses with x1.2 multiplier<br>tech:extreme damage - x2 damage<hr>
 			<b title="i'm really not smart ok">2021-1-1</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA part 2<br><br>tech:lorentz transformation extended-20% more time<br>WIP stuff (AAAAAAAAAAAAA)<hr>
-			update css[did you know? if you hover over bold text in this update tab it makes stuff show up]<hr>
-			<b title="i'm not smart like at all ok">2020-12-30</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA<br><br>nerfed plasma (0.8 dmg to 0.25 dmg base)<br>tech:cardinality extended - +1 choice<br>r<b title="stupid variable names...">e</b>moved erase because i'm not smart<br>chooseable things(tech,fields,guns) now don't check for repeats(fun!)<hr>`
+			update css[did you know? if you hover over bold text in this update tab it makes stuff show up]<hr>`
 })
 
 //**********************************************************************
