@@ -1674,7 +1674,7 @@ const b = {
             deathCycles: 110 + RADIUS * 5,
             isImproved: false,
             beforeDmg(who) {
-				b.targetedNail(who.position,tech.extremeFragments)
+				b.targetedNail(this.position,tech.extremeFragments)
                 if (tech.isIncendiary) {
                     const max = Math.min(this.endCycle - simulation.cycle, 1500)
                     b.explosion(this.position, max * 0.08 + this.isImproved * 100 + 60 * Math.random()); //makes bullet do explosive damage at end
@@ -1959,15 +1959,43 @@ const b = {
         bullet[me] = Bodies.rectangle(pos.x, pos.y, 25 * tech.biggerNails, 2 * tech.biggerNails, b.fireAttributes(Math.atan2(velocity.y, velocity.x)));
         Matter.Body.setVelocity(bullet[me], velocity);
         World.add(engine.world, bullet[me]); //add bullet to world
-        bullet[me].endCycle = simulation.cycle + 60 + 18 * Math.random();
+        bullet[me].endCycle = simulation.cycle + (60*(tech.homingNails?5:1)) + 18 * Math.random();
         bullet[me].dmg = dmg
         bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
 			if (tech.extremeNailExpl) b.explosion(this.position, 100,2,false);//oh no
             if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
             if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
         };
-        bullet[me].do = function() {};
-    },
+        bullet[me].do = function() {
+			            if (tech.homingNails) {
+							
+								
+									if (!(simulation.cycle % 10)) {
+										this.lockedOn = null;
+										let closeDist = Infinity;
+											for (let i = 0, len = mob.length; i < len; ++i) {
+												if (
+													mob[i].dropPowerUp &&
+													Matter.Query.ray(map, this.position, mob[i].position).length === 0 &&
+													Matter.Query.ray(body, this.position, mob[i].position).length === 0
+												) {
+													const TARGET_VECTOR = Vector.sub(this.position, mob[i].position)
+													const DIST = Vector.magnitude(TARGET_VECTOR);
+													if (DIST < closeDist) {
+														closeDist = DIST;
+														this.lockedOn = mob[i]
+													}
+												}
+											}
+									    if (this.lockedOn) { //accelerate towards mobs
+											this.force = Vector.mult(Vector.normalise(Vector.sub(this.position, this.lockedOn.position)), -this.mass*0.05)
+										}
+									}
+							
+						
+		};
+    }
+	},
     // **************************************************************************************************
     // **************************************************************************************************
     // ********************************         Bots        *********************************************

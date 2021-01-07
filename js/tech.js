@@ -349,6 +349,54 @@ const tech = {
                 tech.extremeTechGen = false;
             }
         },
+        {
+            name: "homing nails",
+            description: "nails angle towards the nearest mob",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return true
+            },
+            requires: "",
+            effect() {
+                tech.homingNails = true;
+            },
+            remove() {
+                tech.homingNails = false;
+            }
+        },
+        {
+            name: "hypercycles",
+            description: "awkwardly makes time faster(some timers are 50% faster but physics engine runs at the same pace)",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.cycleSpeed>=1
+            },
+            requires: "",
+            effect() {
+                tech.cycleSpeed *= 1.5;
+            },
+            remove() {
+                tech.cycleSpeed = 1;
+            }
+        },
+		        {
+            name: "anticycles",
+            description: "awkwardly makes time slower(some timers are 33% slower but physics engine runs at the same pace)",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.cycleSpeed<=1
+            },
+            requires: "",
+            effect() {
+                tech.cycleSpeed /= 1.5;
+            },
+            remove() {
+                tech.cycleSpeed = 1;
+            }
+        },
 		{
             name: "simple boost",
             description: "x1.1 damage,harm reduction,<br>energy cap,energy generation",
