@@ -52,7 +52,7 @@ const b = {
         let i = bullet.length;
         while (i--) {
             if (bullet[i].endCycle < simulation.cycle) {
-                bullet[i].onEnd(i); //some bullets do stuff on end
+                bullet[i].onEnd(i,bullet[i]); //some bullets do stuff on end
                 if (bullet[i]) {
                     Matter.World.remove(engine.world, bullet[i]);
                     bullet.splice(i, 1);
@@ -1966,6 +1966,7 @@ const b = {
             if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
             if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
         };
+		
         bullet[me].do = function() {
 			            if (tech.homingNails) {
 							
@@ -1995,6 +1996,51 @@ const b = {
 						
 		};
     }
+	},
+    treeShot(pos, velocity, dmg = 0.2,iter=4+tech.recurseImprove) {//boringTargetString2 (i'm lazy can't scroll)
+        const me = bullet.length;
+        bullet[me] = Bodies.rectangle(pos.x, pos.y, 25 * tech.biggerNails, 2 * tech.biggerNails, b.fireAttributes(Math.atan2(velocity.y, velocity.x)));
+        bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
+			if (tech.extremeNailExpl) b.explosion(this.position, 100,2,false);//oh no
+            if (tech.isNailPoison) mobs.statusDoT(who, dmg * 0.24, 120) // one tick every 30 cycles
+            if (tech.isNailCrit && !who.shield && Vector.dot(Vector.normalise(Vector.sub(who.position, this.position)), Vector.normalise(this.velocity)) > 0.99) this.dmg *= 5 //crit if hit near center
+        };
+        Matter.Body.setVelocity(bullet[me], velocity);
+        World.add(engine.world, bullet[me]); //add bullet to world
+        bullet[me].endCycle = simulation.cycle + 10+Math.random()*5
+        bullet[me].dmg = dmg
+		bullet[me].iter=iter
+		bullet[me].onEnd=(useless,selff)=>{
+			let recurse=()=>{
+				const dir=selff.angle-0.3+(Math.random()*0.6)
+                const SPEED = 21 -Math.random()*10; //(mech.crouch ? 32 : 20) - radius * 0.7;
+                const velocity = {
+                    x: SPEED * Math.cos(dir),
+                    y: SPEED * Math.sin(dir)
+                }
+				console.log(selff.position)
+				b.treeShot(selff.position,velocity,dmg,iter-1)
+			}
+			if (iter>0) {
+				recurse()
+				if (Math.random() <0.5) recurse()
+				if (Math.random() <0.5) recurse()
+			}
+		}
+        bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
+			let recurse=()=>{
+				const dir=this.angle-0.3+(Math.random()*0.6)
+                const SPEED = 21 -Math.random()*10; //(mech.crouch ? 32 : 20) - radius * 0.7;
+                const velocity = {
+                    x: SPEED * Math.cos(dir),
+                    y: SPEED * Math.sin(dir)
+                }
+				b.treeShot(this.position,velocity,dmg,iter)
+			}
+			recurse()
+			recurse()
+		};
+        bullet[me].do = function() {}
 	},
     // **************************************************************************************************
     // **************************************************************************************************
@@ -3254,6 +3300,25 @@ const b = {
                     y: speed * Math.sin(mech.angle)
                 }, 0, tech.isMineAmmoBack)
                 mech.fireCDcycle = mech.cycle + Math.floor((mech.crouch ? 50 : 25) * b.fireCD); // cool down
+            }
+        },
+        {
+            name: "shattershot",
+            description: "fire a nail that randomly splits<br><em>like shotgun but worse</em>",
+            ammo: 0,
+            ammoPack: 20,
+            have: false,
+            fire() {
+			    const pos = {
+                    x: mech.pos.x + 30 * Math.cos(mech.angle),
+                    y: mech.pos.y + 30 * Math.sin(mech.angle)
+                }
+				const speed=25
+                b.treeShot(mech.pos, {
+                    x: speed * Math.cos(mech.angle),
+                    y: speed * Math.sin(mech.angle)
+                })
+                mech.fireCDcycle = mech.cycle + Math.floor((mech.crouch ? 150 : 75) * b.fireCD); // cool down
             }
         },
         {

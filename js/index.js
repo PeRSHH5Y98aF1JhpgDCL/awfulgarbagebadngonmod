@@ -997,14 +997,12 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="more guns">2021-1-7</b> - funny fractal<br><br>gun:shattershot - makes nails that split recursively<br>tess:recursive shattering- shattering nails shatter more on hit on mob<br>tekl - recursive improvement: shattering nails last 1 iteration longer<br>tulh = extreme limit break - no more tech limits!!!!<hr>
 			<b title="pain">removed cycles buffs</b><hr>
 			<b title="more tehcs">2021-1-7</b> - nail go BRRR<br><br>teches:homing nails- nails go fast towards mobs<br>tekh - [anti/hyper]cycles: cycles go by [faster/slower](some time things are different and<br>most drastically æffects exposives and mob vision)<hr>
 			<b title="ob hoy tore mechs">2021-1-7</b> - more tech<br><br>tch:extreme buuble fusion-30% tech on shield destroy<br>extreme tech generation-5% tech on destroy<br>bots exchange-make random bot on cancel<br>antigravity-super balls don't fall[i actually did this yesterday but i forgot to log it]<br>random bots now include plasma! i have no idea why i didn't do this sooner<br>mech color change<hr>		
 			<b title="<b title='<b title=\'...\'></b>'></b>">2021-1-7</b> - recurser<br><br>new enemy:recurser - makes itself<br>in testing mode press v,b,n,m for more things<hr>
 			<b title="lowerer">2021-1-6</b> - stme blde/<br><br>tech:extreme perpetual tech - get 1 tech on level<br>tech:extreme tech replication - 1/1.5 current tech<br>oh boy one more enemy:summoner - makes other enmeys<hr>
-			<b title="even less now">2021-1-6</b> - xteme ode?<br><br>tech:extreme energy - 2x energy cap and generation<br>tech:extreme explosives - 2x explosive radius and damage<br>oh boy more difficulty:deserted[0],not fun[0.25],very easy[0.5]<hr>
-			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>
-			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
 			update css[did you know? if you hover over bold text in this update tab it makes stuff show up]<hr>`
 })
 

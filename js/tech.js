@@ -222,6 +222,22 @@ const tech = {
             }
         },
 		{
+            name: "extreme limit breaking",
+            description: "all tech with more than a 1 tech limit becomes unlimited<br><em>does NOT work in build menu</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode 
+            },
+            requires: "extreme mode(see settings)",
+            effect: () => {
+				tech.antiLimit=true
+            },
+            remove() {
+				tech.antiLimit=false
+            }
+        },
+		{
             name: "extreme fragmentation",
             description: "most collisions create nails",
             maxCount: 9,
@@ -2928,6 +2944,40 @@ const tech = {
             },
             remove() {
                 tech.isMineSentry = false;
+            }
+        },
+        {
+            name: "recursive shattering",
+            description: "when shattershot nails hit mobs they make two copies of themselves with one more iteration",
+            isGunTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return (tech.haveGunCheck("shattershot"))
+            },
+            requires: "shattershot",
+            effect() {
+                tech.impactRecurse = true;
+            },
+            remove() {
+                tech.impactRecurse = false;
+            }
+        },
+        {
+            name: "recursive improvement",
+            description: "shattershot nails recurse 1 more time",
+            isGunTech: true,
+            maxCount: 4,
+            count: 0,
+            allowed() {
+                return (tech.haveGunCheck("shattershot"))
+            },
+            requires: "shattershot",
+            effect() {
+                tech.recurseImprove += 1;
+            },
+            remove() {
+                tech.recurseImprove = 0;
             }
         },
         {
