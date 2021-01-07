@@ -57,16 +57,16 @@ const mech = {
     lastHarmCycle: 0,
     width: 50,
     radius: 30,
-    fillColor: "#fff",
-    fillColorDark: "#ccc",
+    fillColor: "#f00",
+    fillColorDark: "#f00",
     color: {
         hue: 0,
-        sat: 0,
+        sat: 100,
         light: 100,
     },
     setFillColors() {
-        this.fillColor = `hsl(${mech.color.hue},${mech.color.sat}%,${mech.color.light}%)`
-        this.fillColorDark = `hsl(${mech.color.hue},${mech.color.sat}%,${mech.color.light-20}%)`
+        this.fillColor = `rgb(255,0,0)`
+        this.fillColorDark = `rgb(255,0,0)`
     },
     height: 42,
     yOffWhen: {
@@ -910,8 +910,8 @@ const mech = {
 	setEnergyRegen() {
 		mech.fieldRegen = tech.energyRegen*tech.extremeEnergy*tech.allBoost;
 	},
-    fieldMeterColor: "#0cf",
-    drawFieldMeter(bgColor = "rgba(0, 0, 0, 0.4)", range = 60) {
+    fieldMeterColor: "#00f",
+    drawFieldMeter(bgColor = "rgba(0, 0, 0, 1)", range = 60) {
         if (mech.energy < mech.maxEnergy) {
             mech.energy += mech.fieldRegen;
             ctx.fillStyle = bgColor;

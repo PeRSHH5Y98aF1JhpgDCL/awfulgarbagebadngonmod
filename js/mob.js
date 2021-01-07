@@ -1065,6 +1065,8 @@ const mobs = {
                         powerUps.spawn(this.position.x, this.position.y, type);
                     }
                 }
+				if (tech.extremeTechGen && (Math.random()<0.05)) powerUps.spawn(this.position.x, this.position.y, "tech");
+				if (tech.isShieldTech && (Math.random()<0.3) && this.shield) powerUps.spawn(this.position.x, this.position.y, "tech");
                 if (tech.isRadioactive) {
                     //look for dots and spread them
                     let dmgTotal = 0

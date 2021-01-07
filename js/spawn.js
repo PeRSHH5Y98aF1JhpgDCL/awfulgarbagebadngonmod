@@ -22,19 +22,28 @@ const spawn = {
         "ghoster",
         "sneaker",
 		"summoner",
-		"recurser"
+		"recurser",
     ],
 	    summonPickList: [
-        "hopper", "hopper", 
-        "shooter",
-        "striker", 
-        "laser", 
-        "exploder",
-        "stabber", 
-        "launcher", 
-        "springer",
-		"grower",
-		"spawner",
+        "hopper", "hopper", "hopper","hopper", "hopper", "hopper","hopper", "hopper", "hopper",
+        "shooter", "shooter","shooter", "shooter",
+        "striker", "striker","striker", "striker",
+        "laser", "laser","laser", "laser",
+        "exploder", "exploder","exploder", "exploder",
+        "stabber", "stabber","stabber", "stabber",
+        "launcher", "launcher","launcher", "launcher",
+        "springer", "springer","springer", "springer",
+        "sucker", "sucker","sucker", "sucker",
+        "chaser",
+        "sniper",
+        "spinner",
+        "grower",
+        "beamer",
+        "focuser",
+        "spawner",
+        "ghoster",
+        "sneaker",
+		'recurser'
 		//"summoner"//oh no
     ],
     allowedBossList: ["chaser", "spinner", "striker", "springer", "laser", "focuser", "beamer", "exploder", "spawner", "shooter", "launcher", "stabber", "sniper"],
@@ -1658,7 +1667,27 @@ const spawn = {
             }
         };
     },
-    metasummoner(x, y, radius = 250 + Math.ceil(Math.random() * 12), spikeMax = 9) {
+    nester(x, y, radius = 75 + Math.ceil(Math.random() * 30), spikeMax = 9) {
+        mobs.spawn(x, y, 4, radius, "rgb(255, 0, 255)"); //can't have sides above 6 or collision events don't work (probably because of a convex problem)
+        let me = mob[mob.length - 1];
+        me.onHit = function() {
+            //run this function on hitting player
+            this.explode();
+        };
+        me.g = 0.0004; //required if using 'gravity'
+		me.onDeath = function(a) {
+				spawn.nester(a.position.x,a.position.y,a.radius/(1+Math.random))
+				spawn.nester(a.position.x,a.position.y,a.radius/(1+Math.random))
+			
+		}
+        me.do = function() {
+            this.gravity();
+            this.seePlayerCheck();
+            this.checkStatus();
+            this.attraction();
+        };
+    },
+    metasummoner(x, y, radius = 100 + Math.ceil(Math.random() * 12), spikeMax = 9) {
         mobs.spawn(x, y, 6, radius, "rgb(45,250,46)"); //can't have sides above 6 or collision events don't work (probably because of a convex problem)
         let me = mob[mob.length - 1];
         me.isVerticesChange = true

@@ -37,6 +37,7 @@ const powerUps = {
     endDraft(type, isCanceled = false) {
         if (isCanceled) {
             if (tech.isCancelDuplication) tech.cancelCount++
+			if (tech.isCancelBots) b.randomBot()
             if (tech.isCancelRerolls) {
                 let spawnType = (mech.health < 0.25 || tech.isEnergyNoAmmo) ? "heal" : "ammo"
                 if (Math.random() < 0.33) {

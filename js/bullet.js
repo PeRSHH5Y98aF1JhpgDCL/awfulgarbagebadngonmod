@@ -2003,6 +2003,10 @@ const b = {
             b.boomBot(where)
             if (isKeep) tech.boomBotCount++;
         }
+		let bots=["boomBot","orbitBot",'nailBot','laserBot','foamBot','plasmaBot']
+		let bot=bots[Math.floor(Math.random()*bots.length)]
+		b[bot](where)
+		if (isKeep) tech[bot+'Count']++
     },
     nailBot(position = { x: mech.pos.x + 50 * (Math.random() - 0.5), y: mech.pos.y + 50 * (Math.random() - 0.5) }) {
         simulation.makeTextLog(`<span class='color-var'>b</span>.nailBot()`);

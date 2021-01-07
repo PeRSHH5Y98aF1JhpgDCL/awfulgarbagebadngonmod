@@ -294,7 +294,7 @@ const tech = {
         {
             name: "extreme tech replication",
             description: "spawn new <strong class='color-m'>tech</strong> according<br> to your current <strong class='color-m'>tech</strong>(/1.5)",
-            maxCount: 1,
+            maxCount: 10000000,
             count: 0,
             // isNonRefundable: true,
             isCustomHide: true,
@@ -303,16 +303,51 @@ const tech = {
             },
             requires: "extreme mode",
             effect: () => {
-                let count = 0 //count tech
+                let count = -tech.extremeTech //count tech
                 for (let i = 0, len = tech.tech.length; i < len; i++) { // spawn new tech power ups
                     if (!tech.tech[i].isNonRefundable) count += tech.tech[i].count
                 }
                 for (let i = 0; i < count/1.5; i++) { // spawn new tech power ups
                     powerUps.spawn(mech.pos.x, mech.pos.y, "tech");
+					tech.extremeTech++
                 }
                 //have state is checked in mech.death()
             },
-            remove() {}
+            remove() {
+				
+			}
+        },
+        {
+            name: "extreme bubble fusion",
+            description: "after destroying a mob's <strong>shield</strong><br>you have a 30% chance to spawn <strong>1</strong> <strong class='color-m'>tech</strong>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "",
+            effect() {
+                tech.isShieldTech = true;
+            },
+            remove() {
+                tech.isShieldTech = false;
+            }
+        },
+        {
+            name: "extreme tech generation",
+            description: "you have a 5% chance to spawn <strong>1</strong> <strong class='color-m'>tech</strong><br>when you kill a mob",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "",
+            effect() {
+                tech.extremeTechGen = true;
+            },
+            remove() {
+                tech.extremeTechGen = false;
+            }
         },
 		{
             name: "simple boost",
@@ -1688,7 +1723,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return tech.duplicationChance() < 1 && !tech.isDeterminism
+                return true
             },
             requires: "below 100% duplication chance, not determinism",
             effect() {
@@ -1700,6 +1735,22 @@ const tech = {
                 tech.isCancelDuplication = false
                 tech.cancelCount = 0
                 if (tech.duplicationChance() === 0) simulation.draw.powerUp = simulation.draw.powerUpNormal
+            }
+        },
+        {
+            name: "bots exchange",
+            description: "clicking <strong style = 'font-size:150%;'>×</strong> to cancel a <strong class='color-f'>field</strong>, <strong class='color-m'>tech</strong>, or <strong class='color-g'>gun</strong><br>creates a random <b>bot</b>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return tech.duplicationChance() < 1 && !tech.isDeterminism
+            },
+            requires: "below 100% duplication chance, not determinism",
+            effect() {
+                tech.isCancelBots = true
+            },
+            remove() {
+                tech.isCancelBots = false
             }
         },
         {
@@ -4236,7 +4287,8 @@ const tech = {
     isRewindGrenade: null,
     isExtruder: null,
     isEndLevelPowerUp: null,
-    isRewindGun: null
+    isRewindGun: null,
+	extremeTech:0
 
 }
 					tech.extremeHrmDecPerm = 1;

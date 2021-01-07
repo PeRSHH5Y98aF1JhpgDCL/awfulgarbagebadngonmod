@@ -997,14 +997,12 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="ob hoy tore mechs">2021-1-7</b> - more tech<br><br>tch:extreme buuble fusion-30% tech on shield destroy<br>extreme tech generation-5% tech on destroy<br>bots exchange-make random bot on cancel<br>antigravity-super balls don't fall[i actually did this yesterday but i forgot to log it]<br>random bots now include plasma! i have no idea why i didn't do this sooner<br>mech color change<hr>		
 			<b title="<b title='<b title=\'...\'></b>'></b>">2021-1-7</b> - recurser<br><br>new enemy:recurser - makes itself<br>in testing mode press v,b,n,m for more things<hr>
 			<b title="lowerer">2021-1-6</b> - stme blde/<br><br>tech:extreme perpetual tech - get 1 tech on level<br>tech:extreme tech replication - 1/1.5 current tech<br>oh boy one more enemy:summoner - makes other enmeys<hr>
 			<b title="even less now">2021-1-6</b> - xteme ode?<br><br>tech:extreme energy - 2x energy cap and generation<br>tech:extreme explosives - 2x explosive radius and damage<br>oh boy more difficulty:deserted[0],not fun[0.25],very easy[0.5]<hr>
 			<b title="999 final bosses">2021-1-6</b> - 9 in testing<br><br>made pressing 9 in testing mode summon final boss<br>more difficulty options:help.[10], AAAAAAAAA[25], good luck[100](in comparison, why? is 6)<br>slightly nerfed extreme fragmentation<hr>
 			<b title="kabang!!!">2021-1-6</b> - extme mode.<br><br>tech:extremely explosive nails - nails explode(...oh no)<hr>
-			<b title="oh boy more tecgs">2021-1-5</b> - XxX_Xtreme_XxX mode!!!!!!!!!!!!!!!!!!!!!!!<br><br>tech:extreme fragmentation - most stuffs make nails<br>tech:extreme defense - /2 harm<hr>
-			<b title="funny DI reference the second">2021-1-5</b> - Xtreme mode!!!!!!!<br><br>added extreme mode<br>tech:extreme radiation - radiation recurses with x1.2 multiplier<br>tech:extreme damage - x2 damage<hr>
-			<b title="i'm really not smart ok">2021-1-1</b> - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA part 2<br><br>tech:lorentz transformation extended-20% more time<br>WIP stuff (AAAAAAAAAAAAA)<hr>
 			update css[did you know? if you hover over bold text in this update tab it makes stuff show up]<hr>`
 })
 
