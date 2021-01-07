@@ -285,7 +285,7 @@ const powerUps = {
                 function pick(skip1 = -1, skip2 = -1, skip3 = -1, skip4 = -1) {
                     let options = [];
                     for (let i = 0; i < tech.tech.length; i++) {
-                        if ((tech.tech[i].count < tech.tech[i].maxCount||tech.antiLimit) && tech.tech[i].allowed()) {
+                        if ((tech.tech[i].count < tech.tech[i].maxCount||(tech.antiLimit&&tech.tech[i].maxCount>1)) && tech.tech[i].allowed()) {
 							options.push(i);
                         }
                     }

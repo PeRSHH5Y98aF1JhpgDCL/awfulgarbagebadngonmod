@@ -2028,6 +2028,7 @@ const b = {
 			}
 		}
         bullet[me].beforeDmg = function(who) { //beforeDmg is rewritten with ice crystal tech
+				if (tech.impactRecurse) {
 			let recurse=()=>{
 				const dir=this.angle-0.3+(Math.random()*0.6)
                 const SPEED = 21 -Math.random()*10; //(mech.crouch ? 32 : 20) - radius * 0.7;
@@ -2039,6 +2040,7 @@ const b = {
 			}
 			recurse()
 			recurse()
+				}
 		};
         bullet[me].do = function() {}
 	},
