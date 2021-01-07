@@ -997,6 +997,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="pain">removed cycles buffs</b><hr>
 			<b title="more tehcs">2021-1-7</b> - nail go BRRR<br><br>teches:homing nails- nails go fast towards mobs<br>tekh - [anti/hyper]cycles: cycles go by [faster/slower](some time things are different and<br>most drastically æffects exposives and mob vision)<hr>
 			<b title="ob hoy tore mechs">2021-1-7</b> - more tech<br><br>tch:extreme buuble fusion-30% tech on shield destroy<br>extreme tech generation-5% tech on destroy<br>bots exchange-make random bot on cancel<br>antigravity-super balls don't fall[i actually did this yesterday but i forgot to log it]<br>random bots now include plasma! i have no idea why i didn't do this sooner<br>mech color change<hr>		
 			<b title="<b title='<b title=\'...\'></b>'></b>">2021-1-7</b> - recurser<br><br>new enemy:recurser - makes itself<br>in testing mode press v,b,n,m for more things<hr>
@@ -1019,7 +1020,7 @@ function cycle() {
     if (elapsed > simulation.fpsInterval) { // if enough time has elapsed, draw the next frame
         simulation.then = now - (elapsed % simulation.fpsInterval); // Get ready for next frame by setting then=now.   Also, adjust for fpsInterval not being multiple of 16.67
 
-        simulation.cycle+=tech.cycleSpeed; //tracks game cycles
+        simulation.cycle++ //tracks game cycles
         mech.cycle+=1; //tracks player cycles  //used to alow time to stop for everything, but the player
         if (simulation.clearNow) {
             simulation.clearNow = false;
