@@ -308,6 +308,8 @@ summary {
     border-radius: 8px;
     border: 2px #333 solid;
     background-color: #eee;
+	height:20em;
+	overflow:scroll;
 }
 
 #dmg {
