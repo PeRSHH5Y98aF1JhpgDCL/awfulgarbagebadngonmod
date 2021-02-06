@@ -440,9 +440,9 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return simulation.isExtremeMode
+                return [0,2,3].includes(mech.fieldMode)
             },
-            requires: "",
+            requires: "standard fields(the blue ones)",
             effect() {
                 tech.isFieldOrb = true;
 				mech.fieldArc=tech.isFieldOrb?1:0.2
@@ -1089,6 +1089,22 @@ const tech = {
                         bullet[i].orbitalSpeed = Math.sqrt(0.25 / range)
                     }
                 }
+            }
+        },
+        {
+            name: "aim-bot",
+            description: "automatically aim at nearest mob<br><em>disclaimer:not actually a bot</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return true
+            },
+            requires: "",
+            effect() {
+                tech.isAimBot=true
+            },
+            remove() {
+                tech.isAimBot =false;
             }
         },
         {
@@ -4013,6 +4029,7 @@ const tech = {
                 mech.setEnergyRegen()
             }
         },
+        
         {
             name: "phase decoherence",
             description: "become <strong>intangible</strong> while <strong class='color-cloaked'>cloaked</strong><br>but, passing through <strong>mobs</strong> drains your <strong class='color-f'>energy</strong>",

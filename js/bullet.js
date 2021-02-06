@@ -2050,6 +2050,135 @@ const b = {
 			y=()=>{a=x();return (bl.includes(a.name)?y():a)}
 			y().fire()
 	},
+	zap(isUpgrade=false) { ////i am lazy
+
+            //calculate laser collision
+            let best;
+            let range = 2 * (120 + (mech.crouch ? 400 : 300) * Math.sqrt(Math.random())) //+ 100 * Math.sin(mech.cycle * 0.3);
+            // const dir = mech.angle // + 0.04 * (Math.random() - 0.5)
+            const path = [{
+                    x: mech.pos.x + 20 * Math.cos(mech.angle),
+                    y: mech.pos.y + 20 * Math.sin(mech.angle)
+                },
+                {
+                    x: mech.pos.x + range * Math.cos(mech.angle),
+                    y: mech.pos.y + range * Math.sin(mech.angle)
+                }
+            ];
+            const vertexCollision = function(v1, v1End, domain) {
+                for (let i = 0; i < domain.length; ++i) {
+                    let vertices = domain[i].vertices;
+                    const len = vertices.length - 1;
+                    for (let j = 0; j < len; j++) {
+                        results = simulation.checkLineIntersection(v1, v1End, vertices[j], vertices[j + 1]);
+                        if (results.onLine1 && results.onLine2) {
+                            const dx = v1.x - results.x;
+                            const dy = v1.y - results.y;
+                            const dist2 = dx * dx + dy * dy;
+                            if (dist2 < best.dist2 && (!domain[i].mob || domain[i].alive)) {
+                                best = {
+                                    x: results.x,
+                                    y: results.y,
+                                    dist2: dist2,
+                                    who: domain[i],
+                                    v1: vertices[j],
+                                    v2: vertices[j + 1]
+                                };
+                            }
+                        }
+                    }
+                    results = simulation.checkLineIntersection(v1, v1End, vertices[0], vertices[len]);
+                    if (results.onLine1 && results.onLine2) {
+                        const dx = v1.x - results.x;
+                        const dy = v1.y - results.y;
+                        const dist2 = dx * dx + dy * dy;
+                        if (dist2 < best.dist2 && (!domain[i].mob || domain[i].alive)) {
+                            best = {
+                                x: results.x,
+                                y: results.y,
+                                dist2: dist2,
+                                who: domain[i],
+                                v1: vertices[0],
+                                v2: vertices[len]
+                            };
+                        }
+                    }
+                }
+            };
+
+            //check for collisions
+            best = {
+                x: null,
+                y: null,
+                dist2: Infinity,
+                who: null,
+                v1: null,
+                v2: null
+            };
+            vertexCollision(path[0], path[1], mob);
+            vertexCollision(path[0], path[1], map);
+            vertexCollision(path[0], path[1], body);
+            if (best.dist2 != Infinity) { //if hitting something
+                path[path.length - 1] = {
+                    x: best.x,
+                    y: best.y
+                };
+                if (best.who.alive) {
+                    const dmg = 8 * b.dmgScale; //********** SCALE DAMAGE HERE *********************
+                    best.who.damage(dmg);
+					b.targetedNail(best.who.position,tech.extremeFragments)
+                    best.who.locatePlayer();
+
+                    //push mobs away
+                    const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.01 * Math.min(5, best.who.mass))
+                    Matter.Body.applyForce(best.who, path[1], force)
+                    Matter.Body.setVelocity(best.who, { //friction
+                        x: best.who.velocity.x * 0.7,
+                        y: best.who.velocity.y * 0.7
+                    });
+                    //draw mob damage circle
+                    simulation.drawList.push({
+                        x: path[1].x,
+                        y: path[1].y,
+                        radius: Math.sqrt(dmg) * 50,
+                        color: "rgba(100,100,255,0.2)",
+                        time: simulation.drawTime * 4
+                    });
+                } else if (!best.who.isStatic) {
+                    //push blocks away
+                    const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.27 * Math.sqrt(Math.sqrt(best.who.mass)))
+                    Matter.Body.applyForce(best.who, path[1], force)
+                }
+            }
+
+            //draw blowtorch laser beam
+            ctx.strokeStyle = "rgba(100,100,255,0.1)"
+            ctx.lineWidth = 14
+            ctx.beginPath();
+            ctx.moveTo(path[0].x, path[0].y);
+            ctx.lineTo(path[1].x, path[1].y);
+            ctx.stroke();
+            ctx.strokeStyle = "#88f";
+            ctx.lineWidth = 2
+            ctx.stroke();
+
+            //draw electricity
+            const Dx = Math.cos(mech.angle);
+            const Dy = Math.sin(mech.angle);
+            let x = mech.pos.x + 20 * Dx;
+            let y = mech.pos.y + 20 * Dy;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            const step = Vector.magnitude(Vector.sub(path[0], path[1])) / 10
+            for (let i = 0; i < 8; i++) {
+                x += step * (Dx + 1.5 * (Math.random() - 0.5))
+                y += step * (Dy + 1.5 * (Math.random() - 0.5))
+                ctx.lineTo(x, y);
+            }
+            ctx.lineWidth = 2 * Math.random();
+            ctx.stroke();
+        
+    },
     // **************************************************************************************************
     // **************************************************************************************************
     // ********************************         Bots        *********************************************
@@ -4018,7 +4147,18 @@ const b = {
             have: false,
             fire() {
                 b.rngshot()
-                mech.fireCDcycle = mech.cycle + 7; // cool down
+                mech.fireCDcycle = mech.cycle + (mech.crouch ? 15 : 6 * b.fireCD); // cool down
+            }
+        },
+		{
+            name: "zap",
+            description: "energy laser",
+            ammo: 0,
+            ammoPack: 8,
+            have: false,
+            fire() {
+                b.zap()
+                mech.fireCDcycle = mech.cycle + (30 * b.fireCD); // cool down
             }
         },
     ],
