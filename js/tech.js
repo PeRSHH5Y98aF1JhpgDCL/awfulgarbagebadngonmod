@@ -385,7 +385,7 @@ const tech = {
         },
         {
             name: "extreme frost",
-            description: "freeze effects are twice as long",
+            description: "freeze effects are twice as long and cause stun",
             maxCount: 9,
             count: 0,
             allowed() {
