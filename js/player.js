@@ -187,14 +187,26 @@ const mech = {
             simulation.mouseInGame.y - mech.pos.y,
             simulation.mouseInGame.x - mech.pos.x
         );
-        //smoothed mouse look translations
-        const scale = 0.8;
-        mech.transSmoothX = canvas.width2 - mech.pos.x - (simulation.mouse.x - canvas.width2) * scale;
-        mech.transSmoothY = canvas.height2 - mech.pos.y - (simulation.mouse.y - canvas.height2) * scale;
+	if (tech.isAimBot) {
+		function distance(p) {
+			return Math.sqrt(Math.pow(point.x - p.x, 2) + Math.pow(point.y - p.y, 2))
+		}
 
-        mech.transX += (mech.transSmoothX - mech.transX) * 0.07;
-        mech.transY += (mech.transSmoothY - mech.transY) * 0.07;
-    },
+		var point = mech.pos,
+		points = mob.map((x)=>x.position);
+		points.filter((x)=>!(Matter.Query.ray(map, mech.pos, x).length === 0 && Matter.Query.ray(body, mech.pos, x).length === 0));
+		var closest
+		if (points.length) closest = points.reduce((a, b) => distance(a) < distance(b) ? a : b);
+			if (closest&&input.fire) mech.angle=Math.PI+Math.atan2(mech.pos.y-closest.y,mech.pos.x-closest.x)
+		}
+			//smoothed mouse look translations
+			const scale = 0.8;
+			mech.transSmoothX = canvas.width2 - mech.pos.x - (simulation.mouse.x - canvas.width2) * scale;
+			mech.transSmoothY = canvas.height2 - mech.pos.y - (simulation.mouse.y - canvas.height2) * scale;
+
+			mech.transX += (mech.transSmoothX - mech.transX) * 0.07;
+			mech.transY += (mech.transSmoothY - mech.transY) * 0.07;
+	},
     doCrouch() {
         if (!mech.crouch) {
             mech.crouch = true;
