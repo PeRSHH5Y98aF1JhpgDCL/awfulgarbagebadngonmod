@@ -52,6 +52,7 @@ const tech = {
             tech.totalCount++ //used in power up randomization
             simulation.updateTechHUD();
         }
+		mech.setMaxEnergy()
     },
     setTechoNonRefundable(name) {
         for (let i = 0; i < tech.tech.length; i++) {
@@ -72,7 +73,7 @@ const tech = {
         }
 
         for (i = 0, len = b.inventory.length; i < len; i++) {
-            if (b.guns[b.inventory[i]].name === name) return true
+            if (b.guns[b.inventory[i]].name === name||(b.guns[b.inventory[i]].name === "random"&&!b.rngbl.includes(name))) return true
         }
         return false
     },
@@ -203,6 +204,7 @@ const tech = {
                 tech.extremeEnergy = 1;
                 mech.setEnergyRegen()
                 mech.setMaxEnergy()
+								
             }
         },
         {
@@ -222,8 +224,24 @@ const tech = {
             }
         },
 		{
-            name: "extreme limit breaking",
-            description: "all tech with more than a 1 tech limit becomes unlimited<br><em>does NOT work in build menu</em>",
+            name: "extreme explosive vaporisation",
+            description: "<strong class='color-e'>explosives</strong> have a +0.4%*ln(dmg) chance of having 1e12* damage",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "extreme mode",
+            effect: () => {
+                tech.extremeExpDel += 0.004;
+            },
+            remove() {
+                tech.extremeExpDel = 0;
+            }
+        },
+		{
+			name:"extreme antilimit",
+           description: "all tech with more than a 1 tech limit becomes unlimited",
             maxCount: 1,
             count: 0,
             allowed() {
@@ -366,6 +384,22 @@ const tech = {
             }
         },
         {
+            name: "extreme frost",
+            description: "freeze effects are twice as long",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "",
+            effect() {
+                tech.extremeFrost *= 2;
+            },
+            remove() {
+                tech.extremeFrost = 1;
+            }
+        },
+        {
             name: "homing nails",
             description: "nails angle towards the nearest mob",
             maxCount: 1,
@@ -398,6 +432,24 @@ const tech = {
                 tech.allBoost = 1;
 				mech.setEnergyRegen()
 				mech.setEnergyRegen()
+            }
+        },
+        {
+            name: "field orb",
+            description: "your <strong class='color-f'>field</strong> is circular<br><em>haha orb</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode
+            },
+            requires: "",
+            effect() {
+                tech.isFieldOrb = true;
+				mech.fieldArc=tech.isFieldOrb?1:0.2
+            },
+            remove() {
+                tech.isFieldOrb = false;
+				mech.fieldArc=tech.isFieldOrb?1:0.2
             }
         },
 		{

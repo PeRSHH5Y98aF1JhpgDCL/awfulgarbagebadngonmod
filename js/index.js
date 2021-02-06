@@ -252,7 +252,7 @@ const build = {
         window.scrollTo(0, 0);
     },
     isCustomSelection: true,
-    choosePowerUp(who, index, type, isAllowed = false) {
+    choosePowerUp(event,who, index, type, isAllowed = false) {
         if (type === "gun") {
             let isDeselect = false
             for (let i = 0, len = b.inventory.length; i < len; i++) { //look for selection in inventory
@@ -280,14 +280,16 @@ const build = {
                 who.classList.add("build-field-selected");
             }
         } else if (type === "tech") { //remove tech if you have too many
-            if (tech.tech[index].count < tech.tech[index].maxCount) {
+            if (tech.tech[index].count < tech.tech[index].maxCount||(tech.antiLimit&&tech.tech[index].maxCount>1)) {
                 if (!who.classList.contains("build-tech-selected")) who.classList.add("build-tech-selected");
                 tech.giveTech(index)
             } else {
                 tech.removeTech(index);
                 who.classList.remove("build-tech-selected");
             }
+			if (event.which==3) {tech.removeTech(index);who.classList.remove("build-tech-selected");}
         }
+		console.log(event.which)
         //update tech text //disable not allowed tech
         for (let i = 0, len = tech.tech.length; i < len; i++) {
             const techID = document.getElementById("tech-" + i)
@@ -318,7 +320,7 @@ const build = {
 
                     if (techID.classList.contains("build-grid-disabled")) {
                         techID.classList.remove("build-grid-disabled");
-                        techID.setAttribute("onClick", `javascript: build.choosePowerUp(this,${i},'tech')`);
+                        techID.setAttribute("onClick", `build.choosePowerUp(event,this,${i},'tech')`);
                     }
                 } else {
                     techID.innerHTML = `<div class="grid-title"> ${tech.tech[i].name}</div><span style="color:#666;">requires: ${tech.tech[i].requires}</span></div>`
@@ -374,10 +376,10 @@ const build = {
     </div>
   </div>`
         for (let i = 0, len = mech.fieldUpgrades.length; i < len; i++) {
-            text += `<div id ="field-${i}" class="build-grid-module" onclick="build.choosePowerUp(this,${i},'field')"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[i].name}</div> ${mech.fieldUpgrades[i].description}</div>`
+            text += `<div id ="field-${i}" class="build-grid-module" onclick="build.choosePowerUp(event,this,${i},'field')"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[i].name}</div> ${mech.fieldUpgrades[i].description}</div>`
         }
         for (let i = 0, len = b.guns.length; i < len; i++) {
-            text += `<div id = "gun-${i}" class="build-grid-module" onclick="build.choosePowerUp(this,${i},'gun')"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[i].name}</div> ${b.guns[i].description}</div>`
+            text += `<div id = "gun-${i}" class="build-grid-module" onclick="build.choosePowerUp(event,this,${i},'gun')"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[i].name}</div> ${b.guns[i].description}</div>`
         }
 
         for (let i = 0, len = tech.tech.length; i < len; i++) {
@@ -387,7 +389,7 @@ const build = {
                     // } else if (tech.tech[i].count > 1) {
                     //     text += `<div id="tech-${i}" class="build-grid-module" onclick="build.choosePowerUp(this,${i},'tech')"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[i].name} (${tech.tech[i].count}x)</div> ${tech.tech[i].description}</div>`
                 } else {
-                    text += `<div id="tech-${i}" class="build-grid-module" onclick="build.choosePowerUp(this,${i},'tech')"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[i].name}</div> ${tech.tech[i].description}</div>`
+                    text += `<div id="tech-${i}" class="build-grid-module" onmousedown="build.choosePowerUp(event,this,${i},'tech')"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[i].name}</div> ${tech.tech[i].description}</div>`
                 }
             }
         }
@@ -997,12 +999,11 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="should've waited a day more">2021-2-6</b> - OH MY GOD AN UPDATE??????????????<br>gun:random - random bullet<br>tech:freeze - 2x freeze<br>tech:extreme explosive vaporisation - small chance for an exposion to have xe12 damage<br>made extreme antilimit work in custom menu<br>right click clears in custom menu<hr>
 			<b title="more guns">2021-1-7</b> - funny fractal<br><br>gun:shattershot - makes nails that split recursively<br>tess:recursive shattering- shattering nails shatter more on hit on mob<br>tekl - recursive improvement: shattering nails last 1 iteration longer<br>tulh = extreme limit break - no more tech limits!!!!<hr>
 			<b title="pain">removed cycles buffs</b><hr>
 			<b title="more tehcs">2021-1-7</b> - nail go BRRR<br><br>teches:homing nails- nails go fast towards mobs<br>tekh - [anti/hyper]cycles: cycles go by [faster/slower](some time things are different and<br>most drastically æffects exposives and mob vision)<hr>
 			<b title="ob hoy tore mechs">2021-1-7</b> - more tech<br><br>tch:extreme buuble fusion-30% tech on shield destroy<br>extreme tech generation-5% tech on destroy<br>bots exchange-make random bot on cancel<br>antigravity-super balls don't fall[i actually did this yesterday but i forgot to log it]<br>random bots now include plasma! i have no idea why i didn't do this sooner<br>mech color change<hr>		
-			<b title="<b title='<b title=\'...\'></b>'></b>">2021-1-7</b> - recurser<br><br>new enemy:recurser - makes itself<br>in testing mode press v,b,n,m for more things<hr>
-			<b title="lowerer">2021-1-6</b> - stme blde/<br><br>tech:extreme perpetual tech - get 1 tech on level<br>tech:extreme tech replication - 1/1.5 current tech<br>oh boy one more enemy:summoner - makes other enmeys<hr>
 			update css[did you know? if you hover over bold text in this update tab it makes stuff show up]<hr>`
 })
 

@@ -255,7 +255,7 @@ const b = {
                 if (dist < radius) {
                     if (mob[i].shield) dmg *= 2.5 //balancing explosion dmg to shields
                     if (Matter.Query.ray(map, mob[i].position, where).length > 0) dmg *= 0.5 //reduce damage if a wall is in the way
-                    mob[i].damage(dmg * damageScale * b.dmgScale);
+                    mob[i].damage(dmg * damageScale * b.dmgScale*((tech.extremeExpDel*Math.log((dmg * damageScale * b.dmgScale)+1))>Math.random()?1e12:1));
                     mob[i].locatePlayer();
                     knock = Vector.mult(Vector.normalise(sub), (-Math.sqrt(dmg * damageScale) * mob[i].mass) * 0.01);
                     mob[i].force.x += knock.x;
@@ -2018,7 +2018,6 @@ const b = {
                     x: SPEED * Math.cos(dir),
                     y: SPEED * Math.sin(dir)
                 }
-				console.log(selff.position)
 				b.treeShot(selff.position,velocity,dmg,iter-1)
 			}
 			if (iter>0) {
@@ -2043,6 +2042,13 @@ const b = {
 				}
 		};
         bullet[me].do = function() {}
+	},
+	rngbl:['rail gun'],
+	rngshot() {
+			x=()=>b.guns[Math.floor(Math.random()*b.guns.length)]
+			bl=b.rngbl
+			y=()=>{a=x();return (bl.includes(a.name)?y():a)}
+			y().fire()
 	},
     // **************************************************************************************************
     // **************************************************************************************************
@@ -4003,6 +4009,17 @@ const b = {
                     b.pulse(energy, mech.angle)
                 }
             },
+        },
+		{
+            name: "random",
+            description: "shoot a random bullet<br>makes tech with a gun requirement selectable<br><em>blacklist:rail gun</em>",
+            ammo: 0,
+            ammoPack: 40,
+            have: false,
+            fire() {
+                b.rngshot()
+                mech.fireCDcycle = mech.cycle + 7; // cool down
+            }
         },
     ],
     gunRewind: { //this gun is added with a tech

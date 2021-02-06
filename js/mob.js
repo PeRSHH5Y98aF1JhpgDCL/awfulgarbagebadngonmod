@@ -44,7 +44,9 @@ const mobs = {
         }
     },
     statusSlow(who, cycles = 60) {
+		cycles*=(tech.extremeFrost)
         applySlow(who)
+		if (tech.extremeFrost) mobs.statusStun(who,cycles)
         //look for mobs near the target
         if (tech.isAoESlow) {
             const range = (320 + 150 * Math.random()) ** 2
@@ -61,7 +63,7 @@ const mobs = {
         }
 
         function applySlow() {
-            if (!who.shield && !who.isShielded && !mech.isBodiesAsleep) {
+            if (!who.shield && (!who.isShielded||tech.extremeFrost) && !mech.isBodiesAsleep) {
                 if (who.isBoss) cycles = Math.floor(cycles * 0.25)
 
                 let i = who.status.length
