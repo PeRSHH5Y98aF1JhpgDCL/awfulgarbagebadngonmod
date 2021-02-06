@@ -999,7 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
-			<b title="should've waited a day more">2021-2-6</b> - OH MY GOD AN UPDATE??????????????<br>gun:random - random bullet<br>tech:freeze - 2x freeze<br>tech:extreme explosive vaporisation - small chance for an exposion to have xe12 damage<br>made extreme antilimit work in custom menu<br>right click clears in custom menu<hr>
+			<b title="should've waited a day more">2021-2-6</b> - OH MY GOD AN UPDATE??????????????<br>gun:random - random bullet<br>tech:extreme freeze - 2x freeze<br>tech:extreme explosive vaporisation - small chance for an exposion to have xe12 damage<br>made extreme antilimit work in custom menu<br>right click clears in custom menu<hr>
 			<b title="more guns">2021-1-7</b> - funny fractal<br><br>gun:shattershot - makes nails that split recursively<br>tess:recursive shattering- shattering nails shatter more on hit on mob<br>tekl - recursive improvement: shattering nails last 1 iteration longer<br>tulh = extreme limit break - no more tech limits!!!!<hr>
 			<b title="pain">removed cycles buffs</b><hr>
 			<b title="more tehcs">2021-1-7</b> - nail go BRRR<br><br>teches:homing nails- nails go fast towards mobs<br>tekh - [anti/hyper]cycles: cycles go by [faster/slower](some time things are different and<br>most drastically æffects exposives and mob vision)<hr>
