@@ -1454,7 +1454,7 @@ const mech = {
                     const wave = Math.sin(mech.cycle * 0.022);
                     mech.fieldRange = 170 + 12 * wave
                     mech.fieldArc = 0.33 + 0.045 * wave //run calculateFieldThreshold after setting fieldArc, used for powerUp grab and mobPush with lookingAt(mob)
-				mech.fieldArc=tech.isFieldOrb?1:0.2
+				mech.fieldArc=tech.isFieldOrb?1:mech.fieldArc
                     mech.calculateFieldThreshold();
                     if (mech.isHolding) {
                         mech.drawHold(mech.holdingTarget);
