@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="bzzz">2021-2-8</b> - updateasdsaedsaa<br>tech - chain zap :zap chains<br> tehcj - long zap ; zap 33% longer<br>teidj - gamma rad beam = raytracing things cause radiation<br>made field orb  work for thignas<hr>
 			<b title="this is not a news ticker">2021-2-7</b> - updataes yes<br>tech - aimbot:auto-aim on fire<br>tech-field orb:claified things<br>gun : zap - pulse but without exploding and with ammo<br>update thtis div's css<hr>
 			<b title="should've waited a day more">2021-2-6</b> - OH MY GOD AN UPDATE??????????????<br>gun:random - random bullet<br>tech:extreme freeze - 2x freeze<br>tech:extreme explosive vaporisation - small chance for an exposion to have xe12 damage<br>made extreme antilimit work in custom menu<br>right click clears in custom menu<hr>
 			<b title="more guns">2021-1-7</b> - funny fractal<br><br>gun:shattershot - makes nails that split recursively<br>tess:recursive shattering- shattering nails shatter more on hit on mob<br>tekl - recursive improvement: shattering nails last 1 iteration longer<br>tulh = extreme limit break - no more tech limits!!!!<hr>

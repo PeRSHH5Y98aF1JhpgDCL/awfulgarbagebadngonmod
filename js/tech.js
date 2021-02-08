@@ -3567,6 +3567,57 @@ const tech = {
                 tech.isPulseAim = false;
             }
         },
+        {
+            name: "gamma radiation beam",
+            description: "<strong>laser,zap,plasma</strong> does radiation damage<br><em>i don't think this makes <br>sense scientifically but whatever</em>",
+            isGunTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return tech.haveGunCheck("zap")||(tech.haveGunCheck("laser")&&!tech.isPulseLaser)||(tech.plasmaBotCount>0)||(mech.fieldUpgrades[mech.fieldMode].name === "plasma torch")
+            },
+            requires: "zap or laser or plasma",
+            effect() {
+                tech.radLight = true;
+            },
+            remove() {
+                tech.radLight = false;
+            }
+        },
+        {
+            name: "chain zap",
+            description: "<strong>zap</strong> chains at a nearby mob for +1 iteration",
+            isGunTech: true,
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.haveGunCheck("zap")
+            },
+            requires: "zap",
+            effect() {
+                tech.zapChain += 1;
+            },
+            remove() {
+                tech.zapChain = 1;
+            }
+        },
+        {
+            name: "long zap",
+            description: "<strong>zap</strong> is 33% longer",
+            isGunTech: true,
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.haveGunCheck("zap")
+            },
+            requires: "zap",
+            effect() {
+                tech.zapLength *= 1.33;
+            },
+            remove() {
+                tech.zapLength = 1;
+            }
+        },
         //************************************************** 
         //************************************************** field
         //************************************************** tech

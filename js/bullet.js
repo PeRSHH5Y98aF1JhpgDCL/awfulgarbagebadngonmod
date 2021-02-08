@@ -1094,6 +1094,7 @@ const b = {
                         color: "rgba(255,0,255,0.2)",
                         time: simulation.drawTime * 4
                     });
+					if (tech.radLight && simulation.cycle%3==0) mobs.statusDoT(best.who,dmg*2)
                 } else if (!best.who.isStatic) {
                     //push blocks away
                     const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.007 * Math.sqrt(Math.sqrt(best.who.mass)))
@@ -1222,6 +1223,7 @@ const b = {
                     color: "rgba(255,0,0,0.5)",
                     time: simulation.drawTime
                 });
+				if (tech.radLight && simulation.cycle%4==0) mobs.statusDoT(best.who,dmg*6)
             }
             // ctx.fillStyle = color; //draw mob damage circle
             // ctx.beginPath();
@@ -2050,19 +2052,19 @@ const b = {
 			y=()=>{a=x();return (bl.includes(a.name)?y():a)}
 			y().fire()
 	},
-	zap(isUpgrade=false) { ////i am lazy
+	zap(pos=mech.pos,angle=mech.angle,iter=tech.zapChain) { ////i am lazy
 
             //calculate laser collision
             let best;
-            let range = 2 * (120 + (mech.crouch ? 400 : 300) * Math.sqrt(Math.random())) //+ 100 * Math.sin(mech.cycle * 0.3);
+            let range = 2 * (120 + (mech.crouch ? 400 : 300) * Math.sqrt(Math.random()))*tech.zapLength //+ 100 * Math.sin(mech.cycle * 0.3);
             // const dir = mech.angle // + 0.04 * (Math.random() - 0.5)
             const path = [{
-                    x: mech.pos.x + 20 * Math.cos(mech.angle),
-                    y: mech.pos.y + 20 * Math.sin(mech.angle)
+                    x: pos.x + 20 * Math.cos(angle),
+                    y: pos.y + 20 * Math.sin(angle)
                 },
                 {
-                    x: mech.pos.x + range * Math.cos(mech.angle),
-                    y: mech.pos.y + range * Math.sin(mech.angle)
+                    x: pos.x + range * Math.cos(angle),
+                    y: pos.y + range * Math.sin(angle)
                 }
             ];
             const vertexCollision = function(v1, v1End, domain) {
@@ -2130,7 +2132,7 @@ const b = {
                     best.who.locatePlayer();
 
                     //push mobs away
-                    const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.01 * Math.min(5, best.who.mass))
+                    const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.06 * Math.min(5, best.who.mass))
                     Matter.Body.applyForce(best.who, path[1], force)
                     Matter.Body.setVelocity(best.who, { //friction
                         x: best.who.velocity.x * 0.7,
@@ -2144,6 +2146,24 @@ const b = {
                         color: "rgba(100,100,255,0.2)",
                         time: simulation.drawTime * 4
                     });
+					if (tech.radLight) mobs.statusDoT(best.who,dmg*2)
+					if ((iter>1)&&(tech.zapChain>1)) {	
+						function distance(p) {
+							return Math.sqrt(Math.pow(point.x - p.x, 2) + Math.pow(point.y - p.y, 2))
+						}
+
+						var point = {x:best.who.position.x+ 20 * Math.cos(angle),y:best.who.position.y+ 20 * Math.sin(angle)},
+						points=mob
+						points=points.filter((x)=>(x!=best.who))
+						points = points.map((x)=>x.position);
+						points = points.filter((x)=>Matter.Query.ray(map, point, x).length === 0 && Matter.Query.ray(body, point, x).length === 0)
+						var closest
+						var temp
+							console.log(point)
+						if (points.length) closest = points.reduce((a, b) => distance(a) < distance(b) ? a : b);
+							if (closest) temp=Math.PI+Math.atan2(point.y-closest.y,point.x-closest.x)
+						b.zap(point,temp,iter-1)
+					}
                 } else if (!best.who.isStatic) {
                     //push blocks away
                     const force = Vector.mult(Vector.normalise(Vector.sub(mech.pos, path[1])), -0.27 * Math.sqrt(Math.sqrt(best.who.mass)))
@@ -4152,12 +4172,12 @@ const b = {
         },
 		{
             name: "zap",
-            description: "energy laser",
+            description: "shoot a beam of energy<br><em>ammo is batteries<br>does landgreen not know batteries exist</em>",
             ammo: 0,
             ammoPack: 8,
             have: false,
             fire() {
-                b.zap()
+				b.zap(mech.pos,mech.angle,tech.zapChain)
                 mech.fireCDcycle = mech.cycle + (30 * b.fireCD); // cool down
             }
         },

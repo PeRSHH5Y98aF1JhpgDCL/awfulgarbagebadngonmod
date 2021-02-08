@@ -194,7 +194,7 @@ const mech = {
 
 		var point = mech.pos,
 		points = mob.map((x)=>x.position);
-		points.filter((x)=>!(Matter.Query.ray(map, mech.pos, x).length === 0 && Matter.Query.ray(body, mech.pos, x).length === 0));
+		points = points.filter((x)=>(Matter.Query.ray(map, mech.pos, x).length === 0 && Matter.Query.ray(body, mech.pos, x).length === 0));
 		var closest
 		if (points.length) closest = points.reduce((a, b) => distance(a) < distance(b) ? a : b);
 			if (closest&&input.fire) mech.angle=Math.PI+Math.atan2(mech.pos.y-closest.y,mech.pos.x-closest.x)
@@ -899,6 +899,7 @@ const mech = {
         mech.holdingMassScale = 0.5;
         mech.isFieldActive = false; //only being used by negative mass field
         mech.fieldArc = 0.2; //run calculateFieldThreshold after setting fieldArc, used for powerUp grab and mobPush with lookingAt(mob)
+				mech.fieldArc=tech.isFieldOrb?1:0.2
         mech.calculateFieldThreshold(); //run calculateFieldThreshold after setting fieldArc, used for powerUp grab and mobPush with lookingAt(mob)
         mech.isBodiesAsleep = true;
         mech.wakeCheck();
@@ -1453,6 +1454,7 @@ const mech = {
                     const wave = Math.sin(mech.cycle * 0.022);
                     mech.fieldRange = 170 + 12 * wave
                     mech.fieldArc = 0.33 + 0.045 * wave //run calculateFieldThreshold after setting fieldArc, used for powerUp grab and mobPush with lookingAt(mob)
+				mech.fieldArc=tech.isFieldOrb?1:0.2
                     mech.calculateFieldThreshold();
                     if (mech.isHolding) {
                         mech.drawHold(mech.holdingTarget);
