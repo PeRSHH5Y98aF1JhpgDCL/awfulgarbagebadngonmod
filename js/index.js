@@ -421,7 +421,7 @@ const build = {
         document.getElementById("build-grid").style.display = "grid"
     },
     shareURL(isCustom = false) {
-        let url = "https://PeRSHH5Y98aF1JhpgDCL.github.io/awfulgarbagebadngonmod/index.html?"
+        let url = "https://aShorterName.github.io/awfulgarbagebadngonmod/index.html?"
         let count = 0;
 
         for (let i = 0; i < b.inventory.length; i++) {
@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="i give up">2021-4-6</b> - i have run out of jokes<br>tech - even more extreme mode:things<hr>
 			<b title="bzzz">2021-2-8</b> - updateasdsaedsaa<br>tech - chain zap :zap chains<br> tehcj - long zap ; zap 33% longer<br>teidj - gamma rad beam = raytracing things cause radiation<br>made field orb  work for thignas<hr>
 			<b title="this is not a news ticker">2021-2-7</b> - updataes yes<br>tech - aimbot:auto-aim on fire<br>tech-field orb:claified things<br>gun : zap - pulse but without exploding and with ammo<br>update thtis div's css<hr>
 			<b title="should've waited a day more">2021-2-6</b> - OH MY GOD AN UPDATE??????????????<br>gun:random - random bullet<br>tech:extreme freeze - 2x freeze<br>tech:extreme explosive vaporisation - small chance for an exposion to have xe12 damage<br>made extreme antilimit work in custom menu<br>right click clears in custom menu<hr>

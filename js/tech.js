@@ -96,12 +96,12 @@ const tech = {
         if (tech.isNoFireDamage && mech.cycle > mech.fireCDcycle + 120) dmg *= 1.66
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
-        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost
+        return dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost**(tech.extremeModeTwo?2:1)
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
 		if (x>1.5) x=1.5*((x/1.5)**0.825)
-		return x
+		return x+tech.extremeModeTwo?1:0
     },
     totalBots() {
         return tech.foamBotCount + tech.nailBotCount + tech.laserBotCount + tech.boomBotCount + tech.plasmaBotCount + tech.orbitBotCount + tech.plasmaBotCount
@@ -124,7 +124,7 @@ const tech = {
         },
 		{
             name: "extreme radiation",
-            description: "when radiation ends radiation resets with x1.2 damage",
+            description: "when radiation ends radiation resets with x1.1 damage",
             maxCount: 9,
             count: 0,
             allowed() {
@@ -136,6 +136,26 @@ const tech = {
             },
             remove() {
                 tech.extremeRadExp = 1;
+            }
+        },
+		{
+            name: "even more extreme mode",
+            description: "damage is squared, <br>harm reduction is squared, <br>+100% duplication chance(after softcap), <br>spawn 10 tech and guns<br><em>doesn't unlock more tech<br>has a 1/20 chance to appear relative to other tech</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.isExtremeMode && Math.random()<0.05
+            },
+            requires: "extreme mode, 1/20 chance",
+            effect: () => {
+                tech.extremeModeTwo=true
+				for (let i=0;i<10;i++) {
+					powerUps.spawn(mech.pos.x,mech.pos.y,"gun")
+					powerUps.spawn(mech.pos.x,mech.pos.y,"tech")
+				}
+            },
+            remove() {
+                tech.extremeModeTwo=false
             }
         },
         {

@@ -522,7 +522,7 @@ const mech = {
         if (tech.isEntanglement && b.inventory[0] === b.activeGun) {
             for (let i = 0, len = b.inventory.length; i < len; i++) dmg *= 0.87 // 1 - 0.15
         }
-        return dmg
+        return dmg**(tech.extremeModeTwo?2:1)
     },
     rewind(steps) { // mech.rewind(Math.floor(Math.min(599, 137 * mech.energy)))
         if (tech.isRewindGrenade) {
