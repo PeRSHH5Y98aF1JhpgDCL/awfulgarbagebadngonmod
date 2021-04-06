@@ -166,7 +166,7 @@ const tech = {
             allowed() {
                 return simulation.isExtremeMode
             },
-            requires: "only 1 perpetual effect, not superdeterminism",
+            requires: "extreme mode",
             effect() {
                 tech.isPerpetualTech = true
             },
