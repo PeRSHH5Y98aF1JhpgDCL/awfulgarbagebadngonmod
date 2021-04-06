@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="AAAAAAAAAAAA">2021-4-6</b> - one nanosecond later bugpatch<br>fixed even more extreme mode<hr>
 			<b title="i give up">2021-4-6</b> - i have run out of jokes<br>tech - even more extreme mode:things<hr>
 			<b title="bzzz">2021-2-8</b> - updateasdsaedsaa<br>tech - chain zap :zap chains<br> tehcj - long zap ; zap 33% longer<br>teidj - gamma rad beam = raytracing things cause radiation<br>made field orb  work for thignas<hr>
 			<b title="this is not a news ticker">2021-2-7</b> - updataes yes<br>tech - aimbot:auto-aim on fire<br>tech-field orb:claified things<br>gun : zap - pulse but without exploding and with ammo<br>update thtis div's css<hr>
