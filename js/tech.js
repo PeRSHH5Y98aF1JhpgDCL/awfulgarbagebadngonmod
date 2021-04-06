@@ -379,7 +379,7 @@ const tech = {
             allowed() {
                 return simulation.isExtremeMode
             },
-            requires: "",
+            requires: "extreme mode",
             effect() {
                 tech.isShieldTech = true;
             },
@@ -395,7 +395,7 @@ const tech = {
             allowed() {
                 return simulation.isExtremeMode
             },
-            requires: "",
+            requires: "extreme mode",
             effect() {
                 tech.extremeTechGen = true;
             },
@@ -411,7 +411,7 @@ const tech = {
             allowed() {
                 return simulation.isExtremeMode
             },
-            requires: "",
+            requires: "extreme mode",
             effect() {
                 tech.extremeFrost *= 2;
             },
