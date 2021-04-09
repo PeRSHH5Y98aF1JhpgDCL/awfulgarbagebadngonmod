@@ -1017,6 +1017,11 @@ const mobs = {
                         if (mech.health > mech.maxHealth) mech.health = mech.maxHealth
                     }
                     dmg /= Math.sqrt(this.mass)
+					dmg /=b.dmgScale//oh god this code is horrible
+					let tDmg=0
+					if (tech.diffPierce) tDmg=(dmg*(b.dmgScale**tech.diffPierceExponent))/33
+					dmg *=b.dmgScale**(tech.diffReduction)
+					dmg+=tDmg
                     this.health -= dmg
                     //this.fill = this.color + this.health + ')';
                     this.onDamage(dmg); //custom damage effects

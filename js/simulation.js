@@ -1,7 +1,7 @@
 // game Object ********************************************************
 //*********************************************************************
 const simulation = {
-    loop() {}, //main game loop, gets se tto normal or testing loop
+    loop() {}, //main game loop, gets set to normal or testing loop
     normalLoop() {
         simulation.gravity();
         Engine.update(engine, simulation.delta);
@@ -43,6 +43,36 @@ const simulation = {
         // simulation.clip();
         ctx.restore();
         simulation.drawCursor();
+		if (tech.nyoomCycle) {
+			mech.health-=0.00005*((mech.maxHealth*100)**0.5)
+			mech.displayHealth();
+			if (mech.health < 0 || isNaN(mech.health)) {
+                if (tech.isDeathAvoid && powerUps.reroll.rerolls > 0 && !tech.isDeathAvoidedThisLevel) { //&& Math.random() < 0.5
+                    tech.isDeathAvoidedThisLevel = true
+                    mech.health = 0.05
+                    powerUps.reroll.changeRerolls(-1)
+                    simulation.makeTextLog(`<span class='color-var'>mech</span>.<span class='color-r'>rerolls</span><span class='color-symbol'>--</span>
+                    <br>${powerUps.reroll.rerolls}`)
+                    for (let i = 0; i < 6; i++) {
+                        powerUps.spawn(mech.pos.x, mech.pos.y, "heal", false);
+                    }
+                    mech.immuneCycle = mech.cycle + 360 //disable this.immuneCycle bonus seconds
+                    simulation.wipe = function() { //set wipe to have trails
+                        ctx.fillStyle = "rgba(255,255,255,0.03)";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+                    setTimeout(function() {
+                        simulation.wipe = function() { //set wipe to normal
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        }
+                    }, 3000);
+                } else {
+                    mech.health = 0;
+                    mech.death();
+                    return;
+                }
+            }
+		}
         // simulation.pixelGraphics();
     },
     testingLoop() {

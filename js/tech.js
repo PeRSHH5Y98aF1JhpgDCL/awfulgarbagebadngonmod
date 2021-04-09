@@ -96,6 +96,7 @@ const tech = {
         if (tech.isNoFireDamage && mech.cycle > mech.fireCDcycle + 120) dmg *= 1.66
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
+		if (tech.nyoomCycle) dmg *= 1+(simulation.cycle-tech.nyoomCycle)/6000
         return (dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost)**(tech.extremeModeTwo?2:1)
     },
     duplicationChance() {
@@ -348,7 +349,7 @@ const tech = {
         {
             name: "extreme tech replication",
             description: "spawn new <strong class='color-m'>tech</strong> according<br> to your current <strong class='color-m'>tech</strong>(/1.5)",
-            maxCount: 10000000,
+            maxCount: 1,
             count: 0,
             // isNonRefundable: true,
             isCustomHide: true,
@@ -470,6 +471,23 @@ const tech = {
             remove() {
                 tech.isFieldOrb = false;
 				mech.fieldArc=tech.isFieldOrb?1:0.2
+            }
+        },
+        {
+            name: "extreme emitter",
+            description: "<b>field emitter</b> overcharges energy instead<br> of draining and deals some damage<br> with rooted damage scaling",
+            maxCount: 1,
+            count: 0,
+			isFieldTech: true,
+            allowed() {
+                return mech.fieldMode==0&&simulation.isExtremeMode
+            },
+            requires: "field emitter, extreme mode",
+            effect() {
+                tech.extremeEmitter = true;
+            },
+            remove() {
+                tech.extremeEmitter = false;
             }
         },
 		{
@@ -3638,10 +3656,90 @@ const tech = {
                 tech.zapLength = 1;
             }
         },
+        {
+            name: "AAAAAAAAAAAAA",
+            description: "effective harm and damage scaling is ^0.9(multiplicative)",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return simulation.difficultyMode>9
+            },
+            requires: "difficulty of help. or higher",
+            effect() {
+                tech.diffReduction *= .9;
+            },
+            remove() {
+                tech.diffReduction = 1;
+            }
+        },
+        {
+            name: "[endless screaming]",
+            description: "3% of damage has square rooted damage scaling",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return simulation.difficultyMode>9
+            },
+            requires: "difficulty of help. or higher",
+            effect() {
+                tech.diffPierce = true;
+            },
+            remove() {
+                tech.diffPierce = false;
+            }
+        },
+        {
+            name: "s;kjhfdsiugafuigsduil",
+            description: "[endless screaming]'s exponent is 0.25 higher",
+            maxCount: 9,
+            count: 0,
+            allowed() {
+                return tech.diffPierce
+            },
+            requires: "[endless screaming]",
+            effect() {
+                tech.diffPierceExp += 0.25;
+            },
+            remove() {
+                tech.diffPierceExp = 2;
+            }
+        },
+        {
+            name: "nyoom",
+            description: "get +0.00666...% damage per cycle<br>after this tech was selected,<br>reduce health by 0.005% of sqrt(max health)<br>every cycle",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return true
+            },
+            effect() {
+                tech.nyoomCycle = simulation.cycle;
+            },
+            remove() {
+                tech.nyoomCycle = 0;
+            }
+        },
         //************************************************** 
         //************************************************** field
         //************************************************** tech
         //************************************************** 
+        {
+            name: "extreme wave harmonics",
+            description: "the first <strong>standing wave harmonics</strong> shield is permanently maxed,<br>energy drain from blocking is divided by 3",
+            isFieldTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return mech.fieldUpgrades[mech.fieldMode].name === "standing wave harmonics"&&simulation.isExtremeMode
+            },
+            requires: "standing wave harmonics, extreme mode",
+            effect() {
+                tech.extremeWavHrm=true
+            },
+            remove() {
+                tech.extremeWavHrm=true
+            }
+        },
         {
             name: "bremsstrahlung radiation",
             description: "<strong>blocking</strong> with <strong>standing wave harmonics</strong><br> does <strong class='color-d'>damage</strong> to mobs",
@@ -3676,6 +3774,23 @@ const tech = {
             remove() {
                 mech.fieldRange = 175;
                 mech.fieldShieldingScale = 1;
+            }
+        },
+        {
+            name: "extreme diamagnetism",
+            description: "blocking with <strong>perfect diamagnetism</strong><br>fires the current gun at no ammo cost<br><em>defaults to \"random\"<br>if no guns in inventory</em>",
+            isFieldTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return mech.fieldUpgrades[mech.fieldMode].name === "perfect diamagnetism"&&simulation.isExtremeMode
+            },
+            requires: "perfect diamagnetism, extreme mode",
+            effect() {
+                tech.extremeDiamag = true;
+            },
+            remove() {
+                tech.extremeDiamag = false
             }
         },
         {
@@ -3727,6 +3842,23 @@ const tech = {
             },
             remove() {
                 tech.isCrit = false;
+            }
+        },
+        {
+            name: "extreme manufacturing",
+            description: "<strong>nano-scale manufacturing</strong> is improved a lot<br>acts as if all manufacturing tech is used<br>including no tech<br>every manufacturing interval's output is tripled",
+            isFieldTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return mech.maxEnergy > 0.99&&mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing"
+            },
+            requires: "nano-scale manufacturing",
+            effect() {
+                tech.extremeManu = true;
+            },
+            remove() {
+                tech.extremeManu = false;
             }
         },
         {
@@ -3835,7 +3967,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return mech.maxEnergy > 0.99 && mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isMissileField || tech.isIceField || tech.isFastDrones || tech.isDroneGrab)
+                return mech.maxEnergy > 0.99 && mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isMissileField || tech.isIceField || tech.isFastDrones || tech.isDroneGrab || tech.extremeManu)
             },
             requires: "nano-scale manufacturing",
             effect() {
@@ -3852,7 +3984,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return mech.maxEnergy > 0.99 && mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isSporeField || tech.isIceField || tech.isFastDrones || tech.isDroneGrab)
+                return mech.maxEnergy > 0.99 && mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isSporeField || tech.isIceField || tech.isFastDrones || tech.isDroneGrab || tech.extremeManu)
             },
             requires: "nano-scale manufacturing",
             effect() {
@@ -3869,7 +4001,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isSporeField || tech.isMissileField || tech.isFastDrones || tech.isDroneGrab)
+                return mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing" && !(tech.isSporeField || tech.isMissileField || tech.isFastDrones || tech.isDroneGrab || tech.extremeManu)
             },
             requires: "nano-scale manufacturing",
             effect() {
@@ -4152,6 +4284,23 @@ const tech = {
             remove() {
                 tech.aimDamage = 1
                 b.setFireCD();
+            }
+        },
+        {
+            name: "extreme wave",
+            description: "pilot wave line of sight nerf is disabled<br>energy drain from pilot wave is<br>divided by 4",
+            isFieldTech: true,
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return mech.fieldUpgrades[mech.fieldMode].name === "pilot wave"&&simulation.isExtremeMode
+            },
+            requires: "pilot wave,extreme mode",
+            effect() {
+                tech.extremeWave=true
+            },
+            remove() {
+                tech.extremeWave=false
             }
         },
         {

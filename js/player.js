@@ -621,6 +621,7 @@ const mech = {
         }
     },
     damage(dmg) {
+		dmg=dmg/(simulation.dmgScale**(tech.diffReduction-1))
         if (tech.isRewindAvoidDeath && mech.energy > 0.66) {
             mech.rewind(Math.floor(Math.min(299, 137 * mech.energy)))
             return
@@ -1182,7 +1183,7 @@ const mech = {
         const unit = Vector.normalise(Vector.sub(player.position, who.position))
 
         if (mech.energy > fieldBlockCost * 0.2) { //shield needs at least some of the cost to block
-            mech.energy -= fieldBlockCost
+            mech.energy -= ((tech.extremeEmitter&&mech.fieldMode==0)?-fieldBlockCost:((tech.extremeWavHrm&&mech.fieldMode==1)?fieldBlockCost/3:fieldBlockCost))
             if (mech.energy < 0) {
                 mech.energy = 0;
             }
@@ -1258,6 +1259,12 @@ const mech = {
             ) {
                 mob[i].locatePlayer();
                 mech.pushMass(mob[i]);
+				if (tech.extremeEmitter&&mech.fieldMode==0) {
+					mob[i].damage((1+Math.random()*1)*(1/simulation.dmgScale)**0.5)
+				}
+				if (tech.extremeDiamag&&mech.fieldMode==2) {
+					b.guns[b.activeGun??15].fire();
+				}
             }
         }
     },
@@ -1422,7 +1429,7 @@ const mech = {
                         mech.holdingTarget = null; //clears holding target (this is so you only pick up right after the field button is released and a hold target exists)
                     }
                     if (mech.energy > 0.1 && mech.fieldCDcycle < mech.cycle) {
-                        const fieldRange1 = (0.7 + 0.3 * Math.sin(mech.cycle / 23)) * mech.fieldRange
+                        const fieldRange1 = (0.7 + 0.3 * (tech.extremeWavHrm&&mech.fieldMode==1?1:Math.sin(mech.cycle / 23))) * mech.fieldRange
                         const fieldRange2 = (0.63 + 0.37 * Math.sin(mech.cycle / 37)) * mech.fieldRange
                         const fieldRange3 = (0.65 + 0.35 * Math.sin(mech.cycle / 47)) * mech.fieldRange
                         const netfieldRange = Math.max(fieldRange1, fieldRange2, fieldRange3)
@@ -1522,24 +1529,35 @@ const mech = {
             effect: () => {
                 mech.hold = function() {
                     if (mech.energy > mech.maxEnergy - 0.02 && mech.fieldCDcycle < mech.cycle && !input.field) {
-                        if (tech.isSporeField) {
-                            const len = Math.floor(5 + 4 * Math.random())
-                            mech.energy -= len * 0.105;
-                            for (let i = 0; i < len; i++) {
-                                b.spore(mech.pos)
+						if (tech.extremeManu) {
+							for (let i = 0; i < 3; i++) {
+								for (let i = 0; i < 9; i++) {
+									b.spore(mech.pos)
+								}
+                                b.missile({ x: mech.pos.x, y: mech.pos.y - 40 }, -Math.PI / 2, 0, 1, tech.recursiveMissiles)
+								b.iceIX(1)
+								b.drone(1)
                             }
-                        } else if (tech.isMissileField) {
-                            mech.energy -= 0.55;
-                            b.missile({ x: mech.pos.x, y: mech.pos.y - 40 }, -Math.PI / 2, 0, 1, tech.recursiveMissiles)
-                        } else if (tech.isIceField) {
-                            mech.energy -= 0.057;
-                            b.iceIX(1)
-                        } else {
-                            mech.energy -= 0.45;
-                            b.drone(1)
-                        }
-                    }
-
+							mech.energy-=0.5
+						} else {
+							if (tech.isSporeField) {
+								const len = Math.floor(5 + 4 * Math.random())
+								mech.energy -= len * 0.105;
+								for (let i = 0; i < len; i++) {
+									b.spore(mech.pos)
+								}
+							} else if (tech.isMissileField) {
+								mech.energy -= 0.55;
+								b.missile({ x: mech.pos.x, y: mech.pos.y - 40 }, -Math.PI / 2, 0, 1, tech.recursiveMissiles)
+							} else if (tech.isIceField) {
+								mech.energy -= 0.057;
+								b.iceIX(1)
+							} else {
+								mech.energy -= 0.45;
+								b.drone(1)
+							}
+						}
+					}
                     if (mech.isHolding) {
                         mech.drawHold(mech.holdingTarget);
                         mech.holding();
@@ -2187,8 +2205,8 @@ const mech = {
                                 const velocity = Vector.mult(Vector.normalise(diff), Math.min(speed, 45)) //limit velocity
                                 let radius, radiusSmooth
                                 if (Matter.Query.ray(map, mech.fieldPosition, player.position).length) { //is there something block the player's view of the field
-                                    radius = 0
-                                    radiusSmooth = Math.max(0, isInMap ? 0.96 - 0.02 * speed : 0.995); //0.99
+                                    radius = tech.extremeWave?250:0
+                                    radiusSmooth = tech.extremeWave?0.97:Math.max(0, isInMap ? 0.96 - 0.02 * speed : 0.995); //0.99
                                 } else {
                                     radius = Math.max(50, 250 - 2 * speed)
                                     radiusSmooth = 0.97
@@ -2197,7 +2215,7 @@ const mech = {
 
                                 for (let i = 0, len = body.length; i < len; ++i) {
                                     if (Vector.magnitude(Vector.sub(body[i].position, mech.fieldPosition)) < mech.fieldRadius && !body[i].isNotHoldable) {
-                                        const DRAIN = speed * body[i].mass * 0.000013
+                                        const DRAIN = speed * body[i].mass * 0.000013/(tech.extremeWave?4:1)
                                         if (mech.energy > DRAIN) {
                                             mech.energy -= DRAIN;
                                             Matter.Body.setVelocity(body[i], velocity); //give block mouse velocity
