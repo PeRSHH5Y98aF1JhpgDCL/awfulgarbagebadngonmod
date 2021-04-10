@@ -1429,7 +1429,7 @@ const mech = {
                         mech.holdingTarget = null; //clears holding target (this is so you only pick up right after the field button is released and a hold target exists)
                     }
                     if (mech.energy > 0.1 && mech.fieldCDcycle < mech.cycle) {
-                        const fieldRange1 = (0.7 + 0.3 * (tech.extremeWavHrm&&mech.fieldMode==1?1:Math.sin(mech.cycle / 23))) * mech.fieldRange
+                        const fieldRange1 = (0.7 + 0.3 * ((tech.extremeWavHrm&&mech.fieldMode==1)?1:Math.sin(mech.cycle / 23))) * mech.fieldRange
                         const fieldRange2 = (0.63 + 0.37 * Math.sin(mech.cycle / 37)) * mech.fieldRange
                         const fieldRange3 = (0.65 + 0.35 * Math.sin(mech.cycle / 47)) * mech.fieldRange
                         const netfieldRange = Math.max(fieldRange1, fieldRange2, fieldRange3)
