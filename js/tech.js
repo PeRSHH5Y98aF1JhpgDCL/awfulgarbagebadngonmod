@@ -3737,7 +3737,7 @@ const tech = {
                 tech.extremeWavHrm=true
             },
             remove() {
-                tech.extremeWavHrm=true
+                tech.extremeWavHrm=false
             }
         },
         {
