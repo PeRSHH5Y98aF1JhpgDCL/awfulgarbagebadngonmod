@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="...">2021-4-10</b> - who likes cloaking anyway<br>reenabled phase decoherence field and removed phase decoherence tech<hr>
 			<b title="get buffed">2021-4-9</b> - a "bit" more content<br>added a lot of extreme field tech(<b title="only for field emitter,standing wave harmonics,perfect diametrism,nano-scale manufacturing,pilot wave, can't be bothered with any other ones yet">hover over this for more info</b>)<br>tech: AAAAAAAAAAAA - lowers effective difficulty scaling<br>tech: [endless screaming] - 3% of damage to mobs are affected less by scaling<br>tech:jfdghdhgldfhdfkg - [endless screaming]'s exponent is 0.25 higher<br>tech:nyoom - decreases health and increases damage over time<br>sure do hope i remembered all of the things<hr>
 			<b title="AAAAAAAAAAAAAAAAAAAAAAAAAAAA">2021-4-6</b> - one nanosecond later bugpatch 2<br>extreme perpetual tech requirement text was wrong<hr>
 			<b title="AAAAAAAAAAAA part 2:BBBBBB">2021-4-6</b> - ten hour later bugpatch<br>added requirement text to some extreme tech because i forgot or something<hr>

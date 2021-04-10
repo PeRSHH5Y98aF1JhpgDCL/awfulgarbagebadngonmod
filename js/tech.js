@@ -4233,7 +4233,7 @@ const tech = {
             }
         },
         
-        {
+        /*{
             name: "phase decoherence",
             description: "become <strong>intangible</strong> while <strong class='color-cloaked'>cloaked</strong><br>but, passing through <strong>mobs</strong> drains your <strong class='color-f'>energy</strong>",
             isFieldTech: true,
@@ -4249,7 +4249,7 @@ const tech = {
             remove() {
                 tech.isIntangible = false;
             }
-        },
+        },*/
         {
             name: "dazzler",
             description: "<strong class='color-cloaked'>decloaking</strong> <strong>stuns</strong> nearby mobs<br>drains <strong>30%</strong> of your stored <strong class='color-f'>energy</strong>",
