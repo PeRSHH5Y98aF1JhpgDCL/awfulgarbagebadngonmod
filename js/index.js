@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="qwerty8up">2021-4-10</b> - dum IIV<br>added extreme mode requirement to some extreme field tech<hr>
 			<b title="AKHFJODHSUO:HFO">2021-4-10</b> - dum 2<br>fixed extreme wave harmonics for real this time<hr>
 			<b title="jkGJIHJOUHu">2021-4-10</b> - dum<br>fixed extreme wave harmonics<hr>
 			<b title="...">2021-4-10</b> - who likes cloaking anyway<br>reenabled phase decoherence field and removed phase decoherence tech<hr>

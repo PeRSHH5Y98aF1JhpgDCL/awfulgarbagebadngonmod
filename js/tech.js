@@ -3851,7 +3851,7 @@ const tech = {
             maxCount: 1,
             count: 0,
             allowed() {
-                return mech.maxEnergy > 0.99&&mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing"
+                return mech.maxEnergy > 0.99&&mech.fieldUpgrades[mech.fieldMode].name === "nano-scale manufacturing"&&simulation.isExtremeMode
             },
             requires: "nano-scale manufacturing",
             effect() {
