@@ -97,12 +97,16 @@ const tech = {
         if (tech.isSpeedDamage) dmg *= 1 + Math.min(0.4, player.speed * 0.013)
         if (tech.isBotDamage) dmg *= 1 + 0.02 * tech.totalBots()
 		if (tech.nyoomCycle) dmg *= 1+(simulation.cycle-tech.nyoomCycle)/6000
-        return (dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost)**(tech.extremeModeTwo?2:1)
+        dmg=(dmg * tech.slowFire * tech.aimDamage * tech.extremeAtkInc * (simulation.isExtremeMode?tech.extremeAtkIncPerm:1)*tech.allBoost)**(tech.extremeModeTwo?2:1)
+		dmg=dmg**tech.absAtk
+		return dmg
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
 		if (x>1.5) x=1.5*((x/1.5)**0.825)
-		return x+(tech.extremeModeTwo?1:0)
+		x=x+(tech.extremeModeTwo?1:0)
+		if (tech.LvLsurge) x=((x+1)*(level.levelsCleared**0.5))-1
+		return x
     },
     totalBots() {
         return tech.foamBotCount + tech.nailBotCount + tech.laserBotCount + tech.boomBotCount + tech.plasmaBotCount + tech.orbitBotCount + tech.plasmaBotCount
@@ -140,14 +144,14 @@ const tech = {
             }
         },
 		{
-            name: "even more extreme mode",
-            description: "damage is squared, <br>harm reduction is squared, <br>+100% duplication chance(after softcap), <br>spawn 10 tech and guns<br><em>doesn't unlock more tech<br>has a 1/20 chance to appear relative to other tech</em>",
+            name: "absurd mode",
+            description: "damage is squared, <br>harm reduction is squared, <br>+100% duplication chance(after softcap), <br>spawn 10 tech and guns",
             maxCount: 1,
             count: 0,
             allowed() {
-                return simulation.isExtremeMode && Math.random()<0.05
+                return simulation.isExtremeMode
             },
-            requires: "extreme mode, 1/20 chance",
+            requires: "extreme mode",
             effect: () => {
                 tech.extremeModeTwo=true
 				for (let i=0;i<10;i++) {
@@ -331,19 +335,67 @@ const tech = {
             }
         },*/
 		{
-            name: "ghostly bullets[AAAAAAAAAAAAA HOW TO MAKE THIS WORK]",
-            description: "bullets don't collide with walls",
+            name: "absurd damage",
+            description: "damage is squared",
+            maxCount: 3,
+            count: 0,
+            allowed() {
+                return tech.extremeModeTwo
+            },
+            requires: "absurd mode[tech]",
+            effect: () => {
+                tech.absAtk*=2
+            },
+            remove() {
+                tech.absAtk=1
+            }
+        },
+		{
+            name: "absurd defense",
+            description: "harm reduction is squared",
+            maxCount: 3,
+            count: 0,
+            allowed() {
+                return tech.extremeModeTwo
+            },
+            requires: "absurd mode[tech]",
+            effect: () => {
+                tech.absDef*=2
+            },
+            remove() {
+                tech.absDef=1
+            }
+        },
+		{
+            name: "D20",
+            description: "1/20 chance of an attack dealing <strong class=\"rainbow\">infinite</strong> damage<br><em>the rainbow effect isn't perfect but i don't care enough to fix it</em>",
             maxCount: 1,
             count: 0,
             allowed() {
-                return false
+                return tech.extremeModeTwo
             },
-            requires: "a gun",
+            requires: "absurd mode[tech]",
             effect: () => {
-                tech.bulletsCollide = false
+                tech.D20=true
             },
             remove() {
-                tech.bulletsCollide = true
+                tech.D20=false
+            }
+        },
+		{
+            name: "Level surge",
+            description: "Increase levels passed based on <br>the square root of levels<br>and increase duplication chance<br><em>totally not ripped off</em>",
+            maxCount: 1,
+            count: 0,
+            allowed() {
+                return tech.extremeModeTwo
+            },
+            requires: "absurd mode[tech]",
+            effect: () => {
+                tech.LvLsurge=true
+            },
+            remove() {
+                tech.Lvlsurge=false
             }
         },
         {
@@ -475,7 +527,7 @@ const tech = {
         },
         {
             name: "extreme emitter",
-            description: "<b>field emitter</b> overcharges energy instead<br> of draining and deals some damage<br> with rooted damage scaling",
+            description: "<b>field emitter</b> overcharges energy instead<br> of draining and deals some damage",
             maxCount: 1,
             count: 0,
 			isFieldTech: true,

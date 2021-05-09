@@ -12,6 +12,7 @@ const simulation = {
         } else {
             mech.airControl()
         }
+		Math.random()
         // level.checkZones();
         level.checkQuery();
         mech.move();

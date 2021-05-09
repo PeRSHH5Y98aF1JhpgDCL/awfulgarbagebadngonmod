@@ -1,5 +1,16 @@
 let bullet = [];
 
+//no idea where to put this so
+let randomSeed=Math.floor(Math.random()*2147483647);
+Math.random=()=>{
+	if(input.up) randomSeed+=1
+	if(input.fire) randomSeed+=2
+	if(input.field) randomSeed+=4
+	if(input.left) randomSeed+=8
+	if(input.down) randomSeed+=16
+	randomSeed=randomSeed * 16807 % 2147483647;
+	return randomSeed/2147483647;
+}
 const b = {
     dmgScale: null, //scales all gun damage from momentum, but not raw .dmg //set in levels.setDifficulty
     gravity: 0.0006, //most other bodies have   gravity = 0.001

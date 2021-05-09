@@ -182,7 +182,7 @@ const build = {
       <span style="font-size:1.5em;font-weight: 600;">PAUSED</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; press P to resume</div>`
         text += `<div class="pause-grid-module" style = "font-size: 13px;line-height: 120%;padding: 5px;">
       <strong class='color-d'>damage</strong> increase: ${((tech.damageFromTech()-1)*100).toFixed(0)}%
-      <br><strong class='color-harm'>harm</strong> reduction: ${((1-mech.harmReduction())*100).toFixed(0)}%
+      <br><strong class='color-harm'>harm</strong> reduction: ${mech.harmReduction()<0.01?'/'+1/mech.harmReduction():((1-mech.harmReduction())*100).toFixed(0)+'%'}
       <br><strong><em>fire delay</em></strong> decrease: ${((1-b.fireCD)*100).toFixed(0)}%
       <br><strong class='color-dup'>duplication</strong> chance: ${(tech.duplicationChance()*100).toFixed(0)+(tech.duplicationChance()>1.5?"(softcapped)":"")}%
       <br>
@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="another DI reference">2021-5-9</b> - powercreep go brrrrrrr<br>renamed even more extreme mode into absurd mode<br>removed absurd mode &lt;em&gt;s<br>tech - absurd damage: squares damage<br>tech - absurd defense: squares harm reduction<br>tech - d20: 5% to deal infinite damag<b title="makes laser and foam op">e</b><br>tech - level surge: makes you clear more levels and increase duplication<br>changed harm reduction display &lt; 99%<br>also mines broke don't make them<hr>
 			<b title="qwerty8up">2021-4-10</b> - dum IIV<br>added extreme mode requirement to some extreme field tech<hr>
 			<b title="AKHFJODHSUO:HFO">2021-4-10</b> - dum 2<br>fixed extreme wave harmonics for real this time<hr>
 			<b title="jkGJIHJOUHu">2021-4-10</b> - dum<br>fixed extreme wave harmonics<hr>

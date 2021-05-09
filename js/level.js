@@ -3840,6 +3840,7 @@ const level = {
     nextLevel() {
         // if (level.bossKilled) 
         level.levelsCleared++;
+		if (tech.LvLsurge) level.levelsCleared+=Math.floor(level.levelsCleared**0.5)
         // level.difficultyIncrease(simulation.difficultyMode) //increase difficulty based on modes
 
         //difficulty is increased 5 times when finalBoss dies

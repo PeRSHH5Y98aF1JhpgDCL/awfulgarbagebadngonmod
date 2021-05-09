@@ -1021,6 +1021,7 @@ const mobs = {
 					let tDmg=0
 					if (tech.diffPierce) tDmg=(dmg*(b.dmgScale**tech.diffPierceExponent))/33
 					dmg *=b.dmgScale**(tech.diffReduction)
+					if (tech.D20&&Math.random()<0.05) dmg=Infinity
 					dmg+=tDmg
                     this.health -= dmg
                     //this.fill = this.color + this.health + ')';

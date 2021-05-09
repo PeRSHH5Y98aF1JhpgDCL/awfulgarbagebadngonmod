@@ -522,6 +522,7 @@ const mech = {
         if (tech.isEntanglement && b.inventory[0] === b.activeGun) {
             for (let i = 0, len = b.inventory.length; i < len; i++) dmg *= 0.87 // 1 - 0.15
         }
+		dmg=dmg**tech.absDef
         return dmg**(tech.extremeModeTwo?2:1)
     },
     rewind(steps) { // mech.rewind(Math.floor(Math.min(599, 137 * mech.energy)))
@@ -1260,7 +1261,7 @@ const mech = {
                 mob[i].locatePlayer();
                 mech.pushMass(mob[i]);
 				if (tech.extremeEmitter&&mech.fieldMode==0) {
-					mob[i].damage((1+Math.random()*1)*(1/simulation.dmgScale)**0.5)
+					mob[i].damage((1+Math.random()*1))
 				}
 				if (tech.extremeDiamag&&mech.fieldMode==2) {
 					b.guns[b.activeGun??15].fire();
