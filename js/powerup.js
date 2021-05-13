@@ -2,7 +2,7 @@ let powerUp = [];
 
 const powerUps = {
     totalPowerUps: 0, //used for tech that count power ups at the end of a level
-    choose(type, index) {
+    choose(type, index, comp=0) {
         if (type === "gun") {
             b.giveGuns(index)
             let text = `b.giveGuns("<span class='color-text'>${b.guns[index].name}</span>")`
@@ -19,6 +19,10 @@ const powerUps = {
             simulation.makeTextLog(`<span class='color-var'>tech</span>.giveTech("<span class='color-text'>${tech.tech[index].name}</span>")`);
         }
         powerUps.endDraft(type);
+		if (comp>1) {
+			//powerUp.showDraft()
+			powerUps[type].effect(comp-1)
+		}
     },
     showDraft() {
         // document.getElementById("choose-grid").style.gridTemplateColumns = "repeat(2, minmax(370px, 1fr))"
@@ -34,8 +38,9 @@ const powerUps = {
         simulation.isChoosing = true; //stops p from un pausing on key down
         build.pauseGrid(true)
     },
-    endDraft(type, isCanceled = false) {
+    endDraft(type, isCanceled = false,comp=1) {
         if (isCanceled) {
+			for (let j=0;j<comp;j++) {
             if (tech.isCancelDuplication) tech.cancelCount++
 			if (tech.isCancelBots) b.randomBot()
             if (tech.isCancelRerolls) {
@@ -45,7 +50,7 @@ const powerUps = {
                 } else if (Math.random() < 0.5 && !tech.isSuperDeterminism) {
                     spawnType = "reroll"
                 }
-                for (let i = 0; i < 6; i++) powerUps.spawn(mech.pos.x + 40 * (Math.random() - 0.5), mech.pos.y + 40 * (Math.random() - 0.5), spawnType, false);
+                powerUps.spawn(mech.pos.x + 40 * (Math.random() - 0.5), mech.pos.y + 40 * (Math.random() - 0.5), spawnType, false, 6);
             }
             if (tech.isBanish && type === 'tech') { // banish rerolled tech by adding them to the list of banished tech
                 const banishLength = tech.isDeterminism ? 1 : 3 + tech.isExtraChoice * 2
@@ -56,6 +61,7 @@ const powerUps = {
                 }
                 simulation.makeTextLog(`${Math.max(0,powerUps.tech.lastTotalChoices - powerUps.tech.banishLog.length)} estimated <strong class='color-m'>tech</strong> choices remaining`)
             }
+			}
         }
         if (tech.manyWorlds && powerUps.reroll.rerolls === 0) {
             for (let i = 0; i < 2; i++) powerUps.spawn(mech.pos.x + 40 * (Math.random() - 0.5), mech.pos.y + 40 * (Math.random() - 0.5), "reroll", false);
@@ -78,7 +84,7 @@ const powerUps = {
             return 20;
         },
         effect() {
-            powerUps.reroll.changeRerolls(1)
+            powerUps.reroll.changeRerolls(1*this.comp)
         },
         changeRerolls(amount) {
             powerUps.reroll.rerolls += amount
@@ -141,7 +147,7 @@ const powerUps = {
         },
         effect() {
             if (!tech.isEnergyHealth && mech.alive) {
-                const heal = tech.largerHeals * (this.size / 40 / Math.sqrt(tech.largerHeals) / (simulation.healScale ** 0.25)) ** 2 //heal scale is undone here because heal scale is properly affected on mech.addHealth()
+                const heal = tech.largerHeals * this.comp * (this.size / 40 / Math.sqrt(tech.largerHeals) / (simulation.healScale ** 0.25)) ** 2 //heal scale is undone here because heal scale is properly affected on mech.addHealth()
                 if (heal > 0) {
                     const healOutput = Math.min(mech.maxHealth - mech.health, heal) * simulation.healScale
                     mech.addHealth(heal);
@@ -173,7 +179,7 @@ const powerUps = {
             if (tech.isAmmoForGun && b.inventory.length > 0) {
                 const target = b.guns[b.activeGun]
                 const ammoAdded = Math.ceil(Math.random() * target.ammoPack * tech.ammoBuff) + Math.ceil(Math.random() * target.ammoPack * tech.ammoBuff)
-                target.ammo += ammoAdded
+                target.ammo += ammoAdded*this.comp
                 // simulation.makeTextLog(`<div class='circle gun'></div> &nbsp; ${ammoAdded} ammo added`, 300)
                 simulation.makeTextLog(`${target.name}.<span class='color-gun'>ammo</span> <span class='color-symbol'>+=</span> ${ammoAdded}
                     <br>${target.ammo}`)
@@ -200,7 +206,7 @@ const powerUps = {
             return 45;
         },
         choiceLog: [], //records all previous choice options
-        effect() {
+        effect(comp) {
             function pick(who, skip1 = -1, skip2 = -1, skip3 = -1, skip4 = -1) {
                 let options = [];
                 for (let i = 1; i < who.length; i++) {
@@ -230,27 +236,27 @@ const powerUps = {
             let choice3 = -1
             if (choice1 > -1) {
                 let text = ""
-                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("field",true)'>✕</div>`
+                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("field",true,${this.comp??comp})'>✕</div>`
                 text += `<h3 style = 'color:#fff; text-align:left; margin: 0px;'>field</h3>`
                 text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice1})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice1].name}</div> ${mech.fieldUpgrades[choice1].description}</div>`
                 if (!tech.isDeterminism) {
                     choice2 = pick(mech.fieldUpgrades, choice1)
-                    if (choice2 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice2})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice2].name}</div> ${mech.fieldUpgrades[choice2].description}</div>`
+                    if (choice2 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice2},${this.comp??comp})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice2].name}</div> ${mech.fieldUpgrades[choice2].description}</div>`
                     choice3 = pick(mech.fieldUpgrades, choice1, choice2)
-                    if (choice3 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice3})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice3].name}</div> ${mech.fieldUpgrades[choice3].description}</div>`
+                    if (choice3 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice3},${this.comp??comp})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice3].name}</div> ${mech.fieldUpgrades[choice3].description}</div>`
                 }
                 if (tech.isExtraChoice) {
                     let choice4 = pick(mech.fieldUpgrades, choice1, choice2, choice3)
-                    if (choice4 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice4})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice4].name}</div> ${mech.fieldUpgrades[choice4].description}</div>`
+                    if (choice4 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice4},${this.comp??comp})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice4].name}</div> ${mech.fieldUpgrades[choice4].description}</div>`
                     let choice5 = pick(mech.fieldUpgrades, choice1, choice2, choice3, choice4)
-                    if (choice5 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice5})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice5].name}</div> ${mech.fieldUpgrades[choice5].description}</div>`
+                    if (choice5 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${choice5},${this.comp??comp})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[choice5].name}</div> ${mech.fieldUpgrades[choice5].description}</div>`
                     powerUps.field.choiceLog.push(choice4)
                     powerUps.field.choiceLog.push(choice5)
                 }
 				let extrachoices=[]
 				for (i=0;i<tech.isExtraChoices;i++) {
 					extrachoices[extrachoices.length] = pick(mech.fieldUpgrades)
-					text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${extrachoices[extrachoices.length-1]})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].name}</div> ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].description}</div>`
+					text += `<div class="choose-grid-module" onclick="powerUps.choose('field',${extrachoices[extrachoices.length-1]},${this.comp??comp})"><div class="grid-title"><div class="circle-grid field"></div> &nbsp; ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].name}</div> ${mech.fieldUpgrades[extrachoices[extrachoices.length-1]].description}</div>`
 					powerUps.field.choiceLog.push(extrachoices[extrachoices.length-1])
 				} 
                 powerUps.field.choiceLog.push(choice1)
@@ -280,7 +286,7 @@ const powerUps = {
         choiceLog: [], //records all previous choice options
         lastTotalChoices: 0, //tracks how many tech were available for random selection last time a tech was picked up
         banishLog: [], //records all tech permanently removed from the selection pool
-        effect() {
+        effect(comp) {
             if (mech.alive) {
                 function pick(skip1 = -1, skip2 = -1, skip3 = -1, skip4 = -1) {
                     let options = [];
@@ -294,25 +300,24 @@ const powerUps = {
 
                     if (options.length > 0) {
                         const choose = options[Math.floor(Math.random() * options.length)]
-						console.log(choose)
                         const isCount = tech.tech[choose].count > 0 ? `(${tech.tech[choose].count+1}x)` : "";
-
+						console.log(this)
                         if (tech.tech[choose].isFieldTech) {
-                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose})"><div class="grid-title">
+                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose},${this.comp??comp})"><div class="grid-title">
                                                     <span style="position:relative;">
                                                         <div class="circle-grid tech" style="position:absolute; top:0; left:0;opacity:0.8;"></div>
                                                         <div class="circle-grid field" style="position:absolute; top:0; left:10px;opacity:0.65;"></div>
                                                     </span>
                                                     &nbsp; &nbsp; &nbsp; &nbsp; ${tech.tech[choose].name} ${isCount}</div>${tech.tech[choose].description}</div></div>`
                         } else if (tech.tech[choose].isGunTech) {
-                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose})"><div class="grid-title">
+                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose},${this.comp??comp})"><div class="grid-title">
                                                     <span style="position:relative;">
                                                         <div class="circle-grid tech" style="position:absolute; top:0; left:0;opacity:0.8;"></div>
                                                         <div class="circle-grid gun" style="position:absolute; top:0; left:10px; opacity:0.65;"></div>
                                                     </span>
                                                     &nbsp; &nbsp; &nbsp; &nbsp; ${tech.tech[choose].name} ${isCount}</div>${tech.tech[choose].description}</div></div>`
                         } else {
-                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose})"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[choose].name} ${isCount}</div>${tech.tech[choose].description}</div>`
+                            text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose},${this.comp??comp})"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[choose].name} ${isCount}</div>${tech.tech[choose].description}</div>`
                         }
 
                         // text += `<div class="choose-grid-module" onclick="powerUps.choose('tech',${choose})"><div class="grid-title"><div class="circle-grid tech"></div> &nbsp; ${tech.tech[choose].name}</div> ${tech.tech[choose].description}</div>`
@@ -321,7 +326,7 @@ const powerUps = {
 
                 }
                 let text = ""
-                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("tech",true)'>✕</div>`
+                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("tech",true,${this.comp??comp})'>✕</div>`
                 text += `<h3 style = 'color:#fff; text-align:left; margin: 0px;'>tech</h3>`
                 let choice1 = pick()
                 let choice2 = -1
@@ -382,7 +387,7 @@ const powerUps = {
             return 35;
         },
         choiceLog: [], //records all previous choice options
-        effect() {
+        effect(comp) {
             function pick(who, skip1 = -1, skip2 = -1, skip3 = -1, skip4 = -1) {
                 let options = [];
                 for (let i = 0; i < who.length; i++) {
@@ -415,20 +420,20 @@ const powerUps = {
             let choice3 = -1
             if (choice1 > -1) {
                 let text = ""
-                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("gun",true)'>✕</div>`
+                if (!tech.isDeterminism) text += `<div class='cancel' onclick='powerUps.endDraft("gun",true,${this.comp??comp})'>✕</div>`
                 text += `<h3 style = 'color:#fff; text-align:left; margin: 0px;'>gun</h3>`
-                text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice1})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice1].name}</div> ${b.guns[choice1].description}</div>`
+                text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice1},0)"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice1].name}</div> ${b.guns[choice1].description}</div>`
                 if (!tech.isDeterminism) {
                     choice2 = pick(b.guns, choice1)
-                    if (choice2 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice2})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice2].name}</div> ${b.guns[choice2].description}</div>`
+                    if (choice2 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice2},${this.comp??comp})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice2].name}</div> ${b.guns[choice2].description}</div>`
                     choice3 = pick(b.guns, choice1, choice2)
-                    if (choice3 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice3})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice3].name}</div> ${b.guns[choice3].description}</div>`
+                    if (choice3 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice3},${this.comp??comp})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice3].name}</div> ${b.guns[choice3].description}</div>`
                 }
                 if (tech.isExtraChoice) {
                     let choice4 = pick(b.guns, choice1, choice2, choice3)
-                    if (choice4 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice4})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice4].name}</div> ${b.guns[choice4].description}</div>`
+                    if (choice4 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice4},${this.comp??comp})"><div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice4].name}</div> ${b.guns[choice4].description}</div>`
                     let choice5 = pick(b.guns, choice1, choice2, choice3, choice4)
-                    if (choice5 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice5})">
+                    if (choice5 > -1) text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${choice5},${this.comp??comp})">
           <div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[choice5].name}</div> ${b.guns[choice5].description}</div>`
                     powerUps.gun.choiceLog.push(choice4)
                     powerUps.gun.choiceLog.push(choice5)
@@ -436,7 +441,7 @@ const powerUps = {
 				let extrachoices=[]
 				for (i=0;i<tech.isExtraChoices;i++) {
 					extrachoices[extrachoices.length] = pick(b.guns)
-					text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${extrachoices[extrachoices.length-1]})">
+					text += `<div class="choose-grid-module" onclick="powerUps.choose('gun',${extrachoices[extrachoices.length-1]},${this.comp??comp})">
           <div class="grid-title"><div class="circle-grid gun"></div> &nbsp; ${b.guns[extrachoices[extrachoices.length-1]].name}</div> ${b.guns[extrachoices[extrachoices.length-1]].description}</div>`
 					powerUps.tech.choiceLog.push(extrachoices[extrachoices.length-1])
 				} 
@@ -631,7 +636,7 @@ const powerUps = {
             mech.fieldCDcycle = mech.cycle + 30; //disable field so you can't pick up the ejected tech
         }
     },
-    directSpawn(x, y, target, moving = true, mode = null, size = powerUps[target].size()) {
+    directSpawn(x, y, target, moving = true, mode = null, size = powerUps[target].size(), compression=1) {
         let index = powerUp.length;
         target = powerUps[target];
         powerUp[index] = Matter.Bodies.polygon(x, y, 0, size, {
@@ -652,6 +657,8 @@ const powerUps = {
         if (mode) {
             powerUp[index].mode = mode
         }
+		
+			powerUp[index].comp = compression
         if (moving) {
             Matter.Body.setVelocity(powerUp[index], {
                 x: (Math.random() - 0.5) * 15,
@@ -660,21 +667,24 @@ const powerUps = {
         }
         World.add(engine.world, powerUp[index]); //add to world
     },
-    spawn(x, y, target, moving = true, mode = null, size = powerUps[target].size()) {
+    spawn(x, y, target, moving = true, mode = null, size = powerUps[target].size(), com=1) {
         if (
             (!tech.isSuperDeterminism || (target === 'tech' || target === 'heal' || target === 'ammo')) &&
             !(tech.isEnergyNoAmmo && target === 'ammo') &&
             (!simulation.isNoPowerUps || (target === 'reroll' || target === 'heal' || target === 'ammo'))
         ) {
-            powerUps.directSpawn(x, y, target, moving, mode, size)
-			for(i=0;i<Math.floor(tech.duplicationChance());i++) {
-                powerUps.directSpawn(x, y, target, moving, mode, size)
-                powerUp[powerUp.length - 1].isBonus = true
+            powerUps.directSpawn(x, y, target, moving, mode, size, com)
+			if (tech.duplicationChance() < 1) {
+				if (Math.random() < (tech.duplicationChance()%1)) {
+					powerUps.directSpawn(x, y, target, moving, mode, size, com)
+					powerUp[powerUp.length - 1].isBonus = true
+				}
+			} else {
+				let comp= Math.floor(tech.duplicationChance())
+				if (Math.random() < (tech.duplicationChance()-comp)) comp++
+				powerUps.directSpawn(x, y, target, moving, mode, size, comp*com)
+				powerUp[powerUp.length - 1].isBonus = true
 			}
-            if (Math.random() < (tech.duplicationChance()%1)) {
-                powerUps.directSpawn(x, y, target, moving, mode, size)
-                powerUp[powerUp.length - 1].isBonus = true
-            }
         }
     },
 };

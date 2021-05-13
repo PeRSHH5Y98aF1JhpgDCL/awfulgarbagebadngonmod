@@ -1170,7 +1170,7 @@ const mech = {
                         x: player.velocity.x + powerUp[i].velocity.x / player.mass * 5,
                         y: player.velocity.y + powerUp[i].velocity.y / player.mass * 5
                     });
-                    powerUp[i].effect();
+                    powerUp[i].effect(powerUp[i].comp);
                     Matter.World.remove(engine.world, powerUp[i]);
                     powerUp.splice(i, 1);
                     return; //because the array order is messed up after splice

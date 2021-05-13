@@ -103,9 +103,9 @@ const tech = {
     },
     duplicationChance() {
         x=(tech.isBayesian ? 0.2 : 0) + tech.cancelCount * 0.04 + tech.duplicateChance + mech.duplicateChance;
+		if (tech.LvLsurge) x=((x+1)*(level.levelsCleared**0.5))-1
 		if (x>1.5) x=1.5*((x/1.5)**0.825)
 		x=x+(tech.extremeModeTwo?1:0)
-		if (tech.LvLsurge) x=((x+1)*(level.levelsCleared**0.5))-1
 		return x
     },
     totalBots() {

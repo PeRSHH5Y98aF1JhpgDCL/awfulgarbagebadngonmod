@@ -1328,7 +1328,7 @@ const b = {
             beforeDmg() {},
             do() {
                 this.force.y += this.mass * 0.002; //extra gravity
-                let collide = tech.bulletsCollide&&Matter.Query.collides(this, map) //check if collides with map
+                let collide = Matter.Query.collides(this, map) //check if collides with map
                 if (collide.length > 0) {
                     for (let i = 0; i < collide.length; i++) {
                         if (collide[i].bodyA.collisionFilter.category === cat.map) { // || collide[i].bodyB.collisionFilter.category === cat.map) {
