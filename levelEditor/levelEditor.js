@@ -218,7 +218,7 @@ function updateWarns() {
 	let hasEx=(!(itemsPlaced.map(x=>x[0]).indexOf(7)==-1))
 	let hasEnt=(!(itemsPlaced.map(x=>x[0]).indexOf(6)==-1))
 	let warn=[]
-	if (!hasEx) { warn.push("No entry doorway, player will be spawned at [0,1000]")}
+	if (!hasEx) { warn.push("No entry doorway, player will be spawned at previous spawnpoint")}
 	if (!hasEnt){warn.push("No exit doorway, player will not be able to get out without testing mode")};
 	if (warn.length==0) warn.push("None!")
 	document.getElementById("warns").innerHTML="<strong class=\"color-r\">Warnings:</strong>["+warn+']'
