@@ -1,0 +1,50 @@
+<head>
+	<link rel="stylesheet" href="./../style.css">
+	<link rel='shortcut icon' href='./../favicon2.ico' type='image/x-icon' />
+</head>
+<body>
+	<div id="generalStuff" class="pauselike">
+	<p id="mousepos"><strong class='color-d'>Mouse Position</strong>:[no, idea]</p>
+	<p id="type"><strong class='color-harm'>Object to be placed</strong>: Map Rectangle[0]</p>
+	<p id="objs"><strong><em>Amount of objects</em></strong>: 13</p>
+	<p id="curSel"><strong class="color-dup">Currently selected object</strong>: 0[Map Rectangle]</p><br><br>
+	<p id="curSave"><strong class="color-m">Currently selected save:</strong>[None]</p>
+	<p id="warns"><strong class="color-r">Warnings:</strong>[None]</p>
+	<p><strong class="color-h">Note:</strong>This is meant to be a qol thing<br>for mapmakers, and for normal people<br>to make maps, but not for<br>full creation of maps.<br>Change the js for some things<br>that this tool can't do.</p>
+	<!--You could say that i should move the <p> next to the <strong>,but i did not do that, because i did not think of that and not can't be bothered.-->
+	<svg class="SVG-button" onclick="toggleControls()" width="116" height="25" style="padding:2px; margin: 10px;">
+      <g stroke="none" fill="#333" stroke-width="2" font-size="17px" font-family="Ariel, sans-serif">
+          <text x="5" y="18">Show controls&nbsp;</text>
+      </g>
+  </svg>
+	</div>
+	<div id="editProps" class="center chooselike" style="display:none">Test</div>
+	<div id="Controls" class="pauselike center" style="display:none"><br>
+	<strong class="controls">Arrow Keys</strong>: Move camera<br><br>
+	<strong class="controls">Left Mouse Button</strong>:Place object<br><br>
+	<strong class="controls">Right Mouse Button</strong>:Select object<br><br>
+	<strong class="controls">A</strong>/<strong class="controls">D</strong>: Shift to be placed object index<br><br>
+	<strong class="controls">Shift</strong>+<strong class="controls">Move Mouse</strong>:Move current object<br><br>
+	<strong class="controls">Control</strong>+<strong class="controls">Move Mouse</strong>: Resize current object[if type is block]<br><br>
+	<strong class="controls">Shift</strong>+<strong class="controls">Control</strong>+<strong class="controls">Move Mouse</strong>:Move current object along cardinal directions<br><br>
+	<strong class="controls">Delete</strong>:Remove selected object<br><br>
+	<strong class="controls">E</strong>:Edit selected object<br><br>
+	<strong class="controls">F</strong>:Open save manager<br><br>
+	<svg class="SVG-button" onclick="toggleControls()" width="110" height="25" style="padding:2px; margin: 10px;">
+      <g stroke="none" fill="#333" stroke-width="2" font-size="17px" font-family="Ariel, sans-serif">
+          <text x="5" y="18">Hide controls&nbsp;</text>
+      </g>
+   </svg>
+   </div>
+   <div class="center chooselike" id="savesDiv" style="display:none">Testerest</div>
+   <textarea type="text" style="display:none" id="hiddenCopyPaste"></textarea>
+	<canvas id="canvas" width="100%" height="100%"></canvas>
+	<!-- <script src='./../lib/matter.min.js'></script>
+    <script src='./../lib/decomp.min.js'></script>
+    <script src='./../lib/randomColor.min.js'></script>
+	<script src='./../js/simulation.js'></script>
+    <script src="./../js/engine.js"></script>
+	<script src="./../js/player.js"></script>
+	<script src="./../js/level.js"></script> -->
+	<script src="./levelEditor.js"></script>
+</body>
