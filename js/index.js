@@ -999,6 +999,7 @@ document.getElementById("difficulty-select").addEventListener("input", () => {
 document.getElementById("updates").addEventListener("toggle", function() {
 ////there was a bunch of complecated network stuff which i decided to not exist actually
             document.getElementById("updates-div").innerHTML = `the bad mod:update list<hr>
+			<b title="panide">2021-5-31</b> - total reverse<br>Added a level editor[<a href="./levelEditor/index.html">Here</a>]<br>i now no longer wish to exist<hr>
 			<b title="UPDATE">2021-5-13</b> - 4 days<br>duplication chaince above 100% now compresses additional powerups into one<br>only works half the time for some reason<br>unbroke mines<br>moved level surge to before the softcap<br>also last update i replaced the rng function with another one but forgot to put that in<br>now what<hr>
 			<b title="another DI reference">2021-5-9</b> - powercreep go brrrrrrr<br>renamed even more extreme mode into absurd mode<br>removed absurd mode &lt;em&gt;s<br>tech - absurd damage: squares damage<br>tech - absurd defense: squares harm reduction<br>tech - d20: 5% to deal infinite damag<b title="makes laser and foam op">e</b><br>tech - level surge: makes you clear more levels and increase duplication<br>changed harm reduction display &lt; 99%<br>also mines broke don't make them<hr>
 			<b title="qwerty8up">2021-4-10</b> - dum IIV<br>added extreme mode requirement to some extreme field tech<hr>
