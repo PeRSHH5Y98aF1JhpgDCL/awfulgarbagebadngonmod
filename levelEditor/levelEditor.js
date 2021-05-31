@@ -96,6 +96,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 		type:2,
 		name:"Enemy",
 		render(x,s){
+			qol.context.beginPath()
 			r=100*player.camzoom//pain
 			let vertexes=[]
 			for (i = 0; i < 3; i++) {
@@ -118,7 +119,8 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 		type:2,
 		name:"Level Boss",
 		render(x,s){
-			r=300*player.camzoom//pain
+			qol.context.beginPath()
+			r=300*player.camzoom//AAAAAAAAAAAA
 			qol.context.fillStyle="#ccccff"
 			if (s) qol.context.fillStyle="#ff00cc"
 			if (s) qol.context.strokeStyle = '#ff2222';
@@ -157,6 +159,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			}
 			qol.context.fill()
 			qol.context.fillStyle="#777777"
+			qol.context.beginPath()
 		}
 	},
 	{
@@ -194,24 +197,24 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			}
 		}
 	},
-	/*{
-		type:1,
-		name:"Elevator",
-		addedVars:[
-			["Delta", [0,1000]]
-		],
+	{
+		type:2,
+		name:"Random Minor powerup",
 		render(x,s){
-			qol.context.fillStyle=x[3]
-			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
-			if (s) {
-				qol.context.strokeStyle = '#ff2222';
-				qol.context.fillStyle = '#af0000';
-				qol.context.lineWidth = 3;
-				qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
-				qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
-			}
+			qol.context.fillStyle="#2aebc2"
+			if (s) {qol.context.fillStyle = '#eb0000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-25)*player.camzoom,(x[1][1]+player.campos[1]-25)*player.camzoom,(50)*player.camzoom,(50)*player.camzoom)
 		}
-	},*/
+	},
+	{
+		type:2,
+		name:"Random Major powerup",
+		render(x,s){
+			qol.context.fillStyle="#aa88ff"
+			if (s) {qol.context.fillStyle = '#aa0000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]-75)*player.camzoom,(150)*player.camzoom,(150)*player.camzoom)
+		}
+	},
 ]
 var baseLineNames=["Position", "Width"]
 function updateWarns() {
@@ -476,6 +479,12 @@ function saveBtnThings() {
 					case 8:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
 						return "level.hazard("+z.join(", ")+');'
+						break;
+					case 9:
+						return "powerUps.chooseRandomPowerUp("+x[1]+');'
+						break;
+					case 10:
+						return "powerUps.spawnBossPowerUp("+x[1]+');'
 						break;
 					default:
 					alert("You broke something, didn't you?")
