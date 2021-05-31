@@ -76,7 +76,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 	},
 	{
 		type:1,
-		name:"Shading",
+		name:"Background color",
 		addedVars:[
 			["Color", "#d4d4d7"]
 		],
@@ -183,7 +183,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 		type:1,
 		name:"Hazard",
 		render(x,s){
-			qol.context.fillStyle=x[3]
+			qol.context.fillStyle="#2fb688"
 			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
 			if (s) {
 				qol.context.strokeStyle = '#ff2222';
