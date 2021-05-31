@@ -484,7 +484,7 @@ function saveBtnThings() {
 						return "powerUps.chooseRandomPowerUp("+x[1]+');'
 						break;
 					case 10:
-						return "powerUps.spawnBossPowerUp("+x[1]+');'
+						return "powerUps.spawnStartingPowerUps("+x[1]+');'
 						break;
 					default:
 					alert("You broke something, didn't you?")
