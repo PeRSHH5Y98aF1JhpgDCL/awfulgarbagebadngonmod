@@ -239,7 +239,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]+25)*player.camzoom,(150)*player.camzoom,(50)*player.camzoom)
 		}
 	},
-	{
+	/*{
 		type:1,
 		name:"Elevator",
 		addedVars:[
@@ -270,7 +270,7 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1]-x[3])*player.camzoom])
 			//qol.context.stroke()//why does this just not work???????????
 		}
-	},
+	},*/
 	{
 		type:1,
 		name:"Hanging block",
@@ -648,7 +648,7 @@ function saveBtnThings() {
 						return "spawn.boost("+x[1]+", "+x[2]+')'
 						break;
 					case 12:
-						return "level.toUpdate.push([level.elevator("+x[1][0]+", "+(x[1][1]+x[3])+", "+x[2][0]+', '+(x[2][1])+', '+x[3]+'),(x)=>{x.move();x.drawTrack()}]);'
+						return "temp=level.elevator("+x[1][0]+", "+(x[1][1]-x[3])+", "+x[2][0]+", "+(x[2][1])+", "+-x[3]+")\ntemp.isUp=true\nlevel.toUpdate.push([temp,(x)=>{x.move();x.drawTrack()}]);"
 						break;
 					case 13:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
@@ -657,11 +657,11 @@ function saveBtnThings() {
 					case 14:
 						return "level.toUpdate.push([level.button("+x[1]+'),(x)=>{x.query();x.draw();level.triggers["'+x[2]+'"]=(x.isUp=='+x[3]+')}]);'
 						break;
-					case 15:
+					/*case 15:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x))),x[3]]
 						return "level.toUpdate.push([level.door("+z+'),(x)=>{x.draw();x.isOpen = !(level.triggers["'+x[4]+'"])}]);'
-						break;
-					case 16:
+						break;*/
+					case 15:
 						z=[...x[1],x[2][0],x[2][1], 0.4,"\"rgba(255,0,0,1)\""]
 						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.opticalQuery();x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
 						break;
