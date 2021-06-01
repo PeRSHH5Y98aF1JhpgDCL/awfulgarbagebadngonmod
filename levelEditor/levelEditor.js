@@ -647,20 +647,20 @@ function saveBtnThings() {
 					case 11:
 						return "spawn.boost("+x[1]+", "+x[2]+')'
 						break;
-					case 12:
+					/*case 12:
 						return "temp=level.elevator("+x[1][0]+", "+(x[1][1]-x[3])+", "+x[2][0]+", "+(x[2][1])+", "+-x[3]+")\ntemp.isUp=true\nlevel.toUpdate.push([temp,(x)=>{x.move();x.drawTrack()}]);"
-						break;
-					case 13:
+						break;*/
+					case 12:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
 						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: 0.0001815, length: 1});'
 						break;
-					case 14:
+					case 13:
 						return "level.toUpdate.push([level.button("+x[1]+'),(x)=>{x.query();x.draw();level.triggers["'+x[2]+'"]=(x.isUp=='+x[3]+')}]);'
 						break;
-					/*case 15:
+					case 14:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x))),x[3]]
-						return "level.toUpdate.push([level.door("+z+'),(x)=>{x.draw();x.isOpen = !(level.triggers["'+x[4]+'"])}]);'
-						break;*/
+						return "level.toUpdate.push([level.door("+z+'),(x)=>{x.draw();x.isOpen = !(level.triggers["'+x[4]+'"]);x.openClose()}]);'
+						break;
 					case 15:
 						z=[...x[1],x[2][0],x[2][1], 0.4,"\"rgba(255,0,0,1)\""]
 						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.opticalQuery();x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
