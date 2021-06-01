@@ -636,7 +636,7 @@ function saveBtnThings() {
 						break;
 					case 8:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
-						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
+						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.draw();x.query();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
 						break;
 					case 9:
 						return "powerUps.chooseRandomPowerUp("+x[1]+');'
