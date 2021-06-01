@@ -645,7 +645,7 @@ function saveBtnThings() {
 						return "powerUps.spawnStartingPowerUps("+x[1]+');'
 						break;
 					case 11:
-						return "spawn.boost("+x[1]+", "+x[2]+')'
+						return "level.toUpdate.push([level.boost("+x[1]+", "+x[2]+"),(x)=>{x.query()}])"
 						break;
 					/*case 12:
 						return "temp=level.elevator("+x[1][0]+", "+(x[1][1]-x[3])+", "+x[2][0]+", "+(x[2][1])+", "+-x[3]+")\ntemp.isUp=true\nlevel.toUpdate.push([temp,(x)=>{x.move();x.drawTrack()}]);"
