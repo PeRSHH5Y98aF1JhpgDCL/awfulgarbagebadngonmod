@@ -604,6 +604,10 @@ function saveBtnThings() {
 		  el.innerHTML="Export as js"
 		  el.onclick=()=>{//oh boy
 			let tobj=obj
+			tobj=JSON.parse(JSON.stringify(tobj,(k,v)=>{
+				if ((typeof v)=="number") return parseInt(v.toPrecision())
+				return v
+			}))
 			let asdf=tobj.map((x)=>{
 				let y=x[0]
 				switch (y) {
