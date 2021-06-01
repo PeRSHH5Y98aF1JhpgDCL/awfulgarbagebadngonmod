@@ -185,6 +185,9 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 	{
 		type:1,
 		name:"Hazard",
+		addedVars: [
+			["Trigger Id", "Input text here"]
+		],
 		render(x,s){
 			qol.context.fillStyle="#2fb688"
 			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
@@ -213,6 +216,160 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			qol.context.fillStyle="#aa88ff"
 			if (s) {qol.context.fillStyle = '#aa0000';}
 			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]-75)*player.camzoom,(150)*player.camzoom,(150)*player.camzoom)
+		}
+	},
+	{
+		type:2,
+		name:"Boost pad",
+		addedVars:[
+			["Power", 1000]
+		],
+		render(x,s){
+			qol.context.fillStyle="#d596e8"
+			if (s) {qol.context.fillStyle = '#d50000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]-25)*player.camzoom,(150)*player.camzoom,(50)*player.camzoom)
+			qol.context.fillStyle="#d8bbe3"
+			if (s) {qol.context.fillStyle = '#d80000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]-75)*player.camzoom,(150)*player.camzoom,(50)*player.camzoom)
+			qol.context.fillStyle="#dbd1e0"
+			if (s) {qol.context.fillStyle = '#db0000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]-200)*player.camzoom,(150)*player.camzoom,(125)*player.camzoom)
+			qol.context.fillStyle="#444444"
+			if (s) {qol.context.fillStyle = '#440000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]+25)*player.camzoom,(150)*player.camzoom,(50)*player.camzoom)
+		}
+	},
+	{
+		type:1,
+		name:"Elevator",
+		addedVars:[
+			["MaxHeight",1000]
+		],
+		render(x,s){
+			qol.context.fillStyle="#989898"
+			if (!s) {
+				qol.context.strokeStyle = '#aaaaac';
+			} else {
+				qol.context.strokeStyle="#aa0000"
+			}
+			qol.context.lineWidth = 1;
+			qol.context.strokeRect((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom,1,-x[3]*player.camzoom)
+			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.lineWidth = 3;
+			if (s) {
+				qol.context.strokeStyle = '#ff0000';
+			} else {
+				qol.context.strokeStyle="#000000"
+			}
+			qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1]-x[3])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.moveTo((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom)
+			//qol.context.beginPath()
+			//console.clear()
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom])
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1]-x[3])*player.camzoom])
+			//qol.context.stroke()//why does this just not work???????????
+		}
+	},
+	{
+		type:1,
+		name:"Hanging block",
+		addedVars:[
+			["MaxHeight",1000]
+		],
+		render(x,s){
+			qol.context.fillStyle="#989898"
+			if (!s) {
+				qol.context.strokeStyle = '#aaaaac';
+			} else {
+				qol.context.strokeStyle="#aa0000"
+			}
+			qol.context.lineWidth = 1;
+			qol.context.strokeRect((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom,1,-x[3]*player.camzoom)
+			if (s) {
+				qol.context.strokeStyle = '#580000';
+			} else {
+				qol.context.strokeStyle="#58585c"
+			}
+			qol.context.strokeRect((x[1][0]+((x[2][0]-x[3]-x[2][0])/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom,(x[3]+x[2][0])*player.camzoom,1)//bottom line
+			qol.context.strokeRect((x[1][0]+((x[2][0]-x[3]-x[2][0])/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)-37.5+player.campos[1])*player.camzoom,1,(75)*player.camzoom)//left bar
+			qol.context.strokeRect((x[1][0]+((x[2][0]+x[3]+x[2][0])/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)-37.5+player.campos[1])*player.camzoom,1,75*player.camzoom)//right bar
+			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.lineWidth = 3;
+			if (s) {
+				qol.context.strokeStyle = '#ff0000';
+			} else {
+				qol.context.strokeStyle="#000000"
+			}
+			qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.moveTo((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom)
+			//qol.context.beginPath()
+			//console.clear()
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom])
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1]-x[3])*player.camzoom])
+			//qol.context.stroke()//why does this just not work???????????
+		}
+	},
+	{
+		type:2,
+		name:"Button",
+		addedVars:[
+			["Trigger Id", "Input text here"],
+			["Invert", false]
+		],
+		render(x,s){
+			qol.context.fillStyle="#ff6666"
+			if (s) {qol.context.fillStyle = '#aa0000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(150)*player.camzoom,(25)*player.camzoom)
+			qol.context.fillStyle="#444444"
+			if (s) {qol.context.fillStyle = '#440000';}
+			qol.context.fillRect((x[1][0]+player.campos[0]-75)*player.camzoom,(x[1][1]+player.campos[1]+25)*player.camzoom,(150)*player.camzoom,(50)*player.camzoom)
+		}
+	},
+	{
+		type:1,
+		name:"Door",
+		addedVars:[
+			["MaxHeight",185],
+			["Trigger Id", "Input text here"]
+		],
+		render(x,s){
+			qol.context.fillStyle="#444444"
+			if (s) qol.context.fillStyle="#440000"
+			if (!s) {
+				qol.context.strokeStyle = '#aaaaac';
+			} else {
+				qol.context.strokeStyle="#aa0000"
+			}
+			qol.context.lineWidth = 1;
+			qol.context.strokeRect((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom,1,-x[3]*player.camzoom)
+			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.lineWidth = 3;
+			if (s) {
+				qol.context.strokeStyle = '#ff0000';
+			} else {
+				qol.context.strokeStyle="#000000"
+			}
+			qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1]-x[3])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+			qol.context.moveTo((x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom)
+			//qol.context.beginPath()
+			//console.clear()
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1])*player.camzoom])
+			//console.log([(x[1][0]+(x[2][0]/2)+player.campos[0])*player.camzoom,(x[1][1]+(x[2][1]/2)+player.campos[1]-x[3])*player.camzoom])
+			//qol.context.stroke()//why does this just not work???????????
+		}
+	},
+	{
+		type:1,
+		name:"Laser",
+		addedVars: [
+			["Trigger Id", "Input text here"]
+		],
+		render(x,s){
+			qol.context.fillStyle="#ff0000"
+			if (s) {qol.context.fillStyle = '#aa0000';}
+			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
 		}
 	},
 ]
@@ -304,7 +461,7 @@ function saveClick() {
 document.addEventListener("keydown", event => {
 	//if (document.activeElement !== qol.canvas) return;
 	console.log(event.keyCode)
-  if (event.keyCode==46&&!player.isinprompt) {
+  if ((event.keyCode==46||event.keyCode==8)&&!player.isinprompt) {
 	  itemsPlacedBackup=itemsPlaced
 	  itemsPlaced.splice(player.selected, 1)
 	  return;
@@ -351,20 +508,21 @@ document.addEventListener("keydown", event => {
 	el.appendChild(document.createTextNode("Editing "+obs[obj[0]].name+"("+(player.selected+1)+")"))
 	div.appendChild(el)
 	div.appendChild(document.createElement('br'))
-	for (let i=1;i<obj.length;i++) {
+	for (let i=0;i<obj.length-1;i++) {
 		let subDiv=document.createElement("div")
 		subDiv.innerHTML="<div class=\"circle-grid field\"></div>"
 		subDiv.classList.add("chooselike")
 		subDiv.style.backgroundColor="#ffffff"
 		subDiv.style.border="2px solid #bbb"
 		let el=document.createElement("strong")
-		el.appendChild(document.createTextNode((baseLineNames[i-1]??obs[obj[0]].addedVars[i-1-baseLineNames.length][0])))
+		console.log((obs[obj[0]].type==1?baseLineNames[i]:(i==0?"Position":undefined))??i-((obs[obj[0]].type==1)?2:1))
+		el.appendChild(document.createTextNode(((obs[obj[0]].type==1?baseLineNames[i]:(i==0?"Position":undefined))??obs[obj[0]].addedVars[i-((obs[obj[0]].type==1)?2:1)][0])))
 		subDiv.appendChild(el)
 		subDiv.appendChild(document.createElement('br'))
 		subDiv.appendChild(document.createElement('br'))
 		el=document.createElement("input")
 		el.type="text"
-		el.value=JSON.stringify(obj[i])
+		el.value=JSON.stringify(obj[i+1])
 		player.inputElsTracked.push(el)
 		el.classList.add("inputElem")
 		subDiv.appendChild(el)
@@ -462,23 +620,23 @@ function saveBtnThings() {
 						return "level.fillBG.push("+JSON.stringify({x:z[0],y:z[1],width:z[2],height:z[3],color:x[3]})+');'
 						break;
 					case 3:
-						return "randomMob("+x[1]+');'
+						return "spawn.randomMob("+x[1]+');'
 						break;
 					case 4:
-						return "randomLevelBoss("+x[1]+');'
+						return "spawn.randomLevelBoss("+x[1]+');'
 						break;
 					case 5:
-						return "randomBoss("+x[1]+');'
+						return "spawn.randomGroup("+x[1]+');'
 						break;
 					case 6:
-						return "level.exit.x = "+x[1][0]+';\nlevel.exit.y = '+x[1][1]+'\nspawn.mapRect(level.exit.x, level.exit.y + 20, 100, 100);'
+						return "level.exit.x = "+x[1][0]+';\nlevel.exit.y = '+x[1][1]+'\nspawn.mapRect(level.exit.x, level.exit.y + 25, 100, 100);'
 						break;
 					case 7:
-						return "level.setPosToSpawn("+x[1]+");\nspawn.mapRect(level.enter.x, level.enter.y + 20, 100, 20);"
+						return "level.setPosToSpawn("+x[1]+");\nspawn.mapRect(level.enter.x, level.enter.y + 15, 100, 20);"
 						break;
 					case 8:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
-						return "level.hazard("+z.join(", ")+');'
+						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
 						break;
 					case 9:
 						return "powerUps.chooseRandomPowerUp("+x[1]+');'
@@ -486,12 +644,35 @@ function saveBtnThings() {
 					case 10:
 						return "powerUps.spawnStartingPowerUps("+x[1]+');'
 						break;
+					case 11:
+						return "spawn.boost("+x[1]+", "+x[2]+')'
+						break;
+					case 12:
+						return "level.toUpdate.push([level.elevator("+x[1][0]+", "+(x[1][1]+x[3])+", "+x[2][0]+', '+(x[2][1])+', '+x[3]+'),(x)=>{x.move();x.drawTrack()}]);'
+						break;
+					case 13:
+						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
+						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: 0.0001815, length: 1});'
+						break;
+					case 14:
+						return "level.toUpdate.push([level.button("+x[1]+'),(x)=>{x.query();x.draw();level.triggers["'+x[2]+'"]=(x.isUp=='+x[3]+')}]);'
+						break;
+					case 15:
+						z=[...x[1],...(x[2].map((x)=>Math.abs(x))),x[3]]
+						return "level.toUpdate.push([level.door("+z+'),(x)=>{x.draw();x.isOpen = !(level.triggers["'+x[4]+'"])}]);'
+						break;
+					case 16:
+						z=[...x[1],x[2][0],x[2][1], 0.4,"\"rgba(255,0,0,1)\""]
+						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.opticalQuery();x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
+						break;
 					default:
 					alert("You broke something, didn't you?")
 					break;
 				}
 			}).join("\n")
-			  copyText(asdf)
+			asdf="level.toUpdate=[]\nlevel.triggers={}\n"+asdf
+			asdf+="\nlevel.custom=()=>{\n\tlevel.toUpdate.forEach((x)=>{x[1](x[0])})\nlevel.exit.draw();level.enter.draw();level.playerExitCheck()}"
+			copyText(asdf)
 		  }
 		  subDiv.appendChild(document.createElement('br'))
 		  el=document.createElement("button")
@@ -599,7 +780,7 @@ qol.canvas.addEventListener("mousedown", function (iinput) {
 		if (obs[player.blockType].type==2) {
 			player.selected=itemsPlaced.length
 			itemsPlacedBackup=itemsPlaced
-			itemsPlaced.push([player.blockType,player.pos.map((x,i)=>(x)/player.camzoom-player.campos[i])])
+			itemsPlaced.push([player.blockType,player.pos.map((x,i)=>(x)/player.camzoom-player.campos[i]),...((obs[player.blockType].addedVars??[]).map(x=>x[1]))])
 		}
 	} else if (iinput.button==2) {
 		for (let i=0;i<itemsPlaced.length;i++) {
