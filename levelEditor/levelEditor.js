@@ -820,7 +820,7 @@ qol.canvas.addEventListener("mousemove", function (iinput) {
 		itemsPlaced[player.selected][2]=itemsPlaced[player.selected][2].map((z,i)=>Math.abs(z+delta[i]/player.camzoom))
 	}
 	player.pos=[x,y]
-    document.getElementById("mousepos").innerHTML = "<strong class='color-d'>Mouse Position</strong>:[" + (x+player.campos[0]/player.camzoom).toPrecision(4) + "," + (y+player.campos[1]/player.camzoom).toPrecision(4) + "]";
+    document.getElementById("mousepos").innerHTML = "<strong class='color-d'>Mouse Position</strong>:[" + ((x+player.campos[0])/player.camzoom).toPrecision(4) + "," + ((y+player.campos[1])/player.camzoom).toPrecision(4) + "]";
 });
 localSettings = JSON.parse(localStorage.getItem("localSettings"));
 cycle()
