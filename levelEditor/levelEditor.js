@@ -517,7 +517,7 @@ document.addEventListener("keydown", event => {
 		subDiv.style.border="2px solid #bbb"
 		let el=document.createElement("strong")
 		console.log((obs[obj[0]].type==1?baseLineNames[i]:(i==0?"Position":undefined))??i-((obs[obj[0]].type==1)?2:1))
-		el.appendChild(document.createTextNode(((obs[obj[0]].type==1?baseLineNames[i]:(i==0?"Position":undefined))??obs[obj[0]].addedVars[i-((obs[obj[0]].type==1)?2:1)][0])))
+		el.appendChild(document.createTextNode(((obs[obj[0]].type==1?baseLineNames[i]:(i==0?"Position":undefined))??(obs[obj[0]].addedVars[i-((obs[obj[0]].type==1)?2:1)]??["undefined"])[0])))
 		subDiv.appendChild(el)
 		subDiv.appendChild(document.createElement('br'))
 		subDiv.appendChild(document.createElement('br'))
@@ -666,7 +666,7 @@ function saveBtnThings() {
 						break;*/
 					case 12:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
-						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: '+x[4]+', length: 1});'
+						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: '+x[4]+', length: 1});\nWorld.add(engine.world, cons[cons.length-1])'
 						break;
 					case 13:
 						return "level.toUpdate.push([level.button("+x[1]+'),(x)=>{x.query();x.draw();level.triggers["'+x[2]+'"]=(x.isUp=='+x[3]+')}]);'
