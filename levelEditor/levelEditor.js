@@ -373,6 +373,24 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 			qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
 		}
 	},
+	{
+		type:1,
+		name:"Debris",
+		addedVars:[
+			["Amount",16]
+		],
+		render(x,s){
+			if (s) {
+				qol.context.strokeStyle = '#ff0000';
+			} else {
+				qol.context.strokeStyle="#000000"
+			}
+				qol.context.lineWidth = 3;
+				qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,0)
+				qol.context.strokeRect((x[1][0]+(x[2][0])+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,1,(x[2][1])*player.camzoom)
+				qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,1,(x[2][1])*player.camzoom)
+		}
+	},
 ]
 var baseLineNames=["Position", "Width"]
 function updateWarns() {
@@ -678,6 +696,10 @@ function saveBtnThings() {
 					case 15:
 						z=[...x[1],x[2][0],x[2][1], 0.4,"\"rgba(255,0,0,1)\""]
 						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.opticalQuery();x.draw();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
+						break;
+					case 16:
+						z=[...x[1],x[2][0], x[3]]
+						return "spawn.debris("+z+");"
 						break;
 					default:
 					alert("You broke something, didn't you?")
