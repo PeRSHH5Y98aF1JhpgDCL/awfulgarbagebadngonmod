@@ -275,7 +275,8 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 		type:1,
 		name:"Hanging block",
 		addedVars:[
-			["MaxHeight",1000]
+			["Height",1000],
+			["Stiffness",0.01]
 		],
 		render(x,s){
 			qol.context.fillStyle="#989898"
@@ -576,7 +577,16 @@ function saveBtnThings() {
 		  subDiv.appendChild(el)
 		  el.innerHTML="Load"
 		  el.onclick=()=>{
-			  itemsPlaced=obj
+			itemsPlaced=obj.map((x)=>{
+				if (x.length < (3-obs[x[0]].type+(obs[x[0]].addedVars?obs[x[0]].addedVars:[]).length+1)) {
+					let n=[0,[0,0]]
+					if (obs[x[0]].type==1) n.push([0,0])
+					n=n.concat(obs[x[0]].addedVars?obs[x[0]].addedVars.map(x=>x[1]):[])
+					x=Object.assign(n,x)
+					console.log(x)
+				}
+				return x
+			})
 			  document.getElementById("curSave").innerHTML="<strong class=\"color-m\">Currently selected save:</strong>"+x
 		  }
 		  el=document.createElement("button")
@@ -656,7 +666,7 @@ function saveBtnThings() {
 						break;*/
 					case 12:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
-						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: 0.0001815, length: 1});'
+						return "spawn.bodyRect("+z.join(", ")+');\ncons[cons.length] = Constraint.create({pointA: {x: '+(x[1][0]+(x[2][0]/2))+', y: '+(x[1][1]+(x[2][1]/2)-x[3])+'}, bodyB: body[body.length - 1], stiffness: '+x[4]+', length: 1});'
 						break;
 					case 13:
 						return "level.toUpdate.push([level.button("+x[1]+'),(x)=>{x.query();x.draw();level.triggers["'+x[2]+'"]=(x.isUp=='+x[3]+')}]);'
