@@ -576,13 +576,17 @@ document.addEventListener("keydown", event => {
   }//todo
   if ((event.keyCode==90)&&!player.isinprompt) {
 		function f(v) {
+			let x = Math.pow(10, Math.round(Math.log10(Math.abs(1/player.camzoom))))*100;
+			return Math.round(v/x)*x
+		}
+		function g(v) {
 			let x = Math.pow(10, Math.round(Math.log10(Math.abs(v))))/100;
 			return Math.round(v/x)*x
 		}//snap to closest power of 10
 		if (itemsPlaced[player.selected]) {
 			itemsPlaced[player.selected][1]=[f(itemsPlaced[player.selected][1][0]),f(itemsPlaced[player.selected][1][1])]
 			if(obs[itemsPlaced[player.selected][0]].type==1) {
-				itemsPlaced[player.selected][2]=[f(itemsPlaced[player.selected][2][0]),f(itemsPlaced[player.selected][2][1])]
+				itemsPlaced[player.selected][2]=[g(itemsPlaced[player.selected][2][0]),g(itemsPlaced[player.selected][2][1])]
 			}
 		}
 	return;
