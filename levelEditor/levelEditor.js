@@ -432,6 +432,7 @@ qol.canvas.addEventListener("wheel", function(event){
    }
 }, false);
 qol.canvas.addEventListener("mouseup", function (iinput) {
+	if (player.isinprompt) return;
   //if (iinput.button === 0) {
 	if ((obs[player.blockType].type==1)&&iinput.button==0) {
 		let width=Math.abs(-player.blockPos[0]+player.pos[0])
@@ -808,6 +809,7 @@ qol.canvas.addEventListener('contextmenu', event => {
 		}*/
 });
 qol.canvas.addEventListener("mousedown", function (iinput) {
+	if (player.isinprompt) return;
 	if (iinput.ctrlKey) {
 		if (iinput.button === 2) {
 			player.playerFocus = true;
