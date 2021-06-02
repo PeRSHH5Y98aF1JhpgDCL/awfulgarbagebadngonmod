@@ -9,7 +9,7 @@ var input={
 	r:false,
 	u:false,
 	d:false,
-	shift:false
+	shift:false,
 }
 var player={
 	pos:[0,0],
@@ -19,7 +19,11 @@ var player={
 	campos:[1000,2000],
 	inputElsTracked:[],
 	isinprompt:false,
-	camzoom:1/2//pain
+	camzoom:1/2,
+	mouseMovementControls:true
+}
+function checkMouseControls() {
+	player.mouseMovementControls=document.getElementById("Mousecontrols").checked
 }
 function cycle() {
     requestAnimationFrame(cycle);
@@ -408,7 +412,7 @@ function render() {
 		obs[x[0]].render(x,i==player.selected)
 	})
 	document.getElementById("objs").innerHTML="<strong><em>Amount of objects</em></strong>: "+itemsPlaced.length
-	if (obs[player.blockType].type==1&&input.leftC) {
+	if (obs[player.blockType].type==1&&player.mouseMovementControls&&input.leftC) {
 		let width=Math.abs(-player.blockPos[0]+player.pos[0])
 		let height=Math.abs(-player.blockPos[1]+player.pos[1])
 		qol.context.lineWidth = 3;
@@ -432,8 +436,10 @@ qol.canvas.addEventListener("wheel", function(event){
    }
 }, false);
 qol.canvas.addEventListener("mouseup", function (iinput) {
-	if (player.isinprompt) return;
-  //if (iinput.button === 0) {
+	if (iinput.button==0) {
+		input.leftC = false;
+	}
+	if (player.isinprompt||!player.mouseMovementControls) return;
 	if ((obs[player.blockType].type==1)&&iinput.button==0) {
 		let width=Math.abs(-player.blockPos[0]+player.pos[0])
 		let height=Math.abs(-player.blockPos[1]+player.pos[1])
@@ -444,8 +450,8 @@ qol.canvas.addEventListener("mouseup", function (iinput) {
 		});
 		itemsPlacedBackup=itemsPlaced
 		itemsPlaced.push(temp)
+
 	}
-    input.leftC = false;
   /*} else if (iinput.button === 2) {
     input.leftC = false;
   }*/
@@ -568,8 +574,25 @@ document.addEventListener("keydown", event => {
 	  player.isinprompt=true
 	  saveBtnThings()
   }//todo
-  if ((event.keyCode==90)&&event.ctrlKey) {
-		itemsPlaced=itemsPlacedBackup
+  if ((event.keyCode==90)&&!player.isinprompt) {
+		function f(v) {
+			let x = Math.pow(10, Math.round(Math.log10(Math.abs(v))))/10;
+			return Math.round(v/x)*x
+		}//snap to closest power of 10
+		if (itemsPlaced[player.selected]) {
+			itemsPlaced[player.selected][1]=[f(itemsPlaced[player.selected][1][0]),f(itemsPlaced[player.selected][1][1])]
+			if(obs[itemsPlaced[player.selected][0]].type==1) {
+				itemsPlaced[player.selected][2]=[f(itemsPlaced[player.selected][2][0]),f(itemsPlaced[player.selected][2][1])]
+			}
+		}
+	return;
+  }
+  if (event.keyCode==88&&!player.isinprompt) {
+	player.selected--
+	return;
+  }
+  if (event.keyCode==67&&!player.isinprompt) {
+	player.selected++
 	return;
   }
 });
@@ -809,24 +832,10 @@ qol.canvas.addEventListener('contextmenu', event => {
 		}*/
 });
 qol.canvas.addEventListener("mousedown", function (iinput) {
-	if (player.isinprompt) return;
-	if (iinput.ctrlKey) {
-		if (iinput.button === 2) {
-			player.playerFocus = true;
-			adjustScreen();
-		}
-	}
 	if (iinput.button==0) {
 		input.leftC = true;
-		if (obs[player.blockType].type==1) {
-			player.blockPos=player.pos
-		}
-		if (obs[player.blockType].type==2) {
-			player.selected=itemsPlaced.length
-			itemsPlacedBackup=itemsPlaced
-			itemsPlaced.push([player.blockType,player.pos.map((x,i)=>(x)/player.camzoom-player.campos[i]),...((obs[player.blockType].addedVars??[]).map(x=>x[1]))])
-		}
-	} else if (iinput.button==2) {
+	}
+	if (iinput.button==2) {
 		for (let i=0;i<itemsPlaced.length;i++) {
 			let type=obs[itemsPlaced[i][0]].type
 			let obj=itemsPlaced[i]
@@ -846,6 +855,17 @@ qol.canvas.addEventListener("mousedown", function (iinput) {
 			}
 		}
 	}
+	if (player.isinprompt||!player.mouseMovementControls) return;
+	if (iinput.button==0) {
+		if (obs[player.blockType].type==1) {
+			player.blockPos=player.pos
+		}
+		if (obs[player.blockType].type==2) {
+			player.selected=itemsPlaced.length
+			itemsPlacedBackup=itemsPlaced
+			itemsPlaced.push([player.blockType,player.pos.map((x,i)=>(x)/player.camzoom-player.campos[i]),...((obs[player.blockType].addedVars??[]).map(x=>x[1]))])
+		}
+	}
     window.focus();
 });
 qol.canvas.addEventListener("mousemove", function (iinput) {
@@ -853,6 +873,11 @@ qol.canvas.addEventListener("mousemove", function (iinput) {
     let x = (iinput.clientX)
     let y = (iinput.clientY)
 	let delta=[x,y].map((z,i)=>z-player.pos[i])
+	player.pos=[x,y]
+	if (input.leftC&&!player.mouseMovementControls) {
+		player.campos=player.campos.map((x,i)=>x+(delta[i]/player.camzoom))
+	}
+	if (!player.mouseMovementControls) return;
 	if (iinput.ctrlKey&&iinput.shiftKey&&itemsPlaced[player.selected]) {
 		let gt=Math.abs(delta[0])>Math.abs(delta[1])
 		let w=gt?delta[0]:delta[1]
@@ -863,7 +888,6 @@ qol.canvas.addEventListener("mousemove", function (iinput) {
 	else if (iinput.ctrlKey&&obs[player.blockType]&&itemsPlaced[player.selected]) {
 		itemsPlaced[player.selected][2]=itemsPlaced[player.selected][2].map((z,i)=>Math.abs(z+delta[i]/player.camzoom))
 	}
-	player.pos=[x,y]
     document.getElementById("mousepos").innerHTML = "<strong class='color-d'>Mouse Position</strong>:[" + ((x+player.campos[0])/player.camzoom).toPrecision(4) + "," + ((y+player.campos[1])/player.camzoom).toPrecision(4) + "]";
 });
 localSettings = JSON.parse(localStorage.getItem("localSettings"));

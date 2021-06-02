@@ -19,11 +19,13 @@
 	<p id="warns"><strong class="color-r">Warnings:</strong>[None]</p>
 	<p><strong class="color-h">Note:</strong>This is meant to be a qol thing<br>for mapmakers, and for normal people<br>to make maps, but not for<br>full creation of maps.<br>Change the output js for some things<br>that this tool can't do.</p>
 	<!--You could say that i should move the <p> next to the <strong>,but i did not do that, because i did not think of that and not can't be bothered.-->
+  <label for="Mousecontrols">Mouse movement controls enabled:</label>
+  <input type="checkbox" id="Mousecontrols" onclick="checkMouseControls()" checked><br>
 	<svg class="SVG-button" onclick="toggleControls()" width="116" height="25" style="padding:2px; margin: 10px;">
       <g stroke="none" fill="#333" stroke-width="2" font-size="17px" font-family="Ariel, sans-serif">
           <text x="5" y="18">Show controls&nbsp;</text>
       </g>
-  </svg>
+   </svg><br>
 	</div>
 	<div id="editProps" class="center chooselike" style="display:none">Test</div>
 	<div id="Controls" class="pauselike center" style="display:none"><br>
@@ -32,12 +34,17 @@
 	<strong class="controls">Right Mouse Button</strong>:Select object<br><br>
 	<strong class="controls">Scroll up/down</strong>:Zoom camera<br><br>
 	<strong class="controls">A</strong>/<strong class="controls">D</strong>: Shift to be placed object index<br><br>
+	<strong class="controls">Delete</strong>/<strong class="controls">Backspace</strong>:Remove selected object<br><br>
+	<strong class="controls">E</strong>:Edit selected object<br><br>
+	<strong class="controls">F</strong>:Open save manager<br><br>
+	<strong class="controls">Z</strong>:Snap to grid<br><br>
+	<strong class="controls">X</strong>/<strong class="controls">C</strong>:Move selected index<br><br>
+	The three below controls are only active when mouse movement controls are active!<br><br>
 	<strong class="controls">Shift</strong>+<strong class="controls">Move Mouse</strong>:Move current object<br><br>
 	<strong class="controls">Control</strong>+<strong class="controls">Move Mouse</strong>: Resize current object[if type is block]<br><br>
 	<strong class="controls">Shift</strong>+<strong class="controls">Control</strong>+<strong class="controls">Move Mouse</strong>:Move current object along cardinal directions<br><br>
-	<strong class="controls">Delete</strong>:Remove selected object<br><br>
-	<strong class="controls">E</strong>:Edit selected object<br><br>
-	<strong class="controls">F</strong>:Open save manager<br><br>
+	The below controls are only active when mouse movement controls aren't active!<br><br>
+	<strong class="controls">Drag Left Mouse</strong>: Move camera<br><br>
 	<svg class="SVG-button" onclick="toggleControls()" width="110" height="25" style="padding:2px; margin: 10px;">
       <g stroke="none" fill="#333" stroke-width="2" font-size="17px" font-family="Ariel, sans-serif">
           <text x="5" y="18">Hide controls&nbsp;</text>
