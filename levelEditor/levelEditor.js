@@ -690,6 +690,12 @@ function saveBtnThings() {
 				  saveBtnThings()
 			  }
 		  }
+		  el=document.createElement("button")
+		  subDiv.appendChild(el)
+		  el.innerHTML="Play"
+		  el.onclick=()=>{
+			  window.location.href="https://aShorterName.github.io/ngonfork?save="+x
+		  }
 		  
 	  })
 	  div.appendChild(document.createElement('br'))
