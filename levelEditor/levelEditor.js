@@ -576,7 +576,7 @@ document.addEventListener("keydown", event => {
   }//todo
   if ((event.keyCode==90)&&!player.isinprompt) {
 		function f(v) {
-			let x = Math.pow(10, Math.round(Math.log10(Math.abs(v))))/10;
+			let x = Math.pow(10, Math.round(Math.log10(Math.abs(v))))/100;
 			return Math.round(v/x)*x
 		}//snap to closest power of 10
 		if (itemsPlaced[player.selected]) {
