@@ -395,6 +395,26 @@ var obs=[//1:block, 2:point, 3:tools, 4:vertex
 				qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,1,(x[2][1])*player.camzoom)
 		}
 	},
+	{
+		type:1,
+		name:"Rotor",
+		addedVars: [["Rotation factor", 0.001]],
+		render(x,s){
+		qol.context.fillStyle="#989898"
+		qol.context.fillRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+		qol.context.fillRect((x[1][0]+player.campos[0]+(x[2][0]-x[2][1])/2)*player.camzoom,(x[1][1]+player.campos[1]-(x[2][0]-x[2][1])/2)*player.camzoom,(x[2][1])*player.camzoom,(x[2][0])*player.camzoom)
+		if (s) {
+			qol.context.strokeStyle = '#ff0000';
+		} else {
+			qol.context.strokeStyle="#000000"
+		}
+		qol.context.lineWidth = 3;
+		qol.context.strokeRect((x[1][0]+player.campos[0]+(x[2][0]-x[2][1])/2)*player.camzoom,(x[1][1]+player.campos[1]-(x[2][0]-x[2][1])/2)*player.camzoom,(x[2][1])*player.camzoom,(x[2][0])*player.camzoom)
+		qol.context.strokeRect((x[1][0]+player.campos[0])*player.camzoom,(x[1][1]+player.campos[1])*player.camzoom,(x[2][0])*player.camzoom,(x[2][1])*player.camzoom)
+		qol.context.lineWidth = 7;
+		qol.context.strokeRect((x[1][0]+player.campos[0]+(x[2][0])/2)*player.camzoom,(x[1][1]+player.campos[1]+(x[2][1])/2)*player.camzoom,1,1)
+		}
+	},
 ]
 var baseLineNames=["Position", "Width"]
 function updateWarns() {
@@ -650,7 +670,7 @@ function saveBtnThings() {
 		  el.innerHTML="Export"
 		  el.onclick=()=>{
 			  copyText("{\""+x+"\":"+JSON.stringify(obj,(k,v)=>{
-				if ((typeof v)=="number") return parseInt(v.toPrecision())
+				if (((typeof v)=="number")&&k<3) return parseFloat(v.toPrecision(3))
 				return v
 			  })+"}"
 			)
@@ -661,7 +681,7 @@ function saveBtnThings() {
 		  el.onclick=()=>{//oh boy
 			let tobj=obj
 			tobj=JSON.parse(JSON.stringify(tobj,(k,v)=>{
-				if ((typeof v)=="number") return parseInt(v.toPrecision())
+				if (((typeof v)=="number")&&k<3) return parseFloat(v.toPrecision(3))
 				return v
 			}))
 			let asdf=tobj.map((x)=>{
@@ -696,7 +716,7 @@ function saveBtnThings() {
 						break;
 					case 8:
 						z=[...x[1],...(x[2].map((x)=>Math.abs(x)))]
-						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.draw();x.query();x.isOn = !(level.triggers["'+x[3]+'"])}]);'
+						return "level.toUpdate.push([level.hazard("+z.join(", ")+'), (x)=>{x.draw();x.query();x.level(level.triggers["'+x[3]+'"])}]);'
 						break;
 					case 9:
 						return "powerUps.chooseRandomPowerUp("+x[1]+');'
@@ -729,6 +749,10 @@ function saveBtnThings() {
 						z=[...x[1],x[2][0], x[3]]
 						return "spawn.debris("+z+");"
 						break;
+					case 17:
+						z=[x[1][0]+(x[2][0])/2,(x[1][1]+(x[2][1])/2),x[3], x[2][0],x[2][1]]
+						return "level.toUpdate.push([level.rotor("+z+"),(x)=>{x.rotate()}]);"
+						break;
 					default:
 					alert("You broke something, didn't you?")
 					break;
@@ -743,7 +767,7 @@ function saveBtnThings() {
 		  subDiv.appendChild(el)
 		  el.innerHTML="Delete"
 		  el.onclick=()=>{
-			  if (prompt("Are you sure? Type the name of this save to comfirm")==x) {
+			  if (prompt("Are you sure? Type the name of this save to confirm")==x) {
 				  let tsaves=saves
 				  delete tsaves[x]
 				  localStorage.saves=JSON.stringify(tsaves)
